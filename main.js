@@ -61,6 +61,7 @@ function createCard(title, imgUrl, onClick) {
 
 function showAll(type) {
   hideAllViews();
+  document.getElementById("content-view").style.display = "none";
   document.getElementById("home-view").style.display = "block";
 
   const container = type === "series" ? document.getElementById("series-list-div") : document.getElementById("movies-list-div");
