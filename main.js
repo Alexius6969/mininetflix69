@@ -21,6 +21,8 @@ function logout() {
 function loadHome() {
   hideAllViews();
   document.getElementById("home-view").style.display = "block";
+  document.getElementById("series-section").style.display = "block";
+  document.getElementById("movies-section").style.display = "block";
 
   const seriesDiv = document.getElementById("series-list-div");
   seriesDiv.innerHTML = "";
