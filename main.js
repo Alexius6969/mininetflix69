@@ -60,19 +60,48 @@ function createCard(title, imgUrl, onClick) {
 }
 
 function showAll(type) {
+  // Mostra solo la home
   hideAllViews();
-  document.getElementById("content-view").style.display = "none";
   document.getElementById("home-view").style.display = "block";
 
-  const container = type === "series" ? document.getElementById("series-list-div") : document.getElementById("movies-list-div");
-  const data = type === "series" ? seriesData : moviesData;
+  const seriesDiv = document.getElementById("series-list-div");
+  const moviesDiv = document.getElementById("movies-list-div");
 
-  container.innerHTML = "";
-  for (const key in data) {
-    const card = createCard(key, data[key].img, () => {
-      type === "series" ? showSeasons(key) : showMovie(key);
-    });
-    container.appendChild(card);
+  if (type === "series") {
+    // Carica tutte le serie
+    seriesDiv.innerHTML = "";
+    for (const serie in seriesData) {
+      const card = createCard(serie, seriesData[serie].img, () => showSeasons(serie));
+      seriesDiv.appendChild(card);
+    }
+
+    // Mantieni i film già visibili (primi 24)
+    moviesDiv.innerHTML = "";
+    let count = 0;
+    for (const movie in moviesData) {
+      if (count >= 24) break;
+      const card = createCard(movie, moviesData[movie].img, () => showMovie(movie));
+      moviesDiv.appendChild(card);
+      count++;
+    }
+
+  } else if (type === "movies") {
+    // Carica tutti i film
+    moviesDiv.innerHTML = "";
+    for (const movie in moviesData) {
+      const card = createCard(movie, moviesData[movie].img, () => showMovie(movie));
+      moviesDiv.appendChild(card);
+    }
+
+    // Mantieni le serie già visibili (primi 24)
+    seriesDiv.innerHTML = "";
+    let count = 0;
+    for (const serie in seriesData) {
+      if (count >= 24) break;
+      const card = createCard(serie, seriesData[serie].img, () => showSeasons(serie));
+      seriesDiv.appendChild(card);
+      count++;
+    }
   }
 }
 
