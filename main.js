@@ -93,9 +93,10 @@ function showAll(type) {
 }
 
 function toggleView(type) {
+  hideAllViews();
   const contentView = document.getElementById('content-view');
+  contentView.style.display = 'block';
   contentView.innerHTML = '';
-  document.getElementById('home-view').style.display = 'none';
 
   if (type === 'movies') {
     contentView.innerHTML = '<h2>Film</h2>';
