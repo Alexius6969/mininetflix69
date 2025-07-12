@@ -18,6 +18,36 @@ function logout() {
   location.reload();
 }
 
+function saveWatchProgress(type, title, src, time = 0) {
+  if (!currentUser) return; // se nessun utente loggato esci
+
+  const watchHistory = JSON.parse(localStorage.getItem('watchHistory')) || {};
+  if (!watchHistory[currentUser]) watchHistory[currentUser] = [];
+
+  const existingIndex = watchHistory[currentUser].findIndex(item => item.title === title);
+  if (existingIndex !== -1) {
+    watchHistory[currentUser][existingIndex] = { type, title, src, time };
+  } else {
+    watchHistory[currentUser].push({ type, title, src, time });
+  }
+
+  localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+}function saveWatchProgress(type, title, src, time = 0) {
+  if (!currentUser) return; // se nessun utente loggato esci
+
+  const watchHistory = JSON.parse(localStorage.getItem('watchHistory')) || {};
+  if (!watchHistory[currentUser]) watchHistory[currentUser] = [];
+
+  const existingIndex = watchHistory[currentUser].findIndex(item => item.title === title);
+  if (existingIndex !== -1) {
+    watchHistory[currentUser][existingIndex] = { type, title, src, time };
+  } else {
+    watchHistory[currentUser].push({ type, title, src, time });
+  }
+
+  localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+}
+
 function loadHome() {
   hideAllViews();
   document.getElementById("home-view").style.display = "block";
@@ -92,6 +122,55 @@ function showAll(type) {
   }
 }
 
+function showMovie(title) {
+  const movie = moviesData[title];
+  if (!movie) return;
+
+  // Nascondi altre view e mostra quella del film (dipende da come è fatto il tuo HTML)
+  hideAllViews();
+  document.getElementById('content-view').style.display = 'block';
+
+  // Inserisci il video con iframe
+  document.getElementById('content-view').innerHTML = `
+    <h2>${title}</h2>
+    <iframe src="${movie.src}" width="560" height="315" allowfullscreen></iframe>
+  `;
+
+  // Salva che stai iniziando a guardare questo film (tempo 0)
+  saveWatchProgress('movie', title, movie.src, 0);
+}function showMovie(title) {
+  const movie = moviesData[title];
+  if (!movie) return;
+
+  // Nascondi altre view e mostra quella del film (dipende da come è fatto il tuo HTML)
+  hideAllViews();
+  document.getElementById('content-view').style.display = 'block';
+
+  // Inserisci il video con iframe
+  document.getElementById('content-view').innerHTML = `
+    <h2>${title}</h2>
+    <iframe src="${movie.src}" width="560" height="315" allowfullscreen></iframe>
+  `;
+
+  // Salva che stai iniziando a guardare questo film (tempo 0)
+  saveWatchProgress('movie', title, movie.src, 0);
+}
+
+function showEpisode(seriesTitle, seasonNumber, episode) {
+  if (!episode) return;
+
+  hideAllViews();
+  document.getElementById('content-view').style.display = 'block';
+
+  document.getElementById('content-view').innerHTML = `
+    <h2>${seriesTitle} - Stagione ${seasonNumber} Episodio ${episode.episode}: ${episode.title}</h2>
+    <iframe src="${episode.src}" width="560" height="315" allowfullscreen></iframe>
+  `;
+
+  // Salva la visione (tempo 0 per ora)
+  saveWatchProgress('series', `${seriesTitle} - S${seasonNumber}E${episode.episode}`, episode.src, 0);
+}
+
 function toggleView(type) {
   const contentView = document.getElementById('content-view');
   contentView.innerHTML = '';
@@ -119,19 +198,21 @@ function toggleView(type) {
       `;
     }
   } else if (type === 'continue') {
-    contentView.innerHTML = '<h2>Continua a guardare</h2>';
-    const lastWatched = JSON.parse(localStorage.getItem('lastWatched')) || null;
+  contentView.innerHTML = '<h2>Continua a guardare</h2>';
+  const watchHistory = JSON.parse(localStorage.getItem('watchHistory')) || {};
+  const userHistory = currentUser ? watchHistory[currentUser] || [] : [];
 
-    if (lastWatched) {
+  if (userHistory.length > 0) {
+    userHistory.forEach(item => {
       contentView.innerHTML += `
-        <div>
-          <p>${lastWatched.title}</p>
-          <iframe src="${lastWatched.src}#t=${lastWatched.time}" width="560" height="315" allowfullscreen></iframe>
+        <div class="continue-card">
+          <p>${item.title}</p>
+          <iframe src="${item.src}#t=${item.time}" width="560" height="315" allowfullscreen></iframe>
         </div>
       `;
-    } else {
-      contentView.innerHTML += '<p>Non hai contenuti recenti.</p>';
-    }
+    });
+  } else {
+    contentView.innerHTML += '<p>Non hai contenuti recenti.</p>';
   }
 }
 
