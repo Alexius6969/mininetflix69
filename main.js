@@ -93,16 +93,15 @@ function showAll(type) {
 }
 
 function toggleView(type) {
-  hideAllViews();
   const contentView = document.getElementById('content-view');
-  contentView.style.display = 'block';
   contentView.innerHTML = '';
+  document.getElementById('home-view').style.display = 'none';
 
   if (type === 'movies') {
     contentView.innerHTML = '<h2>Film</h2>';
-    for (let [title, movie] of Object.entries(moviesData)) {
+    for (const [title, movie] of Object.entries(moviesData)) {
       contentView.innerHTML += `
-        <div>
+        <div class="video-card">
           <p>${title}</p>
           <iframe src="${movie.src}" width="560" height="315" allowfullscreen></iframe>
         </div>
@@ -110,11 +109,12 @@ function toggleView(type) {
     }
   } else if (type === 'series') {
     contentView.innerHTML = '<h2>Serie TV</h2>';
-    for (let [title, serie] of Object.entries(seriesData)) {
+    for (const [title, serie] of Object.entries(seriesData)) {
       contentView.innerHTML += `
-        <div>
+        <div class="series-card">
           <p>${title}</p>
           <img src="${serie.img}" width="200" />
+          <button onclick="showSeasons('${title}')">Mostra stagioni</button>
         </div>
       `;
     }
