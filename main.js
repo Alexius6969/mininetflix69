@@ -43,6 +43,7 @@ function loadHome() {
     moviesDiv.appendChild(card);
     moviesCount++;
   }
+  document.getElementById("search-results").style.display = "none";
 }
 
 function createCard(title, imgUrl, onClick) {
