@@ -100,7 +100,13 @@ function toggleView(type) {
   hideAllViews();
   contentView.style.display = 'grid'; // già gestito dal CSS
 
-  let title = '';
+  if (type === 'movies' || type === 'continue') {
+    const backBtn = document.createElement("button");
+    backBtn.textContent = "Torna alla Home";
+    backBtn.className = "nav-button";
+    backBtn.onclick = backToHome;
+    contentView.parentElement.insertBefore(backBtn, contentView);
+  }
 
   if (type === 'movies') {
     title = 'Film';
