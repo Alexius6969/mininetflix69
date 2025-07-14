@@ -133,6 +133,7 @@ function toggleView(type) {
     }
   }
    contentView.style.display = 'block';
+  document.getElementById('side-menu').classList.remove('open');
 }
 
 function hideAllViews() {
