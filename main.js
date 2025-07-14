@@ -167,6 +167,8 @@ document.getElementById('main-app').insertBefore(titleElement, contentView);
 
 function hideAllViews() {
   document.querySelectorAll(".view").forEach(v => v.style.display = "none");
+  document.getElementById("search-results").style.display = "none";
+
 }
 
 function backToHome() {
