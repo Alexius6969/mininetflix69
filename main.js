@@ -96,57 +96,66 @@ function toggleView(type) {
   const contentView = document.getElementById('content-view');
   const buttonContainer = document.getElementById('button-container');
 
-  // Pulisce il contenitore del bottone
-  buttonContainer.innerHTML = '';
-
+  // Pulisce contenuti precedenti
   contentView.innerHTML = '';
+  buttonContainer.innerHTML = '';
   hideAllViews();
+
+  // Mostra la griglia
   contentView.style.display = 'grid';
 
-  // Inserisci il bottone torna alla home solo per 'movies' e 'continue'
-  if (type === 'movies' || type === 'continue') {
+  // Sezione titolo
+  let title = '';
+
+  if (type === 'movies') {
+    title = 'Film';
+
+    // Bottone "Torna alla Home"
     const backBtn = document.createElement("button");
     backBtn.textContent = "Torna alla Home";
     backBtn.className = "nav-button";
     backBtn.onclick = backToHome;
     buttonContainer.appendChild(backBtn);
-  }
 
-  let title = '';
-
-  if (type === 'movies') {
-    title = 'Film';
-    for (let [title, movie] of Object.entries(moviesData)) {
+    for (let [movieTitle, movie] of Object.entries(moviesData)) {
       const div = document.createElement("div");
       div.innerHTML = `
-        <p>${title}</p>
-        <iframe src="${movie.src}" width="100%" height="200" allowfullscreen></iframe>
+        <p>${movieTitle}</p>
+        <iframe src="${movie.src}" allowfullscreen></iframe>
       `;
       contentView.appendChild(div);
     }
+
   } else if (type === 'series') {
     title = 'Serie TV';
+
     for (let [serieTitle, serie] of Object.entries(seriesData)) {
       const div = document.createElement("div");
       div.className = "card";
       div.onclick = () => showSeasons(serieTitle);
-
       div.innerHTML = `
-        <img src="${serie.img}" width="200" />
+        <img src="${serie.img}" />
         <p>${serieTitle}</p>
       `;
-
       contentView.appendChild(div);
     }
+
   } else if (type === 'continue') {
     title = 'Continua a guardare';
+
+    const backBtn = document.createElement("button");
+    backBtn.textContent = "Torna alla Home";
+    backBtn.className = "nav-button";
+    backBtn.onclick = backToHome;
+    buttonContainer.appendChild(backBtn);
+
     const lastWatched = JSON.parse(localStorage.getItem('lastWatched')) || null;
     const div = document.createElement("div");
 
     if (lastWatched) {
       div.innerHTML = `
         <p>${lastWatched.title}</p>
-        <iframe src="${lastWatched.src}#t=${lastWatched.time}" width="100%" height="200" allowfullscreen></iframe>
+        <iframe src="${lastWatched.src}#t=${lastWatched.time}" allowfullscreen></iframe>
       `;
     } else {
       div.innerHTML = '<p>Non hai contenuti recenti.</p>';
@@ -155,14 +164,14 @@ function toggleView(type) {
     contentView.appendChild(div);
   }
 
-  // Rimuove eventuali titoli precedenti
+  // Aggiorna titolo nella pagina
   document.querySelectorAll('#main-app > h2').forEach(el => el.remove());
-
-  // Mostra il nuovo titolo sopra alla griglia
   const titleElement = document.createElement("h2");
   titleElement.textContent = title;
-  document.getElementById('main-app').insertBefore(titleElement, contentView);
+  titleElement.style.marginTop = '20px';
+  document.getElementById('main-app').insertBefore(titleElement, buttonContainer);
 }
+
 
 
 
