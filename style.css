@@ -323,3 +323,25 @@ section {
 #series-section, #movies-section {
   display: block;
 }
+#content-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-items: center;
+}
+
+#content-view > div {
+  background-color: #111;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+#content-view iframe,
+#content-view img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
