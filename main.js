@@ -139,11 +139,14 @@ function toggleView(type) {
     contentView.appendChild(div);
   }
 
-  // Mostra titolo sopra alla griglia
-  const titleElement = document.createElement("h2");
-  titleElement.textContent = title;
-  const mainApp = document.getElementById('main-app');
-  mainApp.insertBefore(titleElement, contentView);
+  // Rimuove eventuali titoli precedenti
+document.querySelectorAll('#main-app > h2').forEach(el => el.remove());
+
+// Mostra il nuovo titolo sopra alla griglia
+const titleElement = document.createElement("h2");
+titleElement.textContent = title;
+document.getElementById('main-app').insertBefore(titleElement, contentView);
+
 }
 
 
