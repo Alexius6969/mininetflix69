@@ -113,15 +113,19 @@ function toggleView(type) {
       contentView.appendChild(div);
     }
   } else if (type === 'series') {
-    title = 'Serie TV';
-    for (let [title, serie] of Object.entries(seriesData)) {
-      const div = document.createElement("div");
-      div.innerHTML = `
-        <p>${title}</p>
-        <img src="${serie.img}" width="100%" />
-      `;
-      contentView.appendChild(div);
-    }
+  title = 'Serie TV';
+  for (let [serieTitle, serie] of Object.entries(seriesData)) {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.onclick = () => showSeasons(serieTitle);
+
+    div.innerHTML = `
+      <img src="${serie.img}" width="200" />
+      <p>${serieTitle}</p>
+    `;
+
+    contentView.appendChild(div);
+  }
   } else if (type === 'continue') {
     title = 'Continua a guardare';
     const lastWatched = JSON.parse(localStorage.getItem('lastWatched')) || null;
