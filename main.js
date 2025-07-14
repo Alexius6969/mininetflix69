@@ -93,48 +93,59 @@ function showAll(type) {
 }
 
 function toggleView(type) {
+  console.log('toggleView chiamata con:', type);
+
   const contentView = document.getElementById('content-view');
   contentView.innerHTML = '';
-  document.getElementById('home-view').style.display = 'none';
+  hideAllViews();
+  contentView.style.display = 'grid'; // già gestito dal CSS
+
+  let title = '';
 
   if (type === 'movies') {
-    contentView.innerHTML = '<h2>Film</h2>';
+    title = 'Film';
     for (let [title, movie] of Object.entries(moviesData)) {
-      contentView.innerHTML += `
-        <div>
-          <p>${title}</p>
-          <iframe src="${movie.src}" width="560" height="315" allowfullscreen></iframe>
-        </div>
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <p>${title}</p>
+        <iframe src="${movie.src}" width="100%" height="200" allowfullscreen></iframe>
       `;
+      contentView.appendChild(div);
     }
   } else if (type === 'series') {
-    contentView.innerHTML = '<h2>Serie TV</h2>';
+    title = 'Serie TV';
     for (let [title, serie] of Object.entries(seriesData)) {
-      contentView.innerHTML += `
-        <div>
-          <p>${title}</p>
-          <img src="${serie.img}" width="200" />
-        </div>
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <p>${title}</p>
+        <img src="${serie.img}" width="100%" />
       `;
+      contentView.appendChild(div);
     }
   } else if (type === 'continue') {
-    contentView.innerHTML = '<h2>Continua a guardare</h2>';
+    title = 'Continua a guardare';
     const lastWatched = JSON.parse(localStorage.getItem('lastWatched')) || null;
+    const div = document.createElement("div");
 
     if (lastWatched) {
-      contentView.innerHTML += `
-        <div>
-          <p>${lastWatched.title}</p>
-          <iframe src="${lastWatched.src}#t=${lastWatched.time}" width="560" height="315" allowfullscreen></iframe>
-        </div>
+      div.innerHTML = `
+        <p>${lastWatched.title}</p>
+        <iframe src="${lastWatched.src}#t=${lastWatched.time}" width="100%" height="200" allowfullscreen></iframe>
       `;
     } else {
-      contentView.innerHTML += '<p>Non hai contenuti recenti.</p>';
+      div.innerHTML = '<p>Non hai contenuti recenti.</p>';
     }
+
+    contentView.appendChild(div);
   }
-   contentView.style.display = 'block';
-  document.getElementById('side-menu').classList.remove('open');
+
+  // Mostra titolo sopra alla griglia
+  const titleElement = document.createElement("h2");
+  titleElement.textContent = title;
+  const mainApp = document.getElementById('main-app');
+  mainApp.insertBefore(titleElement, contentView);
 }
+
 
 function hideAllViews() {
   document.querySelectorAll(".view").forEach(v => v.style.display = "none");
