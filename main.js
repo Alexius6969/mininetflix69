@@ -93,17 +93,21 @@ function showAll(type) {
 }
 
 function toggleView(type) {
-  console.log('toggleView chiamata con:', type);
-
   const contentView = document.getElementById('content-view');
+
+  // Rimuovo eventuali bottoni "Torna alla Home" esistenti
+  const existingBackBtns = document.querySelectorAll('.back-to-home-btn');
+  existingBackBtns.forEach(btn => btn.remove());
+
   contentView.innerHTML = '';
   hideAllViews();
-  contentView.style.display = 'grid'; // già gestito dal CSS
+  contentView.style.display = 'grid';
 
+  // Inserisco il bottone solo per movies e continue
   if (type === 'movies' || type === 'continue') {
     const backBtn = document.createElement("button");
     backBtn.textContent = "Torna alla Home";
-    backBtn.className = "nav-button";
+    backBtn.className = "nav-button back-to-home-btn";
     backBtn.onclick = backToHome;
     contentView.parentElement.insertBefore(backBtn, contentView);
   }
