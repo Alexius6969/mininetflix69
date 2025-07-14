@@ -132,6 +132,7 @@ function toggleView(type) {
       contentView.innerHTML += '<p>Non hai contenuti recenti.</p>';
     }
   }
+   contentView.style.display = 'block';
 }
 
 function hideAllViews() {
