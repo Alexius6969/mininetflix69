@@ -94,23 +94,25 @@ function showAll(type) {
 
 function toggleView(type) {
   const contentView = document.getElementById('content-view');
+  const buttonContainer = document.getElementById('button-container');
 
-  // Rimuovo eventuali bottoni "Torna alla Home" esistenti
-  const existingBackBtns = document.querySelectorAll('.back-to-home-btn');
-  existingBackBtns.forEach(btn => btn.remove());
+  // Pulisce il contenitore del bottone
+  buttonContainer.innerHTML = '';
 
   contentView.innerHTML = '';
   hideAllViews();
   contentView.style.display = 'grid';
 
-  // Inserisco il bottone solo per movies e continue
+  // Inserisci il bottone torna alla home solo per 'movies' e 'continue'
   if (type === 'movies' || type === 'continue') {
     const backBtn = document.createElement("button");
     backBtn.textContent = "Torna alla Home";
-    backBtn.className = "nav-button back-to-home-btn";
+    backBtn.className = "nav-button";
     backBtn.onclick = backToHome;
-    contentView.parentElement.insertBefore(backBtn, contentView);
+    buttonContainer.appendChild(backBtn);
   }
+
+  let title = '';
 
   if (type === 'movies') {
     title = 'Film';
@@ -123,19 +125,19 @@ function toggleView(type) {
       contentView.appendChild(div);
     }
   } else if (type === 'series') {
-  title = 'Serie TV';
-  for (let [serieTitle, serie] of Object.entries(seriesData)) {
-    const div = document.createElement("div");
-    div.className = "card";
-    div.onclick = () => showSeasons(serieTitle);
+    title = 'Serie TV';
+    for (let [serieTitle, serie] of Object.entries(seriesData)) {
+      const div = document.createElement("div");
+      div.className = "card";
+      div.onclick = () => showSeasons(serieTitle);
 
-    div.innerHTML = `
-      <img src="${serie.img}" width="200" />
-      <p>${serieTitle}</p>
-    `;
+      div.innerHTML = `
+        <img src="${serie.img}" width="200" />
+        <p>${serieTitle}</p>
+      `;
 
-    contentView.appendChild(div);
-  }
+      contentView.appendChild(div);
+    }
   } else if (type === 'continue') {
     title = 'Continua a guardare';
     const lastWatched = JSON.parse(localStorage.getItem('lastWatched')) || null;
@@ -154,14 +156,14 @@ function toggleView(type) {
   }
 
   // Rimuove eventuali titoli precedenti
-document.querySelectorAll('#main-app > h2').forEach(el => el.remove());
+  document.querySelectorAll('#main-app > h2').forEach(el => el.remove());
 
-// Mostra il nuovo titolo sopra alla griglia
-const titleElement = document.createElement("h2");
-titleElement.textContent = title;
-document.getElementById('main-app').insertBefore(titleElement, contentView);
-
+  // Mostra il nuovo titolo sopra alla griglia
+  const titleElement = document.createElement("h2");
+  titleElement.textContent = title;
+  document.getElementById('main-app').insertBefore(titleElement, contentView);
 }
+
 
 
 function hideAllViews() {
