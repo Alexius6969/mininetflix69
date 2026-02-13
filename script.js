@@ -78,6 +78,7 @@ const moviesData = {
 
 let currentUser = null;
 let currentSerieTitle = ""; 
+let currentSelectedSeason = null;
 
 // --- LOGIN ---
 function login() {
@@ -184,7 +185,7 @@ function loadHome() {
   filterCategory('home');
 }
 
-// --- PLAYER E NAVIGAZIONE INTERNA ---
+// --- SEASON SELECTOR (STILE NETFLIX) ---
 function showSeasons(title, type) {
   currentSerieTitle = title;
   hideAllViews();
@@ -197,38 +198,56 @@ function showSeasons(title, type) {
       document.querySelector('.details-hero').style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${dataObj.img}')`;
   }
 
-  const ul = document.getElementById("seasons-ul");
-  ul.innerHTML = "";
-
+  // Popoliamo il selettore di stagioni
+  const seasonSelector = document.getElementById("season-selector");
+  seasonSelector.innerHTML = "";
+  
   if (dataObj.seasons) {
-    for (const s in dataObj.seasons) {
-      
-      // TITOLO STAGIONE (ROSSO E GRANDE)
-      const seasonHeader = document.createElement("li");
-      seasonHeader.textContent = "STAGIONE " + s;
-      seasonHeader.style.color = "#e50914"; 
-      seasonHeader.style.fontWeight = "bold";
-      seasonHeader.style.fontSize = "1.2rem";
-      seasonHeader.style.backgroundColor = "transparent";
-      seasonHeader.style.borderBottom = "none";
-      seasonHeader.style.marginTop = "20px";
-      seasonHeader.style.paddingLeft = "0";
-      seasonHeader.style.cursor = "default";
-      seasonHeader.onmouseover = function() { this.style.backgroundColor = "transparent"; };
-      
-      ul.appendChild(seasonHeader);
-
-      // EPISODI
-      dataObj.seasons[s].forEach(ep => {
-        const li = document.createElement("li");
-        li.innerHTML = `<span>${ep.episode}. ${ep.title}</span> <span>▶</span>`;
-        li.onclick = () => playVideo(ep.src, ep.title);
-        ul.appendChild(li);
-      });
-    }
+    const seasonKeys = Object.keys(dataObj.seasons);
+    seasonKeys.forEach(s => {
+      const option = document.createElement("option");
+      option.value = s;
+      option.textContent = `Stagione ${s}`;
+      seasonSelector.appendChild(option);
+    });
+    
+    // Mostriamo la prima stagione di default
+    currentSelectedSeason = seasonKeys[0];
+    displayEpisodesForSeason(title, currentSelectedSeason, type);
   }
 }
 
+function changeSeason() {
+  const seasonSelector = document.getElementById("season-selector");
+  const selectedSeason = seasonSelector.value;
+  currentSelectedSeason = selectedSeason;
+  
+  // Determina il tipo (serie o anime)
+  let type = 'serie';
+  if (animeData[currentSerieTitle]) {
+    type = 'anime';
+  }
+  
+  displayEpisodesForSeason(currentSerieTitle, selectedSeason, type);
+}
+
+function displayEpisodesForSeason(title, seasonNum, type) {
+  let dataObj = (type === 'anime') ? animeData[title] : seriesData[title];
+  
+  const ul = document.getElementById("seasons-ul");
+  ul.innerHTML = "";
+
+  if (dataObj.seasons && dataObj.seasons[seasonNum]) {
+    dataObj.seasons[seasonNum].forEach(ep => {
+      const li = document.createElement("li");
+      li.innerHTML = `<span>${ep.episode}. ${ep.title}</span> <span>▶</span>`;
+      li.onclick = () => playVideo(ep.src, ep.title);
+      ul.appendChild(li);
+    });
+  }
+}
+
+// --- PLAYER E NAVIGAZIONE INTERNA ---
 function playVideo(src, title) {
   hideAllViews();
   document.getElementById("episode-list").style.display = "block";
