@@ -1,4 +1,4 @@
-/* RESET E BASI */
+/* RESET & BASI */
 :root {
   --primary-red: #e50914;
   --bg-black: #141414;
@@ -19,37 +19,36 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 68px; /* Altezza standard Netflix */
+  height: 68px;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 4%; /* Margini laterali */
+  padding: 0 4%;
   box-sizing: border-box;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, transparent);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.9) 10%, transparent);
   transition: background 0.4s;
 }
-
-/* Sfondo nero quando si scorre (opzionale, aggiunge realismo) */
 header:hover { background-color: rgb(20, 20, 20); }
 
 .header-left, .header-right { display: flex; align-items: center; }
 
 .logo {
   color: var(--primary-red);
-  font-size: 1.8rem; /* Circa 25-30px */
+  font-size: 1.8rem;
   font-weight: bold;
   cursor: pointer;
-  margin-right: 40px; /* Spazio tra logo e menu */
+  margin-right: 40px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.6);
 }
 
-/* --- NUOVO MENU "SFOGLIA" --- */
+/* MENU "SFOGLIA" (FIX CLICK) */
 .netflix-nav {
   position: relative;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
+  user-select: none;
 }
 
 .nav-trigger {
@@ -59,34 +58,27 @@ header:hover { background-color: rgb(20, 20, 20); }
   gap: 5px;
   transition: color 0.3s;
 }
+.nav-trigger:hover { color: #b3b3b3; }
 
-.arrow {
-  font-size: 0.7rem;
-  transition: transform 0.3s;
-}
+.arrow { font-size: 0.7rem; transition: transform 0.3s; }
 
-/* Effetto Hover sul Trigger */
-.netflix-nav:hover .nav-trigger { color: #b3b3b3; }
-.netflix-nav:hover .arrow { transform: rotate(180deg); }
-
-/* Il Menu a Tendina Nascosto */
+/* Menu Nascosto */
 .nav-dropdown {
   display: none; /* Nascosto di base */
   position: absolute;
-  top: 35px; /* Distanza dal testo */
-  left: -20px; /* Centratura relativa */
+  top: 35px;
+  left: -20px;
   background-color: rgba(0,0,0,0.95);
-  border-top: 2px solid white; /* Linea bianca sopra */
+  border-top: 2px solid white;
   min-width: 200px;
   padding: 10px 0;
   flex-direction: column;
   box-shadow: 0px 10px 20px rgba(0,0,0,0.8);
 }
 
-/* Mostra menu al passaggio del mouse */
-.netflix-nav:hover .nav-dropdown { display: flex; }
+/* Classe che aggiungiamo con JS per mostrare il menu */
+.nav-dropdown.show { display: flex; }
 
-/* Link dentro il menu */
 .nav-dropdown a {
   color: #b3b3b3;
   padding: 10px 20px;
@@ -96,50 +88,28 @@ header:hover { background-color: rgb(20, 20, 20); }
   text-align: center;
   transition: background 0.2s, color 0.2s;
 }
+.nav-dropdown a:hover { background-color: #333; color: white; }
 
-.nav-dropdown a:hover {
-  background-color: #333;
-  color: white;
-}
-
-/* Il Triangolino sopra il menu */
 .arrow-up {
-  width: 0; 
-  height: 0; 
+  width: 0; height: 0; 
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
   border-bottom: 7px solid white;
-  position: absolute;
-  top: -9px; /* Posizione sopra la linea bianca */
-  left: 50px; /* Allineato col testo */
+  position: absolute; top: -9px; left: 50px;
 }
 
-/* --- RICERCA & LOGOUT --- */
+/* RICERCA & LOGOUT */
 .header-right { gap: 20px; }
-
 #search-bar {
-  background: black;
-  border: 1px solid white;
-  color: white;
-  padding: 5px 10px;
-  width: 200px; /* Fisso aperto per semplicità */
-  transition: width 0.3s;
+  background: black; border: 1px solid white; color: white; padding: 5px 10px; width: 200px; transition: width 0.3s;
 }
 #search-bar:focus { width: 260px; }
+.logout-text { font-size: 0.9rem; color: white; cursor: pointer; font-weight: bold; }
 
-.logout-text {
-  font-size: 0.9rem;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-}
-.logout-text:hover { text-decoration: underline; }
-
-
-/* --- HERO SECTION --- */
+/* HERO SECTION */
 #hero-section {
   position: relative;
-  height: 85vh;
+  height: 80vh; /* Altezza buona */
   background-image: url('https://i.imgur.com/CScKmEZ.jpeg');
   background-size: cover;
   background-position: center top;
@@ -148,62 +118,70 @@ header:hover { background-color: rgb(20, 20, 20); }
 }
 
 .hero-gradient {
-  position: absolute;
-  bottom: 0; left: 0; width: 100%; height: 200px;
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 150px;
   background: linear-gradient(180deg, transparent, #141414);
 }
 
 .hero-content {
-  margin-left: 4%;
-  max-width: 40%;
-  z-index: 10;
+  margin-left: 4%; max-width: 40%; z-index: 10;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
 }
-
 #hero-title { font-size: 4rem; margin-bottom: 10px; line-height: 1; }
-#hero-desc { font-size: 1.2rem; margin-bottom: 20px; font-weight: 400; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+#hero-desc { font-size: 1.2rem; margin-bottom: 20px; font-weight: 400; }
 
 .hero-buttons { display: flex; gap: 10px; }
 .hero-btn {
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  display: flex; align-items: center; gap: 8px;
+  padding: 0.8rem 1.5rem; border-radius: 4px; font-size: 1.1rem; font-weight: bold; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px;
 }
 .hero-btn.play { background: white; color: black; }
-.hero-btn.play:hover { background: rgba(255,255,255,0.75); }
 .hero-btn.info { background: rgba(109, 109, 110, 0.7); color: white; }
-.hero-btn.info:hover { background: rgba(109, 109, 110, 0.4); }
 
-/* --- CONTENUTI --- */
-.content-wrapper { margin-top: -80px; position: relative; z-index: 20; padding-bottom: 50px; }
-.row-title { margin-left: 4%; font-size: 1.4rem; margin-bottom: 10px; color: #e5e5e5; font-weight: 500; transition: color 0.3s; }
-.row-title:hover { color: white; }
+/* CONTENUTI (Fix Layout e Titoli) */
+.content-wrapper {
+  margin-top: -40px; /* RIDOTTO: Era -80px, ora le card non escono fuori */
+  position: relative;
+  z-index: 20;
+  padding-bottom: 50px;
+}
+
+.row-title {
+  margin-left: 4%; font-size: 1.4rem; margin-bottom: 10px; color: #e5e5e5; font-weight: 500;
+}
 
 .scroll-container {
-  display: flex; overflow-x: auto; gap: 10px; padding: 0 4% 40px; scroll-behavior: smooth;
+  display: flex; overflow-x: auto; gap: 15px; padding: 0 4% 40px; scroll-behavior: smooth;
 }
 .scroll-container::-webkit-scrollbar { display: none; }
 
 .card {
-  flex: 0 0 auto; width: 200px; cursor: pointer; transition: transform 0.3s ease-in-out; border-radius: 4px;
+  flex: 0 0 auto; width: 200px; cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  border-radius: 4px;
 }
-.card img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; }
 .card:hover { transform: scale(1.1); z-index: 99; }
 
-
-/* --- PAGINE INTERNE --- */
-.details-hero {
-  height: 50vh;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex; align-items: flex-end; padding: 0 4% 30px;
+.card img {
+  width: 100%; height: 280px; object-fit: cover; border-radius: 4px;
 }
-/* Gradiente scuro sopra l'immagine dettaglio */
+
+/* NUOVO: Titolo sotto la copertina */
+.card-title {
+  font-size: 0.9rem;
+  color: #b3b3b3;
+  margin-top: 8px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card:hover .card-title { color: white; }
+
+
+/* PAGINE INTERNE E PLAYER */
+.details-hero {
+  height: 50vh; position: relative; display: flex; align-items: flex-end; padding: 0 4% 30px;
+  background-size: cover; background-position: center;
+}
 .details-hero::after {
   content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
   background: linear-gradient(0deg, #141414 0%, transparent 50%);
@@ -215,9 +193,9 @@ header:hover { background-color: rgb(20, 20, 20); }
 #seasons-ul li {
   padding: 15px 20px; border-bottom: 1px solid #404040; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #d2d2d2;
 }
-#seasons-ul li:hover { background-color: #333; color: white; border-radius: 4px; }
+#seasons-ul li:hover { background-color: #333; color: white; }
 
-/* Login styles (semplificati per spazio) */
+/* Login */
 #login-screen { height: 100vh; background: black; display: flex; justify-content: center; align-items: center; position: relative; }
 .login-overlay { position: absolute; width:100%; height:100%; background:url('https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg') center/cover; opacity: 0.5; }
 .login-box { position: relative; z-index: 2; background: rgba(0,0,0,0.8); padding: 50px; border-radius: 5px; width: 300px; }
