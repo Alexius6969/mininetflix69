@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  
+  <title>NanoFlix</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+
+  <link rel="icon" type="image/png" href="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/227_Netflix_logo-512.png">
+  <link rel="apple-touch-icon" href="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/227_Netflix_logo-512.png">
+  <link rel="icon" sizes="192x192" href="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/227_Netflix_logo-512.png">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+</head>
+<body>
+
+  <div id="login-screen">
+    <div class="login-overlay"></div>
+    <div class="login-box">
+      <h1>Accedi</h1>
+      <input type="text" id="username" placeholder="Nome utente" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="login()" class="primary-btn">Entra</button>
+      <p id="login-error"></p>
+    </div>
+  </div>
+
+  <div id="main-app" style="display:none;">
+    
+    <header>
+      <div class="header-left">
+        <div class="logo" onclick="filterCategory('home')">NANOFLIX</div>
+        <div class="netflix-nav" onclick="toggleMenu(event)">
+          <div class="nav-trigger">
+            Sfoglia <span class="arrow">▼</span>
+          </div>
+          <div class="nav-dropdown" id="dropdown-menu">
+            <div class="arrow-up"></div>
+            <a href="#" onclick="filterCategory('home')">Home</a>
+            <a href="#" onclick="filterCategory('series')">Serie TV</a>
+            <a href="#" onclick="filterCategory('movies')">Film</a>
+            <a href="#" onclick="filterCategory('anime')">Anime</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <input type="text" id="search-bar" placeholder="Cerca..." onkeyup="filterContent()" />
+        <span onclick="logout()" class="logout-text">Esci</span>
+      </div>
+    </header>
+
+    <div id="hero-section">
+      <div class="hero-content">
+        <h1 id="hero-title">Ginny & Georgia</h1>
+        <p id="hero-desc">Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo.</p>
+        <div class="hero-buttons">
+            <button class="hero-btn play" onclick="playHero()">▶ Riproduci</button>
+            <button class="hero-btn info">ℹ Altre info</button>
+        </div>
+      </div>
+      <div class="hero-gradient"></div>
+    </div>
+
+    <div id="home-view" class="view content-wrapper">
+      <section id="series-section" class="category-row">
+        <h2 class="row-title">Serie TV</h2>
+        <div class="scroll-container" id="series-list-div"></div>
+      </section>
+
+      <section id="movies-section" class="category-row">
+        <h2 class="row-title">Film</h2>
+        <div class="scroll-container" id="movies-list-div"></div>
+      </section>
+
+      <section id="anime-section" class="category-row">
+        <h2 class="row-title">Anime</h2>
+        <div class="scroll-container" id="anime-list-div"></div>
+      </section>
+    </div>
+
+    <div id="season-list" class="view" style="display:none;">
+      <div class="back-nav"><button class="nav-button" onclick="backToHome()">← Indietro</button></div>
+      <div class="details-hero"><h1 id="season-title">Titolo</h1></div>
+      <div class="container-padding">
+        <div class="season-selector-container">
+          <label for="season-selector">Stagione:</label>
+          <select id="season-selector" onchange="changeSeason()">
+            <!-- Le opzioni vengono generate dinamicamente -->
+          </select>
+        </div>
+        <ul id="seasons-ul"></ul>
+      </div>
+    </div>
+
+    <div id="episode-list" class="view" style="display:none;">
+      <div class="back-nav"><button class="nav-button" onclick="backToSeason()">← Indietro</button></div>
+      <div class="player-wrapper">
+        <h2 id="episode-title"></h2>
+        <div id="episodes-container"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="data.js"></script>
+  <!-- Carica tutta la logica app (UI + player) -->
+  <script src="script.js"></script>
+  
+</body>
+</html>
