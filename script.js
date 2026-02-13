@@ -1,4 +1,4 @@
-// Dati Utenti
+// --- DATI UTENTI ---
 const users = {
   "Alessio": "1234",
   "Marco": "pelopelo",
@@ -8,10 +8,7 @@ const users = {
   "Chiara": "iii"
 };
 
-let currentUser = null;
-let currentSerieTitle = ""; // Variabile per ricordare in che serie siamo
-
-// Dati Serie TV (Con le tue immagini e link)
+// --- DATI SERIE ---
 const seriesData = {
   "Ginny e Georgia": {
     img: "https://i.imgur.com/CScKmEZ.jpeg",
@@ -58,41 +55,50 @@ const seriesData = {
     img: "https://i.imgur.com/oyXekYo.jpeg",
     seasons: {
       1: [
-         { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-         // Nota: Ho copiato solo il primo episodio per brevità, 
-         // il codice funzionerà con tutti gli episodi che avevi nel file originale.
-         // Se ne mancano, incollali qui dal tuo vecchio file!
+         { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" }
       ]
     }
   }
 };
 
-// Dati Film (Se ne hai, inseriscili qui sotto seguendo l'esempio)
-const moviesData = {
-  // ESEMPIO:
-  // "Nome Film": {
-  //    img: "url_immagine_film",
-  //    src: "link_google_drive"
-  // }
+// --- DATI ANIME (NUOVO) ---
+const animeData = {
+  // ESEMPIO DI ANIME:
+  "One Piece (Esempio)": {
+     img: "https://i.imgur.com/8Q6lZ9A.jpg", // Placeholder
+     seasons: {
+       1: [ { episode: 1, title: "Sono Luffy!", src: "" } ]
+     }
+  }
 };
 
-// FUNZIONE LOGIN
+// --- DATI FILM ---
+const moviesData = {
+   // Aggiungi film qui se vuoi
+};
+
+
+let currentUser = null;
+let currentSerieTitle = ""; 
+
+// --- FUNZIONE LOGIN ---
 function login() {
-  const user = document.getElementById("username").value;
-  const pass = document.getElementById("password").value;
+  const userInput = document.getElementById("username").value.trim();
+  const passInput = document.getElementById("password").value.trim();
   const errorMsg = document.getElementById("login-error");
 
-  if (users[user] && users[user] === pass) {
-    currentUser = user;
+  if (users[userInput] && users[userInput] === passInput) {
+    currentUser = userInput;
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("main-app").style.display = "block";
     loadHome();
   } else {
     errorMsg.textContent = "Credenziali non valide!";
+    errorMsg.style.color = "red";
   }
 }
 
-// FUNZIONE LOGOUT
+// --- FUNZIONE LOGOUT ---
 function logout() {
   currentUser = null;
   document.getElementById("main-app").style.display = "none";
@@ -101,20 +107,18 @@ function logout() {
   document.getElementById("password").value = "";
 }
 
-// HELPER: Crea una card (locandina)
+// --- CREAZIONE CARD ---
 function createCard(title, data, type) {
   const card = document.createElement("div");
   card.className = "card";
   
   const img = document.createElement("img");
-  // Se non c'è immagine, usa un placeholder colorato
-  img.src = data.img ? data.img : "https://via.placeholder.com/200x300/333/fff?text=" + title.replace(" ", "+");
+  img.src = data.img ? data.img : "https://via.placeholder.com/200x300/333/fff?text=" + title;
   img.alt = title;
   
-  // Gestione click
   card.onclick = () => {
-    if (type === 'serie') {
-      showSeasons(title);
+    if (type === 'serie' || type === 'anime') {
+      showSeasons(title, type);
     } else {
       showMovie(title, data.src);
     }
@@ -124,93 +128,130 @@ function createCard(title, data, type) {
   return card;
 }
 
-// CARICA HOME PAGE
+// --- CARICAMENTO HOME ---
 function loadHome() {
   hideAllViews();
   document.getElementById("home-view").style.display = "block";
+  
+  // Resetta i filtri (mostra tutto)
+  filterCategory('all');
 
   const seriesContainer = document.getElementById("series-list-div");
   const moviesContainer = document.getElementById("movies-list-div");
+  const animeContainer  = document.getElementById("anime-list-div");
+
+  // Pulisci
   seriesContainer.innerHTML = "";
   moviesContainer.innerHTML = "";
+  animeContainer.innerHTML = "";
 
-  // Genera card Serie
+  // Genera SERIE
   for (const serie in seriesData) {
     const card = createCard(serie, seriesData[serie], 'serie');
     seriesContainer.appendChild(card);
   }
 
-  // Genera card Film
+  // Genera ANIME
+  for (const anime in animeData) {
+    const card = createCard(anime, animeData[anime], 'anime');
+    animeContainer.appendChild(card);
+  }
+
+  // Genera FILM
   for (const movie in moviesData) {
     const card = createCard(movie, moviesData[movie], 'movie');
     moviesContainer.appendChild(card);
   }
 }
 
-// MOSTRA STAGIONI (Per le Serie)
-function showSeasons(serieTitle) {
-  currentSerieTitle = serieTitle; // Salva la serie corrente
+// --- NUOVA FUNZIONE: FILTRO CATEGORIE ---
+function filterCategory(category) {
+  const seriesSec = document.getElementById("series-section");
+  const moviesSec = document.getElementById("movies-section");
+  const animeSec  = document.getElementById("anime-section");
+
+  // Prima mostriamo la home view se non ci siamo
+  hideAllViews();
+  document.getElementById("home-view").style.display = "block";
+
+  if (category === 'all') {
+    seriesSec.style.display = "block";
+    moviesSec.style.display = "block";
+    animeSec.style.display  = "block";
+  } else if (category === 'series') {
+    seriesSec.style.display = "block";
+    moviesSec.style.display = "none";
+    animeSec.style.display  = "none";
+  } else if (category === 'movies') {
+    seriesSec.style.display = "none";
+    moviesSec.style.display = "block";
+    animeSec.style.display  = "none";
+  } else if (category === 'anime') {
+    seriesSec.style.display = "none";
+    moviesSec.style.display = "none";
+    animeSec.style.display  = "block";
+  }
+}
+
+
+// --- ALTRE FUNZIONI ---
+function showSeasons(title, type) {
+  currentSerieTitle = title;
   hideAllViews();
   document.getElementById("season-list").style.display = "block";
-  document.getElementById("season-title").textContent = serieTitle;
+  document.getElementById("season-title").textContent = title;
 
   const ul = document.getElementById("seasons-ul");
   ul.innerHTML = "";
 
-  const seasons = seriesData[serieTitle].seasons;
-  for (const seasonNum in seasons) {
-    const li = document.createElement("li");
-    li.textContent = `Stagione ${seasonNum}`;
-    li.onclick = () => showEpisodes(seasonNum);
-    ul.appendChild(li);
+  // Capire se cercare in seriesData o animeData
+  let dataObj = seriesData[title];
+  if (!dataObj) dataObj = animeData[title];
+
+  if (dataObj && dataObj.seasons) {
+    for (const seasonNum in dataObj.seasons) {
+      const li = document.createElement("li");
+      li.textContent = "Stagione " + seasonNum;
+      li.onclick = () => showEpisodes(seasonNum, dataObj); // Passo l'oggetto dati
+      ul.appendChild(li);
+    }
   }
 }
 
-// MOSTRA EPISODI
-function showEpisodes(seasonNum) {
+function showEpisodes(seasonNum, dataObj) {
   hideAllViews();
   document.getElementById("episode-list").style.display = "block";
-  document.getElementById("episode-title").textContent = `${currentSerieTitle} - Stagione ${seasonNum}`;
+  document.getElementById("episode-title").textContent = currentSerieTitle + " - Stagione " + seasonNum;
 
   const container = document.getElementById("episodes-container");
   container.innerHTML = "";
 
-  const episodes = seriesData[currentSerieTitle].seasons[seasonNum];
-  
-  // Crea una lista di bottoni per gli episodi
+  const episodes = dataObj.seasons[seasonNum];
   episodes.forEach(ep => {
     const btn = document.createElement("button");
-    btn.className = "nav-button"; // Riutilizziamo lo stile base
+    btn.className = "nav-button";
+    btn.textContent = ep.episode + ". " + ep.title;
     btn.style.display = "block";
     btn.style.width = "100%";
     btn.style.textAlign = "left";
+    btn.style.margin = "5px 0";
     btn.style.background = "#333";
-    btn.style.marginBottom = "5px";
-    btn.textContent = `${ep.episode}. ${ep.title}`;
     
     btn.onclick = () => playVideo(ep.src, ep.title);
     container.appendChild(btn);
   });
 }
 
-// RIPRODUCI VIDEO (Player)
 function playVideo(src, title) {
   const container = document.getElementById("episodes-container");
-  container.innerHTML = ""; // Pulisci la lista episodi
+  container.innerHTML = "<h3>In riproduzione: " + title + "</h3>";
   
-  // Titolo nel player
-  const playingTitle = document.createElement("h3");
-  playingTitle.textContent = "In riproduzione: " + title;
-  playingTitle.style.marginBottom = "10px";
-  container.appendChild(playingTitle);
-
   const iframe = document.createElement("iframe");
   iframe.src = src;
   iframe.allowFullscreen = true;
   container.appendChild(iframe);
 }
 
-// MOSTRA FILM (Diretto al player)
 function showMovie(title, src) {
   hideAllViews();
   document.getElementById("episode-list").style.display = "block";
@@ -218,40 +259,21 @@ function showMovie(title, src) {
   playVideo(src, title);
 }
 
-// NAVIGAZIONE
 function hideAllViews() {
   document.querySelectorAll(".view").forEach(v => v.style.display = "none");
 }
-
-function backToHome() {
-  loadHome();
+function backToHome() { loadHome(); }
+function backToSeason() { 
+    // Prova a ricaricare le stagioni controllando entrambi i database
+    if (seriesData[currentSerieTitle]) showSeasons(currentSerieTitle, 'serie');
+    else if (animeData[currentSerieTitle]) showSeasons(currentSerieTitle, 'anime');
+    else loadHome();
 }
 
-function backToSeason() {
-  if (currentSerieTitle) {
-    showSeasons(currentSerieTitle);
-  } else {
-    loadHome();
-  }
-}
-
-// FILTRO DI RICERCA (Aggiornato per nascondere le card che non matchano)
 function filterContent() {
   const query = document.getElementById("search-bar").value.trim().toLowerCase();
-  
-  // Se vuoto, mostra tutto
-  if (!query) {
-    document.querySelectorAll('.card').forEach(card => card.style.display = "block");
-    return;
-  }
-
-  // Filtra card
   document.querySelectorAll('.card').forEach(card => {
     const title = card.querySelector('img').alt.toLowerCase();
-    if (title.includes(query)) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
+    card.style.display = title.includes(query) ? "block" : "none";
   });
 }
