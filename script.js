@@ -1,4 +1,4 @@
-// --- DATI UTENTI ---
+// --- DATI E CONFIGURAZIONE ---
 const users = {
   "Alessio": "1234",
   "Marco": "pelopelo",
@@ -8,44 +8,35 @@ const users = {
   "Chiara": "iii"
 };
 
-// --- DATABASE SERIE TV ---
 const seriesData = {
   "Ginny e Georgia": {
     img: "https://i.imgur.com/CScKmEZ.jpeg",
     seasons: {
       1: [
         { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-        // ... inserisci gli altri episodi
+        // ... (Tuoi episodi)
       ]
     }
   },
   "The Vampire Diaries": {
     img: "https://i.imgur.com/oyXekYo.jpeg",
     seasons: {
-      1: [
-         { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" }
-      ]
+      1: [ { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" } ]
     }
   }
 };
 
-// --- DATABASE ANIME ---
 const animeData = {
   "One Piece": {
      img: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
-     seasons: {
-       1: [ { episode: 1, title: "Sono Luffy!", src: "" } ]
-     }
+     seasons: { 1: [ { episode: 1, title: "Sono Luffy!", src: "" } ] }
   },
   "Attack on Titan": {
      img: "https://flxt.tmsimg.com/assets/p10701949_b_v8_ah.jpg",
-     seasons: {
-       1: [ { episode: 1, title: "A te, tra 2000 anni", src: "" } ]
-     }
+     seasons: { 1: [ { episode: 1, title: "A te, tra 2000 anni", src: "" } ] }
   }
 };
 
-// --- DATABASE FILM ---
 const moviesData = {
    "Inception": {
      img: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg",
@@ -77,14 +68,13 @@ function logout() {
   window.location.reload();
 }
 
-// --- LOGICA MENU "SFOGLIA" ---
+// --- MENU MOBILE & DESKTOP ---
 function toggleMenu(event) {
-  event.stopPropagation(); // Evita che il click si propaghi
+  event.stopPropagation(); 
   const dropdown = document.getElementById("dropdown-menu");
   dropdown.classList.toggle("show");
 }
 
-// Chiudi il menu se si clicca fuori
 window.onclick = function(event) {
   if (!event.target.matches('.netflix-nav') && !event.target.matches('.nav-trigger') && !event.target.matches('.arrow')) {
     const dropdown = document.getElementById("dropdown-menu");
@@ -94,22 +84,19 @@ window.onclick = function(event) {
   }
 }
 
-// --- CREAZIONE CARD CON TITOLO SOTTO ---
+// --- CREAZIONE CARD ---
 function createCard(title, data, type) {
   const card = document.createElement("div");
   card.className = "card";
   
-  // Immagine
   const img = document.createElement("img");
   img.src = data.img ? data.img : "https://via.placeholder.com/200x300?text=" + title;
   img.alt = title;
   
-  // Titolo sotto
   const p = document.createElement("p");
   p.className = "card-title";
   p.textContent = title;
 
-  // Click
   card.onclick = () => {
     if (type === 'movie') {
       showMovie(title, data.src);
@@ -119,7 +106,7 @@ function createCard(title, data, type) {
   };
 
   card.appendChild(img);
-  card.appendChild(p); // Aggiungiamo il testo
+  card.appendChild(p);
   return card;
 }
 
@@ -165,7 +152,7 @@ function loadHome() {
   filterCategory('home');
 }
 
-// --- DETTAGLI E PLAYER ---
+// --- PLAYER E NAVIGAZIONE INTERNA ---
 function showSeasons(title, type) {
   currentSerieTitle = title;
   hideAllViews();
@@ -206,7 +193,6 @@ function playVideo(src, title) {
 }
 
 function playHero() {
-  // Avvia la serie principale
   playVideo(seriesData["Ginny e Georgia"].seasons[1][0].src, "Ginny e Georgia");
 }
 
