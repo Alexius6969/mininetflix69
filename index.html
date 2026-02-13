@@ -1,94 +1,70 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MiniNetflix</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
   <div id="login-screen">
-    <h2>Accedi</h2>
-    <input type="text" id="username" placeholder="Nome utente" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-    <p id="login-error"></p>
+    <div class="login-box">
+      <h1>Accedi</h1>
+      <input type="text" id="username" placeholder="Nome utente" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="login()" class="primary-btn">Entra</button>
+      <p id="login-error"></p>
+    </div>
   </div>
 
   <div id="main-app" style="display:none;">
     <header>
-      <div class="header-content">
-        <span class="hamburger" onclick="toggleMenu()">☰</span>
-        MiniNetflix
-      </div>
+      <div class="logo">MiniNetflix</div>
       <div id="search-container">
-        <input type="text" id="search-bar" placeholder="Cerca film o serie TV..."
-          onkeypress="if(event.key==='Enter') filterContent()" />
-        <button onclick="filterContent()">Cerca</button>
+        <input
+          type="text"
+          id="search-bar"
+          placeholder="Titoli, persone, generi"
+          onkeyup="filterContent()"
+        />
         <button onclick="logout()" class="logout-btn">Esci</button>
       </div>
     </header>
-    <div id="side-menu">
-      <span class="close-btn" onclick="toggleMenu()">×</span>
-      <button onclick="toggleView('movies')">Film</button>
-      <button onclick="toggleView('series')">Serie TV</button>
-      <button onclick="toggleView('continue')">Continua a guardare</button>
-    </div>
-    
-<div id="main-app">
-  <div id="button-container"></div>
-  <div id="content-view"></div>
-</div>
-
-    <div id="content-view" class="view">
-    </div>
 
     <div id="home-view" class="view">
-      <button class="nav-button" onclick="backToHome()">← Torna alla home</button>
       <section id="series-section">
-        <h2>Serie TV</h2>
-        <div class="scroll-container" id="series-list-div"></div>
-        <button class="see-all-btn" onclick="showAll('series')">Vedi tutte le Serie TV</button>
+        <h2 class="section-title">Serie TV</h2>
+        <div class="scroll-container" id="series-list-div">
+          </div>
       </section>
 
       <section id="movies-section">
-        <h2>Film</h2>
-        <div class="scroll-container" id="movies-list-div"></div>
-        <button class="see-all-btn" onclick="showAll('movies')">Vedi tutti i Film</button>
+        <h2 class="section-title">Film</h2>
+        <div class="scroll-container" id="movies-list-div">
+          </div>
       </section>
     </div>
 
     <div id="season-list" class="view" style="display:none;">
-      <button class="nav-button" onclick="backToHome()">← Torna alla home</button>
-      <h2 id="season-title"></h2>
-      <ul id="seasons-ul"></ul>
+      <button class="nav-button" onclick="backToHome()">← Torna alla Home</button>
+      <div class="hero-details">
+         <h1 id="season-title"></h1>
+      </div>
+      <div id="seasons-container">
+          <ul id="seasons-ul"></ul>
+      </div>
     </div>
 
     <div id="episode-list" class="view" style="display:none;">
-      <button class="nav-button" onclick="backToHome()">← Torna alla home</button>
-      <h2 id="episode-title"></h2>
-      <div id="episodes-container"></div>
+      <button class="nav-button" onclick="backToSeason()">← Torna alle stagioni</button>
+      <h2 id="episode-title" class="section-title"></h2>
+      <div id="episodes-container" class="player-container"></div>
     </div>
 
-    <div id="search-results" class="view" style="display:none;">
-      <button class="nav-button" onclick="backToHome()">← Torna alla home</button>
-      <h2>Risultati della ricerca</h2>
-      <ul id="search-results-ul"></ul>
-    </div>
   </div>
 
-  <script src="data.js"></script>
-  <script src="media.js"></script>
-  <script src="main.js"></script>
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('side-menu');
-      menu.classList.toggle('open');
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
-
 </html>
