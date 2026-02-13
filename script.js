@@ -12,7 +12,7 @@ const seriesData = {
   "Ginny e Georgia": {
     img: "https://i.imgur.com/CScKmEZ.jpeg",
     seasons: {
-     1: [
+      1: [
         { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
         { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
         { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
@@ -194,7 +194,7 @@ function showSeasons(title, type) {
   let dataObj = (type === 'anime') ? animeData[title] : seriesData[title];
 
   if(dataObj.img) {
-      document.querySelector('.details-hero').style.backgroundImage = `url('${dataObj.img}')`;
+      document.querySelector('.details-hero').style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${dataObj.img}')`;
   }
 
   const ul = document.getElementById("seasons-ul");
@@ -202,6 +202,23 @@ function showSeasons(title, type) {
 
   if (dataObj.seasons) {
     for (const s in dataObj.seasons) {
+      
+      // TITOLO STAGIONE (ROSSO E GRANDE)
+      const seasonHeader = document.createElement("li");
+      seasonHeader.textContent = "STAGIONE " + s;
+      seasonHeader.style.color = "#e50914"; 
+      seasonHeader.style.fontWeight = "bold";
+      seasonHeader.style.fontSize = "1.2rem";
+      seasonHeader.style.backgroundColor = "transparent";
+      seasonHeader.style.borderBottom = "none";
+      seasonHeader.style.marginTop = "20px";
+      seasonHeader.style.paddingLeft = "0";
+      seasonHeader.style.cursor = "default";
+      seasonHeader.onmouseover = function() { this.style.backgroundColor = "transparent"; };
+      
+      ul.appendChild(seasonHeader);
+
+      // EPISODI
       dataObj.seasons[s].forEach(ep => {
         const li = document.createElement("li");
         li.innerHTML = `<span>${ep.episode}. ${ep.title}</span> <span>▶</span>`;
@@ -251,4 +268,3 @@ function filterContent() {
     c.style.display = title.includes(q) ? "block" : "none";
   });
 }
-
