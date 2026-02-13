@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MiniNetflix</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
   <div id="login-screen">
-    <div class="login-box">
+    <div class="login-overlay"></div> <div class="login-box">
       <h1>Accedi</h1>
       <input type="text" id="username" placeholder="Nome utente" />
       <input type="password" id="password" placeholder="Password" />
@@ -20,60 +21,82 @@
   </div>
 
   <div id="main-app" style="display:none;">
+    
     <header>
       <div class="header-left">
-        <div class="logo" onclick="filterCategory('all')">MiniNetflix</div>
+        <div class="logo" onclick="filterCategory('home')">MININETFLIX</div>
         
-        <div class="dropdown">
-          <button class="dropbtn">Sfoglia ▼</button>
-          <div class="dropdown-content">
-            <a href="#" onclick="filterCategory('all')">Home (Tutto)</a>
-            <a href="#" onclick="filterCategory('series')">Serie TV</a>
-            <a href="#" onclick="filterCategory('movies')">Film</a>
-            <a href="#" onclick="filterCategory('anime')">Anime</a>
-          </div>
-        </div>
+        <ul class="main-nav">
+          <li class="nav-item active" onclick="filterCategory('home')">Home</li>
+          <li class="nav-item dropdown-trigger">
+            Sfoglia <i class="fas fa-caret-down"></i>
+            <div class="dropdown-content">
+              <a href="#" onclick="filterCategory('series')">Serie TV</a>
+              <a href="#" onclick="filterCategory('movies')">Film</a>
+              <a href="#" onclick="filterCategory('anime')">Anime</a>
+            </div>
+          </li>
+        </ul>
       </div>
 
-      <div id="search-container">
-        <input type="text" id="search-bar" placeholder="Cerca..." onkeyup="filterContent()" />
+      <div class="header-right">
+        <div class="search-box">
+          <input type="text" id="search-bar" placeholder="Titoli, persone, generi" onkeyup="filterContent()" />
+        </div>
         <button onclick="logout()" class="logout-btn">Esci</button>
       </div>
     </header>
 
-    <div id="home-view" class="view">
+    <div id="hero-section">
+      <div class="hero-content">
+        <h1 id="hero-title">Ginny & Georgia</h1>
+        <p id="hero-desc">Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo, ma il passato li insegue.</p>
+        <button class="hero-btn play" onclick="playHero()">▶ Riproduci</button>
+        <button class="hero-btn info">ℹ Altre info</button>
+      </div>
+      <div class="hero-gradient"></div>
+    </div>
+
+    <div id="home-view" class="view content-wrapper">
       
-      <section id="series-section">
-        <h2 class="section-title">Serie TV</h2>
+      <section id="series-section" class="category-row">
+        <h2 class="row-title">Serie TV</h2>
         <div class="scroll-container" id="series-list-div"></div>
       </section>
 
-      <section id="movies-section">
-        <h2 class="section-title">Film</h2>
+      <section id="movies-section" class="category-row">
+        <h2 class="row-title">Film</h2>
         <div class="scroll-container" id="movies-list-div"></div>
       </section>
 
-      <section id="anime-section">
-        <h2 class="section-title">Anime</h2>
+      <section id="anime-section" class="category-row">
+        <h2 class="row-title">Anime</h2>
         <div class="scroll-container" id="anime-list-div"></div>
       </section>
 
     </div>
 
     <div id="season-list" class="view" style="display:none;">
-      <button class="nav-button" onclick="backToHome()">← Indietro</button>
-      <div class="hero-details">
-         <h1 id="season-title"></h1>
+      <div class="back-nav">
+        <button class="nav-button" onclick="backToHome()">← Torna Indietro</button>
       </div>
-      <div id="seasons-container">
+      <div class="details-hero">
+         <h1 id="season-title">Titolo Serie</h1>
+      </div>
+      <div class="container-padding">
+          <h3>Episodi</h3>
           <ul id="seasons-ul"></ul>
       </div>
     </div>
 
     <div id="episode-list" class="view" style="display:none;">
-      <button class="nav-button" onclick="backToSeason()">← Indietro</button>
-      <h2 id="episode-title" class="section-title"></h2>
-      <div id="episodes-container" class="player-container"></div>
+      <div class="back-nav">
+        <button class="nav-button" onclick="backToSeason()">← Lista Episodi</button>
+      </div>
+      <div class="player-wrapper">
+        <h2 id="episode-title"></h2>
+        <div id="episodes-container"></div>
+      </div>
     </div>
 
   </div>
