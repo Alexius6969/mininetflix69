@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   
-  <title>NanoFlix</title>
+  <title>MiniNetflix</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style.css" />
 
   <link rel="icon" type="image/png" href="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/227_Netflix_logo-512.png">
@@ -34,7 +35,8 @@
     
     <header>
       <div class="header-left">
-        <div class="logo" onclick="filterCategory('home')">NANOFLIX</div>
+        <div class="logo" onclick="filterCategory('home')">MININETFLIX</div>
+        
         <div class="netflix-nav" onclick="toggleMenu(event)">
           <div class="nav-trigger">
             Sfoglia <span class="arrow">▼</span>
@@ -87,15 +89,7 @@
     <div id="season-list" class="view" style="display:none;">
       <div class="back-nav"><button class="nav-button" onclick="backToHome()">← Indietro</button></div>
       <div class="details-hero"><h1 id="season-title">Titolo</h1></div>
-      <div class="container-padding">
-        <div class="season-selector-container">
-          <label for="season-selector">Stagione:</label>
-          <select id="season-selector" onchange="changeSeason()">
-            <!-- Le opzioni vengono generate dinamicamente -->
-          </select>
-        </div>
-        <ul id="seasons-ul"></ul>
-      </div>
+      <div class="container-padding"></div>
     </div>
 
     <div id="episode-list" class="view" style="display:none;">
