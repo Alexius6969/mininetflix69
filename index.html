@@ -26,12 +26,13 @@
       <div class="header-left">
         <div class="logo" onclick="filterCategory('home')">MININETFLIX</div>
         
-        <div class="netflix-nav">
+        <div class="netflix-nav" onclick="toggleMenu(event)">
           <div class="nav-trigger">
             Sfoglia <span class="arrow">▼</span>
           </div>
-          <div class="nav-dropdown">
-            <div class="arrow-up"></div> <a href="#" onclick="filterCategory('home')">Home</a>
+          <div class="nav-dropdown" id="dropdown-menu">
+            <div class="arrow-up"></div>
+            <a href="#" onclick="filterCategory('home')">Home</a>
             <a href="#" onclick="filterCategory('series')">Serie TV</a>
             <a href="#" onclick="filterCategory('movies')">Film</a>
             <a href="#" onclick="filterCategory('anime')">Anime</a>
@@ -58,6 +59,7 @@
     </div>
 
     <div id="home-view" class="view content-wrapper">
+      
       <section id="series-section" class="category-row">
         <h2 class="row-title">Serie TV</h2>
         <div class="scroll-container" id="series-list-div"></div>
@@ -72,6 +74,7 @@
         <h2 class="row-title">Anime</h2>
         <div class="scroll-container" id="anime-list-div"></div>
       </section>
+
     </div>
 
     <div id="season-list" class="view" style="display:none;">
