@@ -21,34 +21,47 @@
 
   <div id="main-app" style="display:none;">
     <header>
-      <div class="logo">MiniNetflix</div>
+      <div class="header-left">
+        <div class="logo" onclick="filterCategory('all')">MiniNetflix</div>
+        
+        <div class="dropdown">
+          <button class="dropbtn">Sfoglia ▼</button>
+          <div class="dropdown-content">
+            <a href="#" onclick="filterCategory('all')">Home (Tutto)</a>
+            <a href="#" onclick="filterCategory('series')">Serie TV</a>
+            <a href="#" onclick="filterCategory('movies')">Film</a>
+            <a href="#" onclick="filterCategory('anime')">Anime</a>
+          </div>
+        </div>
+      </div>
+
       <div id="search-container">
-        <input
-          type="text"
-          id="search-bar"
-          placeholder="Titoli, persone, generi"
-          onkeyup="filterContent()"
-        />
+        <input type="text" id="search-bar" placeholder="Cerca..." onkeyup="filterContent()" />
         <button onclick="logout()" class="logout-btn">Esci</button>
       </div>
     </header>
 
     <div id="home-view" class="view">
+      
       <section id="series-section">
         <h2 class="section-title">Serie TV</h2>
-        <div class="scroll-container" id="series-list-div">
-          </div>
+        <div class="scroll-container" id="series-list-div"></div>
       </section>
 
       <section id="movies-section">
         <h2 class="section-title">Film</h2>
-        <div class="scroll-container" id="movies-list-div">
-          </div>
+        <div class="scroll-container" id="movies-list-div"></div>
       </section>
+
+      <section id="anime-section">
+        <h2 class="section-title">Anime</h2>
+        <div class="scroll-container" id="anime-list-div"></div>
+      </section>
+
     </div>
 
     <div id="season-list" class="view" style="display:none;">
-      <button class="nav-button" onclick="backToHome()">← Torna alla Home</button>
+      <button class="nav-button" onclick="backToHome()">← Indietro</button>
       <div class="hero-details">
          <h1 id="season-title"></h1>
       </div>
@@ -58,7 +71,7 @@
     </div>
 
     <div id="episode-list" class="view" style="display:none;">
-      <button class="nav-button" onclick="backToSeason()">← Torna alle stagioni</button>
+      <button class="nav-button" onclick="backToSeason()">← Indietro</button>
       <h2 id="episode-title" class="section-title"></h2>
       <div id="episodes-container" class="player-container"></div>
     </div>
