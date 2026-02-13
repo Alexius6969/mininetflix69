@@ -1,16 +1,16 @@
-/* Reset e Font */
+/* style.css */
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
   background-color: #141414;
   color: white;
-  overflow-x: hidden; /* Evita lo scroll orizzontale della pagina intera */
+  overflow-x: hidden;
 }
 
-/* Header Sticky con gradiente */
+/* Header */
 header {
   background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-  padding: 20px 4% 0;
+  padding: 0 4%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -20,12 +20,61 @@ header {
   height: 70px;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .logo {
   color: #e50914;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: bold;
   text-transform: uppercase;
+  cursor: pointer;
   text-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* MENU A TENDINA (Nuovo Stile) */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: transparent;
+  color: white;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgba(0,0,0,0.9);
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-top: 2px solid white;
+}
+
+.dropdown-content a {
+  color: #b3b3b3;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.dropdown-content a:hover {
+  background-color: #333;
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block; /* Mostra il menu quando passi col mouse */
 }
 
 /* Login */
@@ -45,7 +94,6 @@ header {
   width: 100%;
   max-width: 350px;
 }
-
 .login-box h1 { margin-bottom: 20px; }
 
 input {
@@ -74,8 +122,8 @@ input {
 
 /* Ricerca */
 #search-container { display: flex; gap: 10px; align-items: center; }
-#search-bar { width: 200px; transition: width 0.3s; }
-#search-bar:focus { width: 300px; background-color: #444; }
+#search-bar { width: 150px; transition: width 0.3s; }
+#search-bar:focus { width: 250px; background-color: #444; }
 
 .logout-btn {
   background: transparent;
@@ -87,16 +135,15 @@ input {
 }
 .logout-btn:hover { background: rgba(255,255,255,0.1); }
 
-/* Sezioni e Titoli */
+/* Sezioni */
 .section-title {
   margin-left: 4%;
   font-size: 1.5rem;
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 10px;
   color: #e5e5e5;
 }
 
-/* Scroll Orizzontale (Netflix Style) */
 .scroll-container {
   display: flex;
   overflow-x: auto;
@@ -104,21 +151,17 @@ input {
   padding: 20px 4%;
   scroll-behavior: smooth;
 }
-/* Nascondi scrollbar ma mantieni funzionalità */
 .scroll-container::-webkit-scrollbar { height: 5px; }
 .scroll-container::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
 .scroll-container::-webkit-scrollbar-track { background: transparent; }
 
-/* Card (Locandine) */
+/* Card */
 .card {
   flex: 0 0 auto;
   width: 200px;
   cursor: pointer;
-  transition: transform 0.3s ease, opacity 0.3s;
-  position: relative;
-  border-radius: 4px;
+  transition: transform 0.3s ease;
 }
-
 .card img {
   width: 100%;
   height: 300px;
@@ -126,14 +169,12 @@ input {
   border-radius: 4px;
   display: block;
 }
-
 .card:hover {
   transform: scale(1.1);
   z-index: 10;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.8);
 }
 
-/* Navigazione interna (Stagioni/Episodi) */
+/* Navigazione interna */
 .nav-button {
   background: none;
   border: none;
@@ -144,26 +185,19 @@ input {
 }
 .nav-button:hover { color: white; }
 
-#seasons-ul {
-  list-style: none;
-  padding: 0 4%;
-}
-
+#seasons-ul { list-style: none; padding: 0 4%; }
 #seasons-ul li {
   background-color: #333;
   margin-bottom: 10px;
   padding: 15px;
   border-radius: 4px;
   cursor: pointer;
-  display: flex;
-  justify-content: space-between;
   transition: background 0.2s;
 }
 #seasons-ul li:hover { background-color: #444; }
 
-/* Player */
 .player-container iframe {
   width: 100%;
-  height: 80vh; /* Quasi tutta l'altezza */
+  height: 80vh;
   border: none;
 }
