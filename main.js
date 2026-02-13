@@ -218,3 +218,4 @@ window.toggleView = toggleView;
 window.filterContent = filterContent;
 window.backToHome = backToHome;
 window.showAll = showAll;
+
