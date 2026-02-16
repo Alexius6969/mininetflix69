@@ -26,30 +26,36 @@
     .card-title { font-size: 0.9rem; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #fff; }
     .card-info { font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 2px; }
 
-    /* Login */
-    #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: flex; align-items: center; justify-content: center; }
-    .login-box { width: 85%; max-width: 400px; background: #1f1f1f; padding: 40px; border-radius: 5px; text-align: center; }
+    /* Login con Immagine di Sfondo */
+    #login-screen { 
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: url('https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg') no-repeat center center/cover;
+        z-index: 2000; display: flex; align-items: center; justify-content: center; 
+    }
+    .login-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 1; }
+    .login-box { position: relative; z-index: 2; width: 85%; max-width: 400px; background: rgba(0,0,0,0.75); padding: 40px; border-radius: 5px; text-align: center; }
+    .login-box h1 { margin-bottom: 30px; }
     .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; background: #333; border: none; color: white; border-radius: 4px; box-sizing: border-box; }
-    .primary-btn { width: 100%; padding: 12px; background: #e50914; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; }
+    .primary-btn { width: 100%; padding: 12px; background: #e50914; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1rem; }
     
     /* Header */
     header { display: flex; justify-content: space-between; align-items: center; padding: 10px 4%; background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%); position: fixed; width: 92%; z-index: 100; top: 0; height: 50px; }
     .logo { color: #e50914; font-size: 1.5rem; font-weight: bold; cursor: pointer; margin-right: 15px; text-shadow: 2px 2px 4px #000; }
     .header-left, .header-right { display: flex; align-items: center; }
     
-    /* Hero Section (Carosello) */
+    /* Hero Section (Carosello) Migliorato */
     #hero-section { 
-        height: 65vh; 
+        height: 55vh; /* Altezza ridotta come richiesto */
         position: relative; 
         display: flex; 
         align-items: center; 
         background-color: #000;
         background-size: cover; 
-        background-position: center top; 
-        transition: background-image 1s ease-in-out; /* Transizione fluida immagine */
-        margin-bottom: -50px; 
+        background-position: center center; 
+        transition: background-image 0.5s ease-in-out; 
+        margin-bottom: -40px; 
     }
-    .hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 200px; background: linear-gradient(to top, #141414, transparent); }
+    .hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 150px; background: linear-gradient(to top, #141414, transparent); }
     .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); }
     
     .hero-content { 
@@ -57,17 +63,34 @@
         max-width: 600px; 
         z-index: 10; 
         text-shadow: 2px 2px 4px rgba(0,0,0,0.8); 
-        padding-bottom: 40px; 
-        transition: opacity 0.5s ease; /* Transizione fluida testo */
+        padding-bottom: 20px; 
+        transition: opacity 0.5s ease;
     }
-    #hero-title { font-size: 3rem; margin-bottom: 10px; line-height: 1.1; font-weight: 700; }
-    #hero-desc { font-size: 1.1rem; margin-bottom: 20px; font-weight: 400; max-height: 80px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+    #hero-title { font-size: 2.5rem; margin-bottom: 10px; line-height: 1.1; font-weight: 700; }
+    #hero-desc { font-size: 1rem; margin-bottom: 15px; font-weight: 400; max-height: 60px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-shadow: 1px 1px 2px #000; }
     
     .hero-buttons { display: flex; gap: 10px; }
-    .hero-btn { padding: 10px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+    .hero-btn { padding: 8px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
     .hero-btn.play { background: white; color: black; }
-    .hero-btn.play:hover { background: #dcdcdc; }
     .hero-btn.info { background: rgba(109, 109, 110, 0.7); color: white; }
+
+    /* Frecce Carosello */
+    .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.3);
+        color: white;
+        font-size: 2rem;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 20;
+        user-select: none;
+        border-radius: 4px;
+    }
+    .carousel-nav:hover { background: rgba(0,0,0,0.7); }
+    .carousel-nav.prev { left: 10px; }
+    .carousel-nav.next { right: 10px; }
 
     /* Sections */
     .content-wrapper { padding-top: 20px; padding-bottom: 60px; }
@@ -110,6 +133,7 @@
 <body>
 
   <div id="login-screen">
+    <div class="login-overlay"></div>
     <div class="login-box">
       <h1>NanoFlix</h1>
       <input type="text" id="username" placeholder="Nome utente" />
@@ -142,6 +166,10 @@
 
     <div id="hero-section">
       <div class="hero-overlay"></div>
+      
+      <div class="carousel-nav prev" onclick="prevHero(event)">&#10094;</div>
+      <div class="carousel-nav next" onclick="nextHero(event)">&#10095;</div>
+
       <div class="hero-content">
         <h1 id="hero-title">Caricamento...</h1>
         <p id="hero-desc"></p>
@@ -203,8 +231,8 @@
   </div>
 
   <script>
-    // --- DATI ---
-    // IMPORTANTE: Non toccare la struttura (parentesi e virgole) per non rompere il sito.
+    // --- DATI COMPLETI ---
+    // Struttura corretta per evitare blocchi JS
     
     const users = {
       "Alessio": "1234", "Marco": "pelopelo", "Alessia": "oceani", "Anna": "1234", "Alfonso": "1234", "Chiara": "iii"
@@ -259,7 +287,191 @@
         seasons: {
           1: [
             { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "La notte della cometa", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
+            { episode: 2, title: "La notte della cometa", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+             { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
+          ],
+          2: [
+            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
+          ],
+          3: [
+            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
+          ],
+          4: [
+            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
+          ],
+          5: [
+            { episode: 1, title: "So cosa hai fatto l’estate scorsa", src: "https://drive.google.com/file/d/1N6SaBr0RqZutVUVrYbFYVVF7AttMWe0P/preview" },
+            { episode: 2, title: "Bugie", src: "https://drive.google.com/file/d/1aZDm2uxQF2htN8fffM3Z5W-B-UC_8O_l/preview" },
+            { episode: 3, title: "Peccato originale", src: "https://drive.google.com/file/d/1eO7sbozXrsuGOYr8_liv7aNzJTBgc6EI/preview" },
+            { episode: 4, title: "Per chi suona la campana", src: "https://drive.google.com/file/d/1aZZcU7tLcXc-Nf7ckuE1kgRFz-zNwrZ_/preview" },
+            { episode: 5, title: "La festa dei mostri", src: "https://drive.google.com/file/d/1GGsTuyPr3C5IuCXjnAm4FLVQrjJLphUF/preview" },
+            { episode: 6, title: "Maneggiare con cura", src: "https://drive.google.com/file/d/1hg5iH4bRtF_n9vK1p8T9FYccWw6Lx5sR/preview" },
+            { episode: 7, title: "Morte e fanciulle", src: "https://drive.google.com/file/d/1Ab5g71bwv9XdIByP_AN2oKGTUmH38-W-/preview" },
+            { episode: 8, title: "Il morto del campus", src: "https://drive.google.com/file/d/10djwOl2REFoOs_aoRXL9oWMBnIMBNEuj/preview" },
+            { episode: 9, title: "La prigione", src: "https://drive.google.com/file/d/1Zi9rB3Lq54xWiyMgLbCyO-EBuZOb3e-s/preview" },
+            { episode: 10, title: "Cinquanta sfumature di Grayson", src: "https://drive.google.com/file/d/1ltXNWcUo9shIKdGTfivLfy_NE-hNSX3w/preview" },
+            { episode: 11, title: "500 anni da sola", src: "https://drive.google.com/file/d/1k5Z6YOJg3XXNWuNnsvo_1CAntV9YGd4S/preview" },
+            { episode: 12, title: "Il diavolo dentro", src: "https://drive.google.com/file/d/18ANYmw1Qz-7p4_VonqBvWmLJzAVn8M47/preview" },
+            { episode: 13, title: "Eclissi totale del cuore", src: "https://drive.google.com/file/d/1fFE-ER0ZTOoxi1aNUYUhU6EgZPpJxUKw/preview" },
+            { episode: 14, title: "Nessuna via d’uscita", src: "https://drive.google.com/file/d/1ZEjlneRrwNc6dkRIAHaJCVBiH0iNhiGY/preview" },
+            { episode: 15, title: "La ragazza scomparsa", src: "https://drive.google.com/file/d/1OawIrHSFSLiv3p8_5km97NJYQEBlQlgf/preview" },
+            { episode: 16, title: "Mentre dormivi", src: "https://drive.google.com/file/d/1w7O1pf0URI7ZklMeO36IIvYF5G9kAYoC/preview" },
+            { episode: 17, title: "Salvami", src: "https://drive.google.com/file/d/1JaYg3RuhQ7d7bVLDrgt5HpKqdDob1pOI/preview" },
+            { episode: 18, title: "Resident Evil", src: "https://drive.google.com/file/d/11IX1Lm0qG9D5_poEj6_DVSo7d7FAkiiV/preview" },
+            { episode: 19, title: "Uomo in fiamme", src: "https://drive.google.com/file/d/1rDVYyfZtLKTkvuxayIF7xdungWQ-Ji4Y/preview" },
+            { episode: 20, title: "Verità sepolte", src: "https://drive.google.com/file/d/11ZX2nfc7Z-JnFuc_tzOI6Wz-MUEm5PiG/preview" },
+            { episode: 21, title: "Terra promessa", src: "https://drive.google.com/file/d/1xqyaVQkkolsiCx6OkBuJmIoSEfQua29q/preview" },
+            { episode: 22, title: "Casa", src: "https://drive.google.com/file/d/1mAA-ITKNXmLUfqT86pBzWDWSOzzfEqnj/preview" }
+          ],
+          6: [
+            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
+          ],
+          7: [
+            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
+          ],
+          8: [
+            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
+            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
+            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
+            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
+            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
+            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
+            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" }
           ]
         }
       },
@@ -269,7 +481,13 @@
         seasons: {
           1: [
             { episode: 1, title: "Chi nasce di Mercoledì", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-            { episode: 2, title: "Un triste isolamento", src: "https://www.youtube.com/embed/HhesaQXLuRY" }
+            { episode: 2, title: "Un triste isolamento", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
+            { episode: 3, title: "Tristemente amici o nemici", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
+            { episode: 4, title: "Una triste serata", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
+            { episode: 5, title: "Chi semina vento raccoglie tristezza", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
+            { episode: 6, title: "Un triste compleanno", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
+            { episode: 7, title: "E' triste che tu non mi conosca ancora", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
+            { episode: 8, title: "Triste da morire", src: "https://www.youtube.com/embed/HhesaQXLuRY" }
           ]
         }
       }
@@ -312,7 +530,70 @@
          seasons: { 
            1: [
               { episode: 1, title: "A te, fra 2000 anni", src: "https://drive.google.com/file/d/1AjHQP9PkMJEcZNKSuNUMgHgOMqxhPvzd/preview" },
-              { episode: 2, title: "Quel giorno", src: "https://drive.google.com/file/d/11PtQl_aUNXA-lWN2xqs2UmDFK3XIGwuW/preview" }
+              { episode: 2, title: "Quel giorno", src: "https://drive.google.com/file/d/11PtQl_aUNXA-lWN2xqs2UmDFK3XIGwuW/preview" },
+              { episode: 3, title: "La luce opaca", src: "https://drive.google.com/file/d/1FUtG05SwZoT8aoLVq0Y2RX5qYHp8wucZ/preview" },
+              { episode: 4, title: "La notte della cerimonia", src: "https://drive.google.com/file/d/1uMVmqK_q2KnBqyIBw0ZFuhHrxr8WV3q1/preview" },
+              { episode: 5, title: "Prima battaglia", src: "https://drive.google.com/file/d/138DMRejzZ7p13cvIAXGwhT-x0gHoGGpO/preview" },
+              { episode: 6, title: "Il mondo che la ragazza ha visto", src: "https://drive.google.com/file/d/1MCieaCeN00Qe9Eptwo2CLsunoCMCmtCd/preview" },
+              { episode: 7, title: "Una piccola lama", src: "https://drive.google.com/file/d/18gRoe6fFZcu_b49LnWn7mKuN4QbhEWnJ/preview" },
+              { episode: 8, title: "Il battito del cuore", src: "https://drive.google.com/file/d/1wcN4o269KxZRV2jMVYrsQdz0TKq5SAfq/preview" },
+              { episode: 9, title: "Braccio sinistro", src: "https://drive.google.com/file/d/1CWa8WdAneGnV_lNH2o5m9dlxVEtAER2F/preview" },
+              { episode: 10, title: "La risposta", src: "https://drive.google.com/file/d/1jVCKgw5ysuSZQMa03cDeaeKWLEUDupSi/preview" },
+              { episode: 11, title: "Icona", src: "https://drive.google.com/file/d/14Ot7i-wK8UJyMYf-MT6DgdYFmy79b3mJ/preview" },
+              { episode: 12, title: "Ferite", src: "https://drive.google.com/file/d/1LgBJwtvT1EhNMDzU5AAv5-um-igobgkr/preview" },
+              { episode: 13, title: "Istinti primordiali", src: "https://drive.google.com/file/d/1qUhBGPoobLgCzPUGb4BRXIwHFxlEcvX7/preview" },
+              { episode: 14, title: "Ancora non riesco", src: "https://drive.google.com/file/d/1bjowsUpPkNtOC5-xClTcqI6a99AbUfQX/preview" },
+              { episode: 15, title: "L'unità per le operazioni", src: "https://drive.google.com/file/d/1QvdU4KZLvViGf_uUv78NgcfaXdoC9lUT/preview" },
+              { episode: 16, title: "Cos'è che deve essere fatto", src: "https://drive.google.com/file/d/1w2VBftQN1tC7IvF8J0yAkmKB6mh0xNif/preview" },
+              { episode: 17, title: "Il gigante femminile", src: "https://drive.google.com/file/d/1w0wEWSieCQOSzWDpxTUkT_9yG5-FqnQz/preview" },
+              { episode: 18, title: "Il bosco di alberi", src: "https://drive.google.com/file/d/1tNf1vxT3XGFSzT_fl0gXw5jGsBqz_uyV/preview" },
+              { episode: 19, title: "Morso", src: "https://drive.google.com/file/d/1RCMXSVdvHTBTeZKIke0IOWFE_WgIrZCq/preview" },
+              { episode: 20, title: "Erwin Smith", src: "https://drive.google.com/file/d/1ov1GDEfLkG2_xTcVeD1FN0g7kOeeJrAU/preview" }, 
+              { episode: 21, title: "Colpo devastante", src: "https://drive.google.com/file/d/1wa6L9LF69vXoGhqszs3vSPpUnDsdpk7a/preview" },
+              { episode: 22, title: "Gli sconfitti", src: "https://drive.google.com/file/d/1h89XzuLmYQcvR3TJIL9nxFqLcmWpjgeJ/preview" },
+              { episode: 23, title: "Un sorriso", src: "https://drive.google.com/file/d/1vKrd4tZpK0lZAhb9x5uECxly88AFr04Y/preview" },
+              { episode: 24, title: "La grazia", src: "https://drive.google.com/file/d/1JnZKieEO0oG2aB6AOXoTmvWkrXhPJlv4/preview" },
+              { episode: 25, title: "Le mura", src: "https://drive.google.com/file/d/1Nlp8pz8FijnWrgiTYupJvKxL8hvcaFy0/preview" }
+           ],
+           2: [
+              { episode: 1, title: "Il gigante bestia", src: "https://drive.google.com/file/d/1VJO8JdZB4EBP0X7mnvxWTp31Pvc0w4rQ/preview" },
+              { episode: 2, title: "Sono a casa", src: "https://drive.google.com/file/d/1EsBJRA38COeSBk4fAjbKRKFJ0S1abSi1/preview" },
+              { episode: 3, title: "Verso sud-ovest", src: "https://drive.google.com/file/d/1l6TtWt2Mz6fZqwghYhh0cGK2dIGOPU4n/preview" },
+              { episode: 4, title: "Soldato", src: "https://drive.google.com/file/d/1zkvYvVTSm2YQrQuSqiweHs0Qo1dPISM9/preview" },
+              { episode: 5, title: "Historia", src: "https://drive.google.com/file/d/13Y30p3nQIep0ukoB3vcAqs3Y1mk7GaRp/preview" },
+              { episode: 6, title: "Guerriero", src: "https://drive.google.com/file/d/14vw-Cr_sjLGvB1sR6Cgp9lYY9bHneqvS/preview" },
+              { episode: 7, title: "Attacco, proiezione", src: "https://drive.google.com/file/d/1mQF1F8-omRUPvUM6J79ZBiAJuVaiZlIn/preview" },
+              { episode: 8, title: "Inseguitori", src: "https://drive.google.com/file/d/1mQF1F8-omRUPvUM6J79ZBiAJuVaiZlIn/preview" },
+              { episode: 9, title: "Apertura", src: "https://drive.google.com/file/d/1i9rL3hudJ9L6xqA0-3b_eyw_qYWMH1TG/preview" },
+              { episode: 10, title: "Bambini", src: "https://drive.google.com/file/d/1BgfksyHHyYZCulD8MRirUOua3Cfa7y1Q/preview" },
+              { episode: 11, title: "Carica", src: "https://drive.google.com/file/d/1RKa8yK0NjsA_hZjbtYkoJE0hFBFIq-7V/preview" },
+              { episode: 12, title: "Urla", src: "https://drive.google.com/file/d/1VtL1bJArYmmdhiA0GMAGBhHRaTSj9j7F/preview" }
+           ],
+           3: [
+              { episode: 1, title: "Segnale di fumo", src: "https://drive.google.com/file/d/1E6zOMk9OxkFl9s3AwLYzNFJkbtbHn1oY/preview" },
+              { episode: 2, title: "Dolore", src: "https://drive.google.com/file/d/1xDR3EZ9MAdVe-zs5vi3yu-mFQjGBN0_W/preview" },
+              { episode: 3, title: "Storie passate", src: "https://drive.google.com/file/d/1GSK6HcKETt48MlhR57ANh8Fg5QV0zUsz/preview" },
+              { episode: 4, title: "Fiducia", src: "https://drive.google.com/file/d/100vXFzfR5rzsclJZsP6fBz31Rt90uRhY/preview" },
+              { episode: 5, title: "Risposta", src: "https://drive.google.com/file/d/1C1qxXz07sfgOwwbBRBfjJCbsWjLHkh5B/preview" },
+              { episode: 6, title: "Peccato", src: "https://drive.google.com/file/d/1A1-fR9GuOy7IE4pLpNOpqJpNsk8FpkgB/preview" },
+              { episode: 7, title: "Desiderio", src: "https://drive.google.com/file/d/1KhUMmLXVazajwFEb5GfMZw6Xq0nbFTDs/preview" },
+              { episode: 8, title: "Le mura del distretto", src: "https://drive.google.com/file/d/1Y35-7T9hLjUNL9A4oS-0-dG2sSB_oyOc/preview" },
+              { episode: 9, title: "Monarca delle mura", src: "https://drive.google.com/file/d/1W343mYrRC2gFgNW_vg7PflbnzbfnJncN/preview" },
+              { episode: 10, title: "Amici", src: "https://drive.google.com/file/d/1G6ZtBjXx81v2fycJnPsbzQMIYcI3kZQb/preview" },
+              { episode: 11, title: "Spettatore", src: "https://drive.google.com/file/d/1nWCxpWO0iV5bHALywTaaKhaXV-kTIxoz/preview" },
+              { episode: 12, title: "La notte prima", src: "https://drive.google.com/file/d/14YhZyWqFJwh6jUrARRemdgQMbNN_A2Bv/preview" }
+           ],
+           4: [
+              { episode: 1, title: "La città dove tutto iniziò", src: "https://drive.google.com/file/d/1gAvZWEi_sTqV8qqd6K-dJj0Ss-hvze5a/preview" },
+              { episode: 2, title: "Le lance fulmine", src: "https://drive.google.com/file/d/1cJnCOpIlSZka643sQZHRBdqqpn9BCy2S/preview" },
+              { episode: 3, title: "La venuta", src: "https://drive.google.com/file/d/10fJ10Pi8J7tDy5dSH9Diq-zSnFRkY1qX/preview" },
+              { episode: 4, title: "Partita perfetta", src: "https://drive.google.com/file/d/1n3otr5tm1j1Mm9RMeebUUA3L_Uluqvcp/preview" },
+              { episode: 5, title: "Il coraggioso", src: "https://drive.google.com/file/d/1AWJ_ud9_Rj4sYP2R8vPzDNFTvFfiCbmo/preview" },
+              { episode: 6, title: "Sole di mezzanotte", src: "https://drive.google.com/file/d/1ban4mTeBq1wOJV9-EFVW9tEVn21YLOQb/preview" },
+              { episode: 7, title: "La cantina", src: "https://drive.google.com/file/d/1RewFMljiuVl_tJjPXH69ugb6uny0J_qt/preview" },
+              { episode: 8, title: "Quel giorno", src: "https://drive.google.com/file/d/151yTXCmjGI7DsNKT6BcRX-_xfTSElt94/preview" },
+              { episode: 9, title: "Il gigante d'attacco", src: "https://drive.google.com/file/d/1pRNlvE6Cb4Gl5O0Tq3PDgHC88qazaEqu/preview" },
+              { episode: 10, title: "Al di là delle mura", src: "https://drive.google.com/file/d/19c8wcm1VUHJxhPfMyxSluzGRNQOQ9WQ5/preview" }
            ]
          }
       }
@@ -325,7 +606,7 @@
     let watchHistory = JSON.parse(localStorage.getItem('nanoFlixHistory')) || {};
     let heroInterval;
 
-    // Elementi Carosello
+    // Elementi Carosello (Lista delle Copertine)
     const heroSlides = [
         { type: 'serie', key: "Ginny e Georgia" },
         { type: 'movie', key: "Il buco: Capitolo 2" },
@@ -365,8 +646,7 @@
         if(heroInterval) clearInterval(heroInterval);
         updateHeroUI(currentHeroIndex);
         heroInterval = setInterval(() => {
-            currentHeroIndex = (currentHeroIndex + 1) % heroSlides.length;
-            updateHeroUI(currentHeroIndex);
+            nextHero(); // Avanza automaticamente
         }, 5000); // 5 secondi
     }
 
@@ -387,11 +667,24 @@
             title.textContent = item.key;
             desc.textContent = data.desc || "Guarda ora su NanoFlix";
             
-            // Animazione testo
+            // Animazione testo fade-in
             const content = document.querySelector('.hero-content');
             content.style.opacity = 0;
             setTimeout(() => content.style.opacity = 1, 300);
         }
+    }
+
+    // Funzioni Manuali Avanti/Indietro
+    function nextHero(e) {
+        if(e) { e.stopPropagation(); clearInterval(heroInterval); } // Ferma auto se clicchi
+        currentHeroIndex = (currentHeroIndex + 1) % heroSlides.length;
+        updateHeroUI(currentHeroIndex);
+    }
+
+    function prevHero(e) {
+        if(e) { e.stopPropagation(); clearInterval(heroInterval); }
+        currentHeroIndex = (currentHeroIndex - 1 + heroSlides.length) % heroSlides.length;
+        updateHeroUI(currentHeroIndex);
     }
 
     function playCurrentHero() {
@@ -485,7 +778,6 @@
             card.innerHTML = `<img src="${h.img}"><p class="card-title">${key}</p><p class="card-info">${h.type === 'movie' ? 'Riprendi' : 'S'+h.season+':E'+h.episode}</p>`;
             
             card.onclick = () => {
-                // Recupera URL originale
                 let src = "";
                 if(h.type === 'movie') {
                     if(moviesData[key]) src = moviesData[key].src;
@@ -504,7 +796,6 @@
     }
 
     function addToHistory(title, type, meta) {
-        // Usa il titolo della serie o film come chiave primaria
         let mainKey = title; 
         if(type !== 'movie' && currentSerieTitle) mainKey = currentSerieTitle;
         
@@ -568,7 +859,7 @@
     }
 
     function playVideo(src, title, meta, push = true) {
-        clearInterval(heroInterval); // Ferma carosello quando guardi
+        clearInterval(heroInterval); 
         addToHistory(title, meta.type, meta);
         
         if(push) history.pushState({view:'player', src:src, title:title, meta:meta}, null, "");
@@ -585,7 +876,7 @@
     }
 
     function filterCategory(cat) {
-        loadHome(false); // Reset vista
+        loadHome(false); 
         const ids = {
             'series': ['series-section'],
             'movies': ['movies-section'],
