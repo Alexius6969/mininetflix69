@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   
   <title>NanoFlix</title>
   
@@ -14,7 +14,7 @@
 
   <style>
     /* --- STILI BASE --- */
-    body { margin: 0; padding: 0; background-color: #141414; color: white; font-family: 'Roboto', sans-serif; overflow-x: hidden; }
+    body { margin: 0; padding: 0; background-color: #141414; color: white; font-family: 'Roboto', sans-serif; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
     
     /* Layout Cards */
     .scroll-container { display: flex; overflow-x: auto; padding: 10px 4%; gap: 10px; scrollbar-width: none; }
@@ -43,9 +43,9 @@
     .logo { color: #e50914; font-size: 1.5rem; font-weight: bold; cursor: pointer; margin-right: 15px; text-shadow: 2px 2px 4px #000; }
     .header-left, .header-right { display: flex; align-items: center; }
     
-    /* Hero Section (Carosello) Migliorato */
+    /* Hero Section (Carosello) */
     #hero-section { 
-        height: 55vh; /* Altezza ridotta come richiesto */
+        height: 55vh; 
         position: relative; 
         display: flex; 
         align-items: center; 
@@ -75,19 +75,7 @@
     .hero-btn.info { background: rgba(109, 109, 110, 0.7); color: white; }
 
     /* Frecce Carosello */
-    .carousel-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0,0,0,0.3);
-        color: white;
-        font-size: 2rem;
-        padding: 10px;
-        cursor: pointer;
-        z-index: 20;
-        user-select: none;
-        border-radius: 4px;
-    }
+    .carousel-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; font-size: 2rem; padding: 10px; cursor: pointer; z-index: 20; user-select: none; border-radius: 4px; }
     .carousel-nav:hover { background: rgba(0,0,0,0.7); }
     .carousel-nav.prev { left: 10px; }
     .carousel-nav.next { right: 10px; }
@@ -109,20 +97,69 @@
     #seasons-ul li { padding: 15px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #dcdcdc; }
     #seasons-ul li:hover { background: #222; }
 
-    /* Player */
-    .player-wrapper { width: 100%; height: 100vh; background: #000; display: flex; flex-direction: column; }
-    .player-header { padding: 10px 4%; display: flex; align-items: center; gap: 15px; background: #141414; }
-    #episodes-container { flex: 1; background: #000; }
+    /* --- PLAYER MODIFICATO --- */
+    /* Fissa il player sopra tutto il resto con z-index alto */
+    #episode-list {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5000; /* Superiore a qualsiasi altro elemento */
+        background-color: #000;
+        display: none; /* Gestito da JS */
+    }
+
+    .player-wrapper { 
+        width: 100%; 
+        height: 100%; 
+        display: flex; 
+        flex-direction: column; 
+    }
+
+    .player-header { 
+        height: 60px; /* Altezza sicura */
+        width: 100%;
+        padding: 0 20px;
+        display: flex; 
+        align-items: center; 
+        gap: 15px; 
+        background: #141414; /* Sfondo scuro per coprire quello sotto */
+        box-sizing: border-box;
+        border-bottom: 1px solid #333;
+        /* Safe area per notch su iPhone */
+        padding-top: env(safe-area-inset-top); 
+        padding-top: constant(safe-area-inset-top);
+    }
+
+    #episodes-container { 
+        flex: 1; 
+        background: #000; 
+        position: relative;
+    }
+    
     #episodes-container iframe { width: 100%; height: 100%; border: none; }
-    .nav-button { background: transparent; color: white; border: none; font-size: 1.1rem; cursor: pointer; }
+
+    /* Bottone Chiudi più visibile */
+    .close-btn {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: 1px solid white;
+        padding: 5px 15px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-transform: uppercase;
+    }
 
     /* Utilities */
-    .view { display: none; animation: fadeIn 0.5s; }
+    .view { animation: fadeIn 0.5s; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     
     /* Menu a tendina */
     .netflix-nav { margin-left:15px; cursor: pointer; position: relative; }
-    .nav-dropdown { display: none; position: absolute; top: 30px; left: -10px; background: rgba(0,0,0,0.95); padding: 10px; min-width: 120px; flex-direction: column; gap: 10px; border: 1px solid #333; }
+    .nav-dropdown { display: none; position: absolute; top: 30px; left: -10px; background: rgba(0,0,0,0.95); padding: 10px; min-width: 120px; flex-direction: column; gap: 10px; border: 1px solid #333; z-index: 200; }
     .nav-dropdown.show { display: flex; }
     .nav-dropdown a { color: #fff; text-decoration: none; }
 
@@ -204,9 +241,9 @@
       </section>
     </div>
 
-    <div id="season-list" class="view">
+    <div id="season-list" class="view" style="display:none;">
       <div style="position:fixed; top:60px; left:4%; z-index:50;">
-        <button class="nav-button" onclick="goBack()">← Indietro</button>
+        <button class="nav-button" onclick="goBack()" style="background:rgba(0,0,0,0.5); padding:5px 10px; border-radius:4px;">← Indietro</button>
       </div>
       <div class="details-hero"><h1 id="season-title">Titolo</h1></div>
       <div class="container-padding">
@@ -218,11 +255,11 @@
       </div>
     </div>
 
-    <div id="episode-list" class="view">
+    <div id="episode-list">
       <div class="player-wrapper">
         <div class="player-header">
-           <button class="nav-button" onclick="goBack()">← Chiudi</button>
-           <span id="episode-title" style="margin-left:15px; font-weight:bold;"></span>
+           <button class="close-btn" onclick="goBack()">Chiudi</button>
+           <span id="episode-title" style="margin-left:15px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></span>
         </div>
         <div id="episodes-container"></div>
       </div>
@@ -232,7 +269,6 @@
 
   <script>
     // --- DATI COMPLETI ---
-    // Struttura corretta per evitare blocchi JS
     
     const users = {
       "Alessio": "1234", "Marco": "pelopelo", "Alessia": "oceani", "Anna": "1234", "Alfonso": "1234", "Chiara": "iii"
@@ -351,11 +387,7 @@
             { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
             { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
             { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
+            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" }
           ],
           4: [
             { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
@@ -452,26 +484,6 @@
             { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
             { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
             { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          8: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" }
           ]
         }
       },
@@ -864,8 +876,13 @@
         
         if(push) history.pushState({view:'player', src:src, title:title, meta:meta}, null, "");
         
+        // Nascondi tutto
         hideViews();
-        document.getElementById("episode-list").style.display = "block";
+        
+        // Mostra Player
+        const player = document.getElementById("episode-list");
+        player.style.display = "block"; // Importante: usare block per renderlo visibile
+        
         document.getElementById("episode-title").textContent = title;
         document.getElementById("episodes-container").innerHTML = `<iframe src="${src}" allowfullscreen></iframe>`;
     }
@@ -873,6 +890,7 @@
     function hideViews() {
         document.getElementById("hero-section").style.display = "none";
         document.querySelectorAll(".view").forEach(v => v.style.display = "none");
+        document.getElementById("episode-list").style.display = "none";
     }
 
     function filterCategory(cat) {
