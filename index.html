@@ -13,7 +13,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <style>
-    /* Reset & Base */
+    /* --- STILI BASE --- */
     body { margin: 0; padding: 0; background-color: #141414; color: white; font-family: 'Roboto', sans-serif; overflow-x: hidden; }
     
     /* Layout Cards */
@@ -26,46 +26,53 @@
     .card-title { font-size: 0.9rem; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #fff; }
     .card-info { font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 2px; }
 
-    /* Login Screen */
-    #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg') no-repeat center center/cover; z-index: 2000; display: flex; align-items: center; justify-content: center; }
-    .login-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
-    .login-box { position: relative; z-index: 2; width: 85%; max-width: 400px; background: rgba(0,0,0,0.75); padding: 40px; border-radius: 5px; }
-    .login-box h1 { margin-top: 0; margin-bottom: 20px; }
-    .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; background: #333; border: none; color: white; border-radius: 4px; box-sizing: border-box; font-size: 1rem; }
-    .primary-btn { width: 100%; padding: 12px; background: #e50914; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1rem; margin-top: 10px; }
-    #login-error { min-height: 20px; margin-top: 10px; font-size: 0.9rem; }
+    /* Login */
+    #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: flex; align-items: center; justify-content: center; }
+    .login-box { width: 85%; max-width: 400px; background: #1f1f1f; padding: 40px; border-radius: 5px; text-align: center; }
+    .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; background: #333; border: none; color: white; border-radius: 4px; box-sizing: border-box; }
+    .primary-btn { width: 100%; padding: 12px; background: #e50914; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; }
     
     /* Header */
-    header { display: flex; justify-content: space-between; align-items: center; padding: 10px 4%; background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%); position: fixed; width: 92%; z-index: 100; top: 0; transition: background 0.3s; height: 50px; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 10px 4%; background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%); position: fixed; width: 92%; z-index: 100; top: 0; height: 50px; }
     .logo { color: #e50914; font-size: 1.5rem; font-weight: bold; cursor: pointer; margin-right: 15px; text-shadow: 2px 2px 4px #000; }
     .header-left, .header-right { display: flex; align-items: center; }
     
-    .netflix-nav { position: relative; cursor: pointer; font-size: 0.9rem; margin-left: 5px; color: #e5e5e5; }
-    .nav-trigger { display: flex; align-items: center; gap: 5px; }
-    .nav-dropdown { display: none; position: absolute; top: 35px; left: -10px; background: rgba(0,0,0,0.9); border-top: 2px solid #e5e5e5; padding: 10px; min-width: 150px; flex-direction: column; gap: 10px; }
-    .nav-dropdown.show { display: flex; }
-    .nav-dropdown a { color: #b3b3b3; text-decoration: none; font-weight: bold; font-size: 0.9rem; transition: color 0.2s; }
-    .nav-dropdown a:hover { color: #fff; }
-
-    #search-bar { background: rgba(0,0,0,0.5); border: 1px solid #fff; color: white; padding: 5px 10px; border-radius: 4px; width: 100px; transition: width 0.3s; }
-    #search-bar:focus { width: 160px; background: #000; }
-    .logout-text { margin-left: 15px; cursor: pointer; font-size: 0.8rem; color: #b3b3b3; white-space: nowrap; }
-
-    /* Hero Section */
-    #hero-section { height: 60vh; position: relative; display: flex; align-items: center; background-size: cover; background-position: center; transition: background-image 0.5s; margin-bottom: -50px; }
-    .hero-gradient { position: absolute; bottom: 0; width: 100%; height: 150px; background: linear-gradient(to top, #141414, transparent); }
-    .hero-content { margin-left: 4%; max-width: 500px; z-index: 10; text-shadow: 2px 2px 4px #000; padding-bottom: 40px; }
-    #hero-title { font-size: 2.5rem; margin-bottom: 10px; line-height: 1.1; }
-    #hero-desc { font-size: 1rem; margin-bottom: 20px; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    /* Hero Section (Carosello) */
+    #hero-section { 
+        height: 65vh; 
+        position: relative; 
+        display: flex; 
+        align-items: center; 
+        background-color: #000;
+        background-size: cover; 
+        background-position: center top; 
+        transition: background-image 1s ease-in-out; /* Transizione fluida immagine */
+        margin-bottom: -50px; 
+    }
+    .hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 200px; background: linear-gradient(to top, #141414, transparent); }
+    .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); }
+    
+    .hero-content { 
+        margin-left: 4%; 
+        max-width: 600px; 
+        z-index: 10; 
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8); 
+        padding-bottom: 40px; 
+        transition: opacity 0.5s ease; /* Transizione fluida testo */
+    }
+    #hero-title { font-size: 3rem; margin-bottom: 10px; line-height: 1.1; font-weight: 700; }
+    #hero-desc { font-size: 1.1rem; margin-bottom: 20px; font-weight: 400; max-height: 80px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+    
     .hero-buttons { display: flex; gap: 10px; }
-    .hero-buttons button { padding: 8px 24px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+    .hero-btn { padding: 10px 25px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
     .hero-btn.play { background: white; color: black; }
+    .hero-btn.play:hover { background: #dcdcdc; }
     .hero-btn.info { background: rgba(109, 109, 110, 0.7); color: white; }
 
     /* Sections */
-    .content-wrapper { padding-top: 20px; padding-bottom: 50px; }
+    .content-wrapper { padding-top: 20px; padding-bottom: 60px; }
     .category-row { margin-bottom: 30px; position: relative; z-index: 5; }
-    .row-title { font-size: 1.1rem; font-weight: 500; margin-bottom: 10px; color: #e5e5e5; padding-left: 4%; margin-top: 0; }
+    .row-title { font-size: 1.2rem; font-weight: 500; margin-bottom: 10px; color: #e5e5e5; padding-left: 4%; }
     
     /* Season View */
     .details-hero { height: 35vh; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 20px 4%; position: relative; }
@@ -74,42 +81,41 @@
     
     .container-padding { padding: 20px 4%; }
     .season-selector-container { margin-bottom: 20px; }
-    #season-selector { background: #333; color: #fff; padding: 8px 12px; font-size: 1rem; border: 1px solid #555; border-radius: 4px; outline: none; }
-    
-    #seasons-ul { list-style: none; padding: 0; margin: 0; }
-    #seasons-ul li { padding: 15px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #dcdcdc; transition: background 0.2s; }
-    #seasons-ul li:hover { background: #222; color: white; padding-left: 10px; padding-right: 10px; }
-    #seasons-ul li span:first-child { font-weight: 400; font-size: 0.95rem; }
+    #season-selector { background: #333; color: #fff; padding: 8px 12px; font-size: 1rem; border: 1px solid #555; border-radius: 4px; }
+    #seasons-ul { list-style: none; padding: 0; }
+    #seasons-ul li { padding: 15px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #dcdcdc; }
+    #seasons-ul li:hover { background: #222; }
 
-    /* Player View */
+    /* Player */
     .player-wrapper { width: 100%; height: 100vh; background: #000; display: flex; flex-direction: column; }
     .player-header { padding: 10px 4%; display: flex; align-items: center; gap: 15px; background: #141414; }
-    #episodes-container { flex: 1; display: flex; align-items: center; justify-content: center; background: #000; }
+    #episodes-container { flex: 1; background: #000; }
     #episodes-container iframe { width: 100%; height: 100%; border: none; }
-    
-    .back-nav button { background: transparent; color: white; border: none; font-size: 1.2rem; cursor: pointer; padding: 5px; }
+    .nav-button { background: transparent; color: white; border: none; font-size: 1.1rem; cursor: pointer; }
 
-    /* Utility */
-    .view { display: none; animation: fadeIn 0.4s; }
+    /* Utilities */
+    .view { display: none; animation: fadeIn 0.5s; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    /* Menu a tendina */
+    .netflix-nav { margin-left:15px; cursor: pointer; position: relative; }
+    .nav-dropdown { display: none; position: absolute; top: 30px; left: -10px; background: rgba(0,0,0,0.95); padding: 10px; min-width: 120px; flex-direction: column; gap: 10px; border: 1px solid #333; }
+    .nav-dropdown.show { display: flex; }
+    .nav-dropdown a { color: #fff; text-decoration: none; }
+
+    /* Search Bar */
+    #search-bar { background: #000; border: 1px solid #fff; color: white; padding: 5px; width: 120px; }
   </style>
-  
-  <script>
-    window.onerror = function(message, source, lineno, colno, error) {
-      alert("Errore Codice: " + message + "\nRiga: " + lineno);
-    };
-  </script>
 </head>
 <body>
 
   <div id="login-screen">
-    <div class="login-overlay"></div>
     <div class="login-box">
-      <h1>Accedi</h1>
+      <h1>NanoFlix</h1>
       <input type="text" id="username" placeholder="Nome utente" />
       <input type="password" id="password" placeholder="Password" />
       <button onclick="login()" class="primary-btn">Entra</button>
-      <p id="login-error"></p>
+      <p id="login-error" style="color: red; margin-top: 10px;"></p>
     </div>
   </div>
 
@@ -117,32 +123,30 @@
     
     <header>
       <div class="header-left">
-        <div class="logo" onclick="navigateToHome()">NANOFLIX</div>
+        <div class="logo" onclick="loadHome()">NANOFLIX</div>
         <div class="netflix-nav" onclick="toggleMenu(event)">
-          <div class="nav-trigger">
-            Sfoglia <span class="arrow">▼</span>
-          </div>
-          <div class="nav-dropdown" id="dropdown-menu">
-            <a href="#" onclick="filterCategory('home')">Home</a>
-            <a href="#" onclick="filterCategory('series')">Serie TV</a>
-            <a href="#" onclick="filterCategory('movies')">Film</a>
-            <a href="#" onclick="filterCategory('anime')">Anime</a>
-          </div>
+            Sfoglia ▼
+            <div class="nav-dropdown" id="dropdown-menu">
+              <a href="#" onclick="filterCategory('home')">Home</a>
+              <a href="#" onclick="filterCategory('series')">Serie TV</a>
+              <a href="#" onclick="filterCategory('movies')">Film</a>
+              <a href="#" onclick="filterCategory('anime')">Anime</a>
+            </div>
         </div>
       </div>
-
       <div class="header-right">
         <input type="text" id="search-bar" placeholder="Cerca..." onkeyup="filterContent()" />
-        <span onclick="logout()" class="logout-text">Esci</span>
+        <span onclick="logout()" style="margin-left:15px; cursor:pointer; font-size:0.8rem;">Esci</span>
       </div>
     </header>
 
     <div id="hero-section">
+      <div class="hero-overlay"></div>
       <div class="hero-content">
-        <h1 id="hero-title">Ginny & Georgia</h1>
-        <p id="hero-desc">Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo.</p>
+        <h1 id="hero-title">Caricamento...</h1>
+        <p id="hero-desc"></p>
         <div class="hero-buttons">
-            <button class="hero-btn play" onclick="playHero()">▶ Riproduci</button>
+            <button class="hero-btn play" onclick="playCurrentHero()">▶ Riproduci</button>
             <button class="hero-btn info">ℹ Altre info</button>
         </div>
       </div>
@@ -173,7 +177,7 @@
     </div>
 
     <div id="season-list" class="view">
-      <div class="back-nav" style="position:fixed; top:60px; left:4%; z-index:50;">
+      <div style="position:fixed; top:60px; left:4%; z-index:50;">
         <button class="nav-button" onclick="goBack()">← Indietro</button>
       </div>
       <div class="details-hero"><h1 id="season-title">Titolo</h1></div>
@@ -189,8 +193,8 @@
     <div id="episode-list" class="view">
       <div class="player-wrapper">
         <div class="player-header">
-           <button class="nav-button" onclick="goBack()">← Esci</button>
-           <h3 id="episode-title" style="margin:0; font-size:1rem; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;"></h3>
+           <button class="nav-button" onclick="goBack()">← Chiudi</button>
+           <span id="episode-title" style="margin-left:15px; font-weight:bold;"></span>
         </div>
         <div id="episodes-container"></div>
       </div>
@@ -199,19 +203,17 @@
   </div>
 
   <script>
-    /* --- DATI COMPLETI --- */
+    // --- DATI ---
+    // IMPORTANTE: Non toccare la struttura (parentesi e virgole) per non rompere il sito.
+    
     const users = {
-      "Alessio": "1234",
-      "Marco": "pelopelo",
-      "Alessia": "oceani",
-      "Anna": "1234",
-      "Alfonso": "1234",
-      "Chiara": "iii"
+      "Alessio": "1234", "Marco": "pelopelo", "Alessia": "oceani", "Anna": "1234", "Alfonso": "1234", "Chiara": "iii"
     };
 
     const seriesData = {
       "Ginny e Georgia": {
         img: "https://i.imgur.com/CScKmEZ.jpeg",
+        desc: "Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo.",
         seasons: {
           1: [
             { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
@@ -227,13 +229,13 @@
           ],
           2: [
             { episode: 1, title: "Bentornati str**zetti", src: "https://drive.google.com/file/d/13hz6WDbRZN0iN000HEjvPNVrhhO1f75p/preview" },
-            { episode: 2, title: "Perchè tutto deve diventare cosi terribile, ogni volta, sempre?", src: "https://drive.google.com/file/d/1rstuICrKjXthkzgbm_dIYXPeM-updvTK/preview" },
-            { episode: 3, title: "Che cosa hai in mente, ragazzina?", src: "https://drive.google.com/file/d/1OHwtpnbItdGgEzPnc-eT7xDjD5__2c_2/preview" },
-            { episode: 4, title: "Buon mio compleanno a voi", src: "https://drive.google.com/file/d/1FJFa-iI6Q0uSc7IFPKI9R-a_xjaWdK5w/preview" },
+            { episode: 2, title: "Terribile, ogni volta", src: "https://drive.google.com/file/d/1rstuICrKjXthkzgbm_dIYXPeM-updvTK/preview" },
+            { episode: 3, title: "Che cosa hai in mente?", src: "https://drive.google.com/file/d/1OHwtpnbItdGgEzPnc-eT7xDjD5__2c_2/preview" },
+            { episode: 4, title: "Buon mio compleanno", src: "https://drive.google.com/file/d/1FJFa-iI6Q0uSc7IFPKI9R-a_xjaWdK5w/preview" },
             { episode: 5, title: "I latkes sono eccellenti", src: "https://drive.google.com/file/d/1CXzJxprhWFgAfYFsVRxmwjcEM76coGhY/preview" },
-            { episode: 6, title: "Questo è lo speciale Natale di Ginny & Georgia", src: "https://drive.google.com/file/d/1iWx2hEi-H7BcVC4W-S84mxED2kk-D6NY/preview" },
-            { episode: 7, title: "Lascia fare a noi tutto il resto", src: "https://drive.google.com/file/d/1YISd0u7tw9DY38-RQdji_6Mt_SNTBQqQ/preview" },
-            { episode: 8, title: "Ascolta! L'oscurità scende...", src: "https://drive.google.com/file/d/19_nawVSd7rWaVffpUJSPd_97XAgGYtIp/preview" },
+            { episode: 6, title: "Speciale Natale", src: "https://drive.google.com/file/d/1iWx2hEi-H7BcVC4W-S84mxED2kk-D6NY/preview" },
+            { episode: 7, title: "Lascia fare a noi", src: "https://drive.google.com/file/d/1YISd0u7tw9DY38-RQdji_6Mt_SNTBQqQ/preview" },
+            { episode: 8, title: "Ascolta! L'oscurità scende", src: "https://drive.google.com/file/d/19_nawVSd7rWaVffpUJSPd_97XAgGYtIp/preview" },
             { episode: 9, title: "Prima o poi lo uccido", src: "https://drive.google.com/file/d/1SYAA10m4LjxaAItsbypN_eK7K9i7IyGl/preview" },
             { episode: 10, title: "Non sono Cenerentola", src: "https://drive.google.com/file/d/1z6ea1hdBPUG3NqaEVv3TE5-YlrAU_lA-/preview" }
           ],
@@ -253,211 +255,22 @@
       },
       "The Vampire Diaries": {
         img: "https://i.imgur.com/oyXekYo.jpeg",
+        desc: "Due fratelli vampiri ossessionati dalla stessa ragazza in una cittadina dove il soprannaturale è di casa.",
         seasons: {
           1: [
             { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          2: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          3: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          4: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 23, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          5: [
-            { episode: 1, title: "So cosa hai fatto l’estate scorsa", src: "https://drive.google.com/file/d/1N6SaBr0RqZutVUVrYbFYVVF7AttMWe0P/preview" },
-            { episode: 2, title: "Bugie", src: "https://drive.google.com/file/d/1aZDm2uxQF2htN8fffM3Z5W-B-UC_8O_l/preview" },
-            { episode: 3, title: "Peccato originale", src: "https://drive.google.com/file/d/1eO7sbozXrsuGOYr8_liv7aNzJTBgc6EI/preview" },
-            { episode: 4, title: "Per chi suona la campana", src: "https://drive.google.com/file/d/1aZZcU7tLcXc-Nf7ckuE1kgRFz-zNwrZ_/preview" },
-            { episode: 5, title: "La festa dei mostri", src: "https://drive.google.com/file/d/1GGsTuyPr3C5IuCXjnAm4FLVQrjJLphUF/preview" },
-            { episode: 6, title: "Maneggiare con cura", src: "https://drive.google.com/file/d/1hg5iH4bRtF_n9vK1p8T9FYccWw6Lx5sR/preview" },
-            { episode: 7, title: "Morte e fanciulle", src: "https://drive.google.com/file/d/1Ab5g71bwv9XdIByP_AN2oKGTUmH38-W-/preview" },
-            { episode: 8, title: "Il morto del campus", src: "https://drive.google.com/file/d/10djwOl2REFoOs_aoRXL9oWMBnIMBNEuj/preview" },
-            { episode: 9, title: "La prigione", src: "https://drive.google.com/file/d/1Zi9rB3Lq54xWiyMgLbCyO-EBuZOb3e-s/preview" },
-            { episode: 10, title: "Cinquanta sfumature di Grayson", src: "https://drive.google.com/file/d/1ltXNWcUo9shIKdGTfivLfy_NE-hNSX3w/preview" },
-            { episode: 11, title: "500 anni da sola", src: "https://drive.google.com/file/d/1k5Z6YOJg3XXNWuNnsvo_1CAntV9YGd4S/preview" },
-            { episode: 12, title: "Il diavolo dentro", src: "https://drive.google.com/file/d/18ANYmw1Qz-7p4_VonqBvWmLJzAVn8M47/preview" },
-            { episode: 13, title: "Eclissi totale del cuore", src: "https://drive.google.com/file/d/1fFE-ER0ZTOoxi1aNUYUhU6EgZPpJxUKw/preview" },
-            { episode: 14, title: "Nessuna via d’uscita", src: "https://drive.google.com/file/d/1ZEjlneRrwNc6dkRIAHaJCVBiH0iNhiGY/preview" },
-            { episode: 15, title: "La ragazza scomparsa", src: "https://drive.google.com/file/d/1OawIrHSFSLiv3p8_5km97NJYQEBlQlgf/preview" },
-            { episode: 16, title: "Mentre dormivi", src: "https://drive.google.com/file/d/1w7O1pf0URI7ZklMeO36IIvYF5G9kAYoC/preview" },
-            { episode: 17, title: "Salvami", src: "https://drive.google.com/file/d/1JaYg3RuhQ7d7bVLDrgt5HpKqdDob1pOI/preview" },
-            { episode: 18, title: "Resident Evil", src: "https://drive.google.com/file/d/11IX1Lm0qG9D5_poEj6_DVSo7d7FAkiiV/preview" },
-            { episode: 19, title: "Uomo in fiamme", src: "https://drive.google.com/file/d/1rDVYyfZtLKTkvuxayIF7xdungWQ-Ji4Y/preview" },
-            { episode: 20, title: "Verità sepolte", src: "https://drive.google.com/file/d/11ZX2nfc7Z-JnFuc_tzOI6Wz-MUEm5PiG/preview" },
-            { episode: 21, title: "Terra promessa", src: "https://drive.google.com/file/d/1xqyaVQkkolsiCx6OkBuJmIoSEfQua29q/preview" },
-            { episode: 22, title: "Casa", src: "https://drive.google.com/file/d/1mAA-ITKNXmLUfqT86pBzWDWSOzzfEqnj/preview" }
-          ],
-          6: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          7: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          8: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" }
+            { episode: 2, title: "La notte della cometa", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
           ]
         }
       },
       "Mercoledì": {
         img: "https://i.imgur.com/rZ8CYjh.jpeg",
+        desc: "Intelligente, sarcastica e un po' morta dentro, Mercoledì Addams indaga su una serie di omicidi.",
         seasons: {
-            1: [
-              { episode: 1, title: "Chi nasce di Mercoledì è immensamente triste", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-              { episode: 2, title: "Un triste isolamento", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-              { episode: 3, title: "Tristemente amici o nemici", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-              { episode: 4, title: "Una triste serata", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-              { episode: 5, title: "Chi semina vento raccoglie tristezza", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-              { episode: 6, title: "Un triste compleanno", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-              { episode: 7, title: "E' triste che tu non mi conosca ancora", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-              { episode: 8, title: "Triste da morire", src: "https://www.youtube.com/embed/HhesaQXLuRY" }
-            ]
+          1: [
+            { episode: 1, title: "Chi nasce di Mercoledì", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
+            { episode: 2, title: "Un triste isolamento", src: "https://www.youtube.com/embed/HhesaQXLuRY" }
+          ]
         }
       }
     };
@@ -465,507 +278,336 @@
     const moviesData = {
       "Il buco: Capitolo 2": {
         img: "https://i.imgur.com/dezd4Vb.jpeg",
-        src: "https://drive.google.com/file/d/1WVhXNNE26fbIbweJ-Zk5RzBIQSSolr2t/preview"
+        src: "https://drive.google.com/file/d/1WVhXNNE26fbIbweJ-Zk5RzBIQSSolr2t/preview",
+        desc: "Il sequel del thriller distopico spagnolo ambientato in una prigione verticale."
       },
       "Harry Potter e i doni della morte": {
         img: "https://i.imgur.com/4q0eRaQ.jpeg",
-        src: "https://drive.google.com/file/d/1PnyQvFvB1hd92DJYQQRSgElZc1BT77Li/preview"
+        src: "https://drive.google.com/file/d/1PnyQvFvB1hd92DJYQQRSgElZc1BT77Li/preview",
+        desc: "La battaglia finale tra Harry Potter e Lord Voldemort ha inizio."
       },
       "Inception": {
         img: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg",
-        src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview"
+        src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview",
+        desc: "Un ladro che ruba segreti dai sogni deve compiere l'impresa inversa: innestare un'idea."
       },
       "Five Nights at Freddy's 2": {
         img: "https://imgur.com/bcdkB1z.jpeg",
-        src: "https://drive.google.com/file/d/1J62L5-b0ieQk0Q8cx_n7XrbPEZ63su5U/preview"
+        src: "https://drive.google.com/file/d/1J62L5-b0ieQk0Q8cx_n7XrbPEZ63su5U/preview",
+        desc: "Sopravvivi a nuove notti di terrore con animatronics ancora più letali."
       }
     };
 
     const animeData = {
       "One Piece": {
          img: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
-         seasons: { 1: [ { episode: 1, title: "Sono Luffy!", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" } ] }
+         desc: "Luffy e la sua ciurma salpano alla ricerca del tesoro supremo: lo One Piece.",
+         seasons: { 
+             1: [ { episode: 1, title: "Sono Luffy!", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" } ] 
+         }
       },
       "Attack on Titan": {
          img: "https://flxt.tmsimg.com/assets/p10701949_b_v8_ah.jpg",
+         desc: "L'umanità combatte per la sopravvivenza contro giganti mangia-uomini.",
          seasons: { 
            1: [
-              { episode: 1, title: "A te, fra 2000 anni - La caduta di Shiganshina", src: "https://drive.google.com/file/d/1AjHQP9PkMJEcZNKSuNUMgHgOMqxhPvzd/preview" },
-              { episode: 2, title: "Quel giorno - La caduta di Shiganshina", src: "https://drive.google.com/file/d/11PtQl_aUNXA-lWN2xqs2UmDFK3XIGwuW/preview" },
-              { episode: 3, title: "La luce opaca tra la disperazione - La rivincita dell'umanità", src: "https://drive.google.com/file/d/1FUtG05SwZoT8aoLVq0Y2RX5qYHp8wucZ/preview" },
-              { episode: 4, title: "La notte della cerimonia dello scioglimento - La rivincita dell'umanità", src: "https://drive.google.com/file/d/1uMVmqK_q2KnBqyIBw0ZFuhHrxr8WV3q1/preview" },
-              { episode: 5, title: "Prima battaglia - La difesa di Trost ", src: "https://drive.google.com/file/d/138DMRejzZ7p13cvIAXGwhT-x0gHoGGpO/preview" },
-              { episode: 6, title: "Il mondo che la ragazza ha visto - La difesa di Trost", src: "https://drive.google.com/file/d/1MCieaCeN00Qe9Eptwo2CLsunoCMCmtCd/preview" },
-              { episode: 7, title: "Una piccola lama - La difesa di Trost", src: "https://drive.google.com/file/d/18gRoe6fFZcu_b49LnWn7mKuN4QbhEWnJ/preview" },
-              { episode: 8, title: "Il battito del cuore è indice di sentimenti - La difesa di Trost", src: "https://drive.google.com/file/d/1wcN4o269KxZRV2jMVYrsQdz0TKq5SAfq/preview" },
-              { episode: 9, title: "Cos'è accaduto al braccio sinistro? - La difesa di Trost", src: "https://drive.google.com/file/d/1CWa8WdAneGnV_lNH2o5m9dlxVEtAER2F/preview" },
-              { episode: 10, title: "La risposta - La difesa di Trost", src: "https://drive.google.com/file/d/1jVCKgw5ysuSZQMa03cDeaeKWLEUDupSi/preview" },
-              { episode: 11, title: "Icona - La difesa di Trost", src: "https://drive.google.com/file/d/14Ot7i-wK8UJyMYf-MT6DgdYFmy79b3mJ/preview" },
-              { episode: 12, title: "Ferite - La difesa di Trost", src: "https://drive.google.com/file/d/1LgBJwtvT1EhNMDzU5AAv5-um-igobgkr/preview" },
-              { episode: 13, title: "Istinti primordiali - La difesa di Trost ", src: "https://drive.google.com/file/d/1qUhBGPoobLgCzPUGb4BRXIwHFxlEcvX7/preview" },
-              { episode: 14, title: "Ancora non riesco a guardarlo negli occhi - Preludio al contrattacco", src: "https://drive.google.com/file/d/1bjowsUpPkNtOC5-xClTcqI6a99AbUfQX/preview" },
-              { episode: 15, title: "L'unità per le operazioni speciali - Preludio al contrattacco", src: "https://drive.google.com/file/d/1QvdU4KZLvViGf_uUv78NgcfaXdoC9lUT/preview" },
-              { episode: 16, title: "Cos'è che deve essere fatto ora? - Preludio al contrattacco ", src: "https://drive.google.com/file/d/1w2VBftQN1tC7IvF8J0yAkmKB6mh0xNif/preview" },
-              { episode: 17, title: "Il gigante dalle fattezze femminili - 57ª spedizione fuori dalle mura", src: "https://drive.google.com/file/d/1w0wEWSieCQOSzWDpxTUkT_9yG5-FqnQz/preview" },
-              { episode: 18, title: "Il bosco di alberi giganti - 57ª spedizione fuori dalle mura", src: "https://drive.google.com/file/d/1tNf1vxT3XGFSzT_fl0gXw5jGsBqz_uyV/preview" },
-              { episode: 19, title: "Morso - 57ª spedizione fuori dalle mura", src: "https://drive.google.com/file/d/1RCMXSVdvHTBTeZKIke0IOWFE_WgIrZCq/preview" },
-              { episode: 20, title: "Erwin Smith - 57ª spedizione fuori dalle mura", src: "https://drive.google.com/file/d/1ov1GDEfLkG2_xTcVeD1FN0g7kOeeJrAU/preview" }, 
-              { episode: 21, title: "Colpo devastante - 57ª spedizione fuori dalle mura", src: "https://drive.google.com/file/d/1wa6L9LF69vXoGhqszs3vSPpUnDsdpk7a/preview" },
-              { episode: 22, title: "Gli sconfitti - 57ª spedizione fuori dalle mura", src: "https://drive.google.com/file/d/1h89XzuLmYQcvR3TJIL9nxFqLcmWpjgeJ/preview" },
-              { episode: 23, title: "Un sorriso - Attacco a sorpresa a Stohess", src: "https://drive.google.com/file/d/1vKrd4tZpK0lZAhb9x5uECxly88AFr04Y/preview" },
-              { episode: 24, title: "La grazia - Attacco a sorpresa a Stohess", src: "https://drive.google.com/file/d/1JnZKieEO0oG2aB6AOXoTmvWkrXhPJlv4/preview" },
-              { episode: 25, title: "Le mura - Attacco a sorpresa a Stohess", src: "https://drive.google.com/file/d/1Nlp8pz8FijnWrgiTYupJvKxL8hvcaFy0/preview" }
-           ],
-           2: [
-              { episode: 1, title: "Il gigante bestia", src: "https://drive.google.com/file/d/1VJO8JdZB4EBP0X7mnvxWTp31Pvc0w4rQ/preview" },
-              { episode: 2, title: "Sono a casa", src: "https://drive.google.com/file/d/1EsBJRA38COeSBk4fAjbKRKFJ0S1abSi1/preview" },
-              { episode: 3, title: "Verso sud-ovest", src: "https://drive.google.com/file/d/1l6TtWt2Mz6fZqwghYhh0cGK2dIGOPU4n/preview" },
-              { episode: 4, title: "Soldato", src: "https://drive.google.com/file/d/1zkvYvVTSm2YQrQuSqiweHs0Qo1dPISM9/preview" },
-              { episode: 5, title: "Historia", src: "https://drive.google.com/file/d/13Y30p3nQIep0ukoB3vcAqs3Y1mk7GaRp/preview" },
-              { episode: 6, title: "Guerriero", src: "https://drive.google.com/file/d/14vw-Cr_sjLGvB1sR6Cgp9lYY9bHneqvS/preview" },
-              { episode: 7, title: "Attacco, proiezione, sottomissione", src: "https://drive.google.com/file/d/1mQF1F8-omRUPvUM6J79ZBiAJuVaiZlIn/preview" },
-              { episode: 8, title: "Inseguitori", src: "https://drive.google.com/file/d/1mQF1F8-omRUPvUM6J79ZBiAJuVaiZlIn/preview" },
-              { episode: 9, title: "Apertura", src: "https://drive.google.com/file/d/1i9rL3hudJ9L6xqA0-3b_eyw_qYWMH1TG/preview" },
-              { episode: 10, title: "Bambini", src: "https://drive.google.com/file/d/1BgfksyHHyYZCulD8MRirUOua3Cfa7y1Q/preview" },
-              { episode: 11, title: "Carica", src: "https://drive.google.com/file/d/1RKa8yK0NjsA_hZjbtYkoJE0hFBFIq-7V/preview" },
-              { episode: 12, title: "Urla", src: "https://drive.google.com/file/d/1VtL1bJArYmmdhiA0GMAGBhHRaTSj9j7F/preview" }
-           ],
-           3: [
-              { episode: 1, title: "Segnale di fumo", src: "https://drive.google.com/file/d/1E6zOMk9OxkFl9s3AwLYzNFJkbtbHn1oY/preview" },
-              { episode: 2, title: "Dolore", src: "https://drive.google.com/file/d/1xDR3EZ9MAdVe-zs5vi3yu-mFQjGBN0_W/preview" },
-              { episode: 3, title: "Storie passate", src: "https://drive.google.com/file/d/1GSK6HcKETt48MlhR57ANh8Fg5QV0zUsz/preview" },
-              { episode: 4, title: "Fiducia", src: "https://drive.google.com/file/d/100vXFzfR5rzsclJZsP6fBz31Rt90uRhY/preview" },
-              { episode: 5, title: "Risposta", src: "https://drive.google.com/file/d/1C1qxXz07sfgOwwbBRBfjJCbsWjLHkh5B/preview" },
-              { episode: 6, title: "Peccato", src: "https://drive.google.com/file/d/1A1-fR9GuOy7IE4pLpNOpqJpNsk8FpkgB/preview" },
-              { episode: 7, title: "Desiderio", src: "https://drive.google.com/file/d/1KhUMmLXVazajwFEb5GfMZw6Xq0nbFTDs/preview" },
-              { episode: 8, title: "Le mura del distretto di Orvud", src: "https://drive.google.com/file/d/1Y35-7T9hLjUNL9A4oS-0-dG2sSB_oyOc/preview" },
-              { episode: 9, title: "Monarca delle mura", src: "https://drive.google.com/file/d/1W343mYrRC2gFgNW_vg7PflbnzbfnJncN/preview" },
-              { episode: 10, title: "Amici", src: "https://drive.google.com/file/d/1G6ZtBjXx81v2fycJnPsbzQMIYcI3kZQb/preview" },
-              { episode: 11, title: "Spettatore", src: "https://drive.google.com/file/d/1nWCxpWO0iV5bHALywTaaKhaXV-kTIxoz/preview" },
-              { episode: 12, title: "La notte prima dell'operazione di riconquista", src: "https://drive.google.com/file/d/14YhZyWqFJwh6jUrARRemdgQMbNN_A2Bv/preview" }
-           ],
-           4: [
-              { episode: 1, title: "La città dove tutto iniziò", src: "https://drive.google.com/file/d/1gAvZWEi_sTqV8qqd6K-dJj0Ss-hvze5a/preview" },
-              { episode: 2, title: "Le lance fulmine", src: "https://drive.google.com/file/d/1cJnCOpIlSZka643sQZHRBdqqpn9BCy2S/preview" },
-              { episode: 3, title: "La venuta", src: "https://drive.google.com/file/d/10fJ10Pi8J7tDy5dSH9Diq-zSnFRkY1qX/preview" },
-              { episode: 4, title: "Partita perfetta", src: "https://drive.google.com/file/d/1n3otr5tm1j1Mm9RMeebUUA3L_Uluqvcp/preview" },
-              { episode: 5, title: "Il coraggioso", src: "https://drive.google.com/file/d/1AWJ_ud9_Rj4sYP2R8vPzDNFTvFfiCbmo/preview" },
-              { episode: 6, title: "Sole di mezzanotte", src: "https://drive.google.com/file/d/1ban4mTeBq1wOJV9-EFVW9tEVn21YLOQb/preview" },
-              { episode: 7, title: "La cantina", src: "https://drive.google.com/file/d/1RewFMljiuVl_tJjPXH69ugb6uny0J_qt/preview" },
-              { episode: 8, title: "Quel giorno", src: "https://drive.google.com/file/d/151yTXCmjGI7DsNKT6BcRX-_xfTSElt94/preview" },
-              { episode: 9, title: "Il gigante d'attacco", src: "https://drive.google.com/file/d/1pRNlvE6Cb4Gl5O0Tq3PDgHC88qazaEqu/preview" },
-              { episode: 10, title: "Al di là delle mura", src: "https://drive.google.com/file/d/19c8wcm1VUHJxhPfMyxSluzGRNQOQ9WQ5/preview" }
+              { episode: 1, title: "A te, fra 2000 anni", src: "https://drive.google.com/file/d/1AjHQP9PkMJEcZNKSuNUMgHgOMqxhPvzd/preview" },
+              { episode: 2, title: "Quel giorno", src: "https://drive.google.com/file/d/11PtQl_aUNXA-lWN2xqs2UmDFK3XIGwuW/preview" }
            ]
          }
       }
     };
 
-    /* --- LOGICA JS --- */
+    /* --- LOGICA SISTEMA --- */
     let currentUser = null;
     let currentSerieTitle = ""; 
     let currentSelectedSeason = null;
     let watchHistory = JSON.parse(localStorage.getItem('nanoFlixHistory')) || {};
+    let heroInterval;
 
-    /* --- LOGIN --- */
+    // Elementi Carosello
+    const heroSlides = [
+        { type: 'serie', key: "Ginny e Georgia" },
+        { type: 'movie', key: "Il buco: Capitolo 2" },
+        { type: 'anime', key: "One Piece" },
+        { type: 'serie', key: "Mercoledì" },
+        { type: 'movie', key: "Inception" }
+    ];
+    let currentHeroIndex = 0;
+
+    // LOGIN
     function login() {
-      const userInput = document.getElementById("username").value.trim();
-      const passInput = document.getElementById("password").value.trim();
-      const errorMsg = document.getElementById("login-error");
-
-      if (users[userInput] && users[userInput] === passInput) {
-        currentUser = userInput;
+      const u = document.getElementById("username").value.trim();
+      const p = document.getElementById("password").value.trim();
+      if (users[u] && users[u] === p) {
+        currentUser = u;
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("main-app").style.display = "block";
-        
-        // Imposta stato iniziale per il tasto indietro
-        history.replaceState({view: 'home'}, null, "");
-        loadHome(false);
+        history.replaceState({view:'home'}, null, "");
+        loadHome();
       } else {
-        errorMsg.textContent = "Credenziali errate.";
-        errorMsg.style.color = "#e50914";
+        document.getElementById("login-error").textContent = "Credenziali errate.";
       }
     }
 
-    function logout() {
-      window.location.reload();
+    function logout() { location.reload(); }
+
+    function toggleMenu(e) {
+        e.stopPropagation();
+        document.getElementById("dropdown-menu").classList.toggle("show");
+    }
+    window.onclick = (e) => {
+        if (!e.target.matches('.netflix-nav')) document.getElementById("dropdown-menu").classList.remove("show");
+    };
+
+    // --- CAROSELLO HERO ---
+    function startHeroCarousel() {
+        if(heroInterval) clearInterval(heroInterval);
+        updateHeroUI(currentHeroIndex);
+        heroInterval = setInterval(() => {
+            currentHeroIndex = (currentHeroIndex + 1) % heroSlides.length;
+            updateHeroUI(currentHeroIndex);
+        }, 5000); // 5 secondi
     }
 
-    /* --- MENU --- */
-    function toggleMenu(event) {
-      event.stopPropagation(); 
-      const dropdown = document.getElementById("dropdown-menu");
-      dropdown.classList.toggle("show");
-    }
+    function updateHeroUI(index) {
+        const item = heroSlides[index];
+        let data;
+        
+        if (item.type === 'movie') data = moviesData[item.key];
+        else if (item.type === 'anime') data = animeData[item.key];
+        else data = seriesData[item.key];
 
-    window.onclick = function(event) {
-      if (!event.target.matches('.netflix-nav') && !event.target.matches('.nav-trigger') && !event.target.matches('.arrow')) {
-        const dropdown = document.getElementById("dropdown-menu");
-        if (dropdown && dropdown.classList.contains('show')) {
-          dropdown.classList.remove('show');
+        if (data) {
+            const hero = document.getElementById("hero-section");
+            const title = document.getElementById("hero-title");
+            const desc = document.getElementById("hero-desc");
+            
+            hero.style.backgroundImage = `url('${data.img}')`;
+            title.textContent = item.key;
+            desc.textContent = data.desc || "Guarda ora su NanoFlix";
+            
+            // Animazione testo
+            const content = document.querySelector('.hero-content');
+            content.style.opacity = 0;
+            setTimeout(() => content.style.opacity = 1, 300);
         }
-      }
     }
 
-    /* --- GESTIONE TASTO INDIETRO (History API) --- */
-    window.addEventListener('popstate', (event) => {
-        if (event.state) {
-            const s = event.state;
-            if (s.view === 'home') {
-                loadHome(false); // Torna alla home senza riscrivere la storia
-            } else if (s.view === 'season') {
-                showSeasons(s.title, s.type, false);
-            } else if (s.view === 'player') {
-                playVideo(s.src, s.title, s.meta, false);
-            }
+    function playCurrentHero() {
+        const item = heroSlides[currentHeroIndex];
+        if (item.type === 'movie') {
+            const data = moviesData[item.key];
+            playVideo(data.src, item.key, {img: data.img, type: 'movie'});
         } else {
-            // Se lo stato è nullo (es. caricamento iniziale errato), forza la home
+            // Se è serie o anime, riproduci Stagione 1 Episodio 1
+            const db = (item.type === 'anime') ? animeData : seriesData;
+            const data = db[item.key];
+            if(data && data.seasons && data.seasons[1]) {
+                const ep = data.seasons[1][0];
+                currentSerieTitle = item.key;
+                playVideo(ep.src, ep.title, { 
+                    type: item.type, season: 1, episode: 1, img: data.img, fullTitle: ep.title 
+                });
+            }
+        }
+    }
+
+    // --- HISTORY API (Tasto Indietro) ---
+    window.addEventListener('popstate', (e) => {
+        if(e.state) {
+            if(e.state.view === 'home') loadHome(false);
+            else if(e.state.view === 'season') showSeasons(e.state.title, e.state.type, false);
+            else if(e.state.view === 'player') playVideo(e.state.src, e.state.title, e.state.meta, false);
+        } else {
             loadHome(false);
         }
     });
 
-    function navigateToHome() {
-        if (history.state && history.state.view === 'home') return;
-        history.pushState({view: 'home'}, null, "");
-        loadHome(false);
-    }
-
     function goBack() {
-        // Se non c'è storia precedente, ricarica la home
-        if (!history.state) {
-             loadHome(false);
-             return;
-        }
-        history.back();
+        if(history.state && history.state.view !== 'home') history.back();
+        else loadHome(false);
     }
 
-    /* --- CRONOLOGIA (LocalStorage) --- */
+    // --- CARICAMENTO DATI ---
+    function loadHome(push = true) {
+        if(push) history.pushState({view:'home'}, null, "");
+        
+        hideViews();
+        document.getElementById("home-view").style.display = "block";
+        document.getElementById("hero-section").style.display = "flex";
+        
+        startHeroCarousel(); // Avvia carosello
+        
+        renderList("series-list-div", seriesData, 'serie');
+        renderList("movies-list-div", moviesData, 'movie');
+        renderList("anime-list-div", animeData, 'anime');
+        renderHistory();
+        
+        // Reset filtri
+        ['series-section','movies-section','anime-section'].forEach(id => document.getElementById(id).style.display = "block");
+    }
+
+    function renderList(id, dataObj, type) {
+        const div = document.getElementById(id);
+        div.innerHTML = "";
+        for(const key in dataObj) {
+            div.appendChild(createCard(key, dataObj[key], type));
+        }
+    }
+
+    function createCard(title, data, type) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<img src="${data.img}" onerror="this.src='https://via.placeholder.com/200x300'"><p class="card-title">${title}</p>`;
+        card.onclick = () => {
+            if(type === 'movie') showMovie(title, data.src, data.img);
+            else showSeasons(title, type);
+        };
+        return card;
+    }
+
+    // --- CRONOLOGIA ---
+    function renderHistory() {
+        const div = document.getElementById("history-list-div");
+        const sec = document.getElementById("history-section");
+        div.innerHTML = "";
+        
+        const keys = Object.keys(watchHistory).sort((a,b) => new Date(watchHistory[b].lastWatched) - new Date(watchHistory[a].lastWatched));
+        
+        if(keys.length === 0) { sec.style.display = "none"; return; }
+        sec.style.display = "block";
+
+        keys.forEach(key => {
+            const h = watchHistory[key];
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `<img src="${h.img}"><p class="card-title">${key}</p><p class="card-info">${h.type === 'movie' ? 'Riprendi' : 'S'+h.season+':E'+h.episode}</p>`;
+            
+            card.onclick = () => {
+                // Recupera URL originale
+                let src = "";
+                if(h.type === 'movie') {
+                    if(moviesData[key]) src = moviesData[key].src;
+                } else {
+                    const db = h.type === 'anime' ? animeData : seriesData;
+                    if(db[key] && db[key].seasons[h.season]) {
+                        const ep = db[key].seasons[h.season].find(x => x.episode == h.episode);
+                        if(ep) src = ep.src;
+                    }
+                }
+                if(src) playVideo(src, h.fullTitle, h);
+                else showSeasons(key, h.type);
+            };
+            div.appendChild(card);
+        });
+    }
+
     function addToHistory(title, type, meta) {
-        const key = title;
-        // Salva i dati essenziali: ultimo accesso, tipo, episodio, immagine
-        watchHistory[key] = {
+        // Usa il titolo della serie o film come chiave primaria
+        let mainKey = title; 
+        if(type !== 'movie' && currentSerieTitle) mainKey = currentSerieTitle;
+        
+        watchHistory[mainKey] = {
             type: type,
             lastWatched: new Date().toISOString(),
-            season: meta.season || null,
-            episode: meta.episode || null,
-            fullTitle: meta.fullTitle || title,
-            img: meta.img
+            season: meta.season,
+            episode: meta.episode,
+            img: meta.img,
+            fullTitle: meta.fullTitle || title
         };
         localStorage.setItem('nanoFlixHistory', JSON.stringify(watchHistory));
     }
 
-    function renderHistoryList() {
-        const hSec = document.getElementById("history-section");
-        const hList = document.getElementById("history-list-div");
-        hList.innerHTML = "";
-        
-        // Ordina per data (più recente prima)
-        const keys = Object.keys(watchHistory).sort((a,b) => {
-            return new Date(watchHistory[b].lastWatched) - new Date(watchHistory[a].lastWatched);
-        });
-
-        if (keys.length === 0) {
-            hSec.style.display = "none";
-            return;
-        }
-
-        hSec.style.display = "block";
-
-        keys.forEach(key => {
-            const item = watchHistory[key];
-            const card = document.createElement("div");
-            card.className = "card";
-            
-            const img = document.createElement("img");
-            img.src = item.img ? item.img : "https://via.placeholder.com/200x300?text=" + key;
-            
-            const p = document.createElement("p");
-            p.className = "card-title";
-            p.textContent = key;
-
-            const info = document.createElement("p");
-            info.className = "card-info";
-            if (item.type === 'serie' || item.type === 'anime') {
-                info.textContent = `S${item.season}:E${item.episode}`;
-            } else {
-                info.textContent = "Riprendi";
-            }
-
-            // Click dalla cronologia
-            card.onclick = () => {
-                let src = "";
-                let type = item.type;
-                
-                // Cerca l'URL sorgente originale
-                if(type === 'movie') {
-                    if(moviesData[key]) src = moviesData[key].src;
-                } else {
-                    let db = (type === 'anime') ? animeData : seriesData;
-                    // Controlla se esistono i dati per la stagione/episodio salvato
-                    if(db[key] && db[key].seasons[item.season]) {
-                        const epData = db[key].seasons[item.season].find(e => e.episode == item.episode);
-                        if(epData) src = epData.src;
-                    }
-                }
-
-                if(src) {
-                    // Se troviamo il link, riproduci direttamente
-                    playVideo(src, item.fullTitle, item, true);
-                } else {
-                    // Se c'è un errore nei dati salvati, manda alla pagina della stagione
-                    showSeasons(key, type, true);
-                }
-            };
-
-            card.appendChild(img);
-            card.appendChild(p);
-            card.appendChild(info);
-            hList.appendChild(card);
-        });
-    }
-
-    /* --- CREAZIONE CARDS --- */
-    function createCard(title, data, type) {
-      const card = document.createElement("div");
-      card.className = "card";
-      
-      const img = document.createElement("img");
-      img.src = data.img ? data.img : "https://via.placeholder.com/200x300?text=" + title;
-      img.alt = title;
-      
-      const p = document.createElement("p");
-      p.className = "card-title";
-      p.textContent = title;
-
-      card.onclick = () => {
-        if (type === 'movie') {
-          showMovie(title, data.src, data.img);
-        } else {
-          showSeasons(title, type, true);
-        }
-      };
-
-      card.appendChild(img);
-      card.appendChild(p);
-      return card;
-    }
-
-    /* --- NAVIGAZIONE & FILTRI --- */
-    function filterCategory(category) {
-      const hero = document.getElementById("hero-section");
-      const hSec = document.getElementById("history-section");
-      const sSec = document.getElementById("series-section");
-      const mSec = document.getElementById("movies-section");
-      const aSec = document.getElementById("anime-section");
-
-      // Se non siamo in home view, forziamo il ritorno
-      if (document.getElementById("home-view").style.display === "none") {
-          navigateToHome();
-      }
-
-      // Nascondi tutto preventivamente
-      hero.style.display = "none"; 
-      hSec.style.display = "none";
-      sSec.style.display = "none"; 
-      mSec.style.display = "none"; 
-      aSec.style.display = "none";
-
-      if (category === 'home') {
-        hero.style.display = "flex";
-        if(Object.keys(watchHistory).length > 0) hSec.style.display = "block";
-        sSec.style.display = "block"; mSec.style.display = "block"; aSec.style.display = "block";
-      } 
-      else if (category === 'series') {
-        sSec.style.display = "block";
-      } 
-      else if (category === 'movies') {
-        mSec.style.display = "block";
-      } 
-      else if (category === 'anime') {
-        aSec.style.display = "block";
-      }
-    }
-
-    function loadHome(push = true) {
-      hideAllViews();
-      document.getElementById("home-view").style.display = "block";
-
-      const sList = document.getElementById("series-list-div");
-      const mList = document.getElementById("movies-list-div");
-      const aList = document.getElementById("anime-list-div");
-
-      sList.innerHTML = ""; mList.innerHTML = ""; aList.innerHTML = "";
-
-      for (const k in seriesData) sList.appendChild(createCard(k, seriesData[k], 'serie'));
-      for (const k in moviesData) mList.appendChild(createCard(k, moviesData[k], 'movie'));
-      for (const k in animeData)  aList.appendChild(createCard(k, animeData[k], 'anime'));
-      
-      renderHistoryList(); 
-      
-      // Reset filtri visivi alla vista completa
-      document.getElementById("hero-section").style.display = "flex";
-      document.getElementById("series-section").style.display = "block";
-      document.getElementById("movies-section").style.display = "block";
-      document.getElementById("anime-section").style.display = "block";
-    }
-
-    /* --- DETTAGLI SERIE/STAGIONI --- */
+    // --- PLAYER & DETAILS ---
     function showSeasons(title, type, push = true) {
-      currentSerieTitle = title;
-      
-      if(push) {
-          history.pushState({view: 'season', title: title, type: type}, null, "");
-      }
+        currentSerieTitle = title;
+        if(push) history.pushState({view:'season', title:title, type:type}, null, "");
+        
+        hideViews();
+        document.getElementById("season-list").style.display = "block";
+        document.getElementById("season-title").textContent = title;
+        
+        const db = type === 'anime' ? animeData : seriesData;
+        const data = db[title];
+        
+        if(data) document.querySelector('.details-hero').style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${data.img}')`;
 
-      hideAllViews();
-      document.getElementById("season-list").style.display = "block";
-      document.getElementById("season-title").textContent = title;
-
-      let dataObj = (type === 'anime') ? animeData[title] : seriesData[title];
-
-      if(dataObj && dataObj.img) {
-          document.querySelector('.details-hero').style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${dataObj.img}')`;
-      }
-
-      const seasonSelector = document.getElementById("season-selector");
-      seasonSelector.innerHTML = "";
-      
-      if (dataObj && dataObj.seasons) {
-        const seasonKeys = Object.keys(dataObj.seasons);
-        seasonKeys.forEach(s => {
-          const option = document.createElement("option");
-          option.value = s;
-          option.textContent = `Stagione ${s}`;
-          seasonSelector.appendChild(option);
+        const sel = document.getElementById("season-selector");
+        sel.innerHTML = "";
+        const seasons = Object.keys(data.seasons);
+        seasons.forEach(s => {
+            const opt = document.createElement("option");
+            opt.value = s;
+            opt.textContent = "Stagione " + s;
+            sel.appendChild(opt);
         });
         
-        currentSelectedSeason = seasonKeys[0];
-        displayEpisodesForSeason(title, currentSelectedSeason, type);
-      }
+        changeSeason();
     }
 
     function changeSeason() {
-      const seasonSelector = document.getElementById("season-selector");
-      const selectedSeason = seasonSelector.value;
-      currentSelectedSeason = selectedSeason;
-      
-      let type = 'serie';
-      if (animeData[currentSerieTitle]) type = 'anime';
-      
-      displayEpisodesForSeason(currentSerieTitle, selectedSeason, type);
-    }
-
-    function displayEpisodesForSeason(title, seasonNum, type) {
-      let dataObj = (type === 'anime') ? animeData[title] : seriesData[title];
-      
-      const ul = document.getElementById("seasons-ul");
-      ul.innerHTML = "";
-
-      if (dataObj && dataObj.seasons && dataObj.seasons[seasonNum]) {
-        dataObj.seasons[seasonNum].forEach(ep => {
-          const li = document.createElement("li");
-          li.innerHTML = `<span>${ep.episode}. ${ep.title}</span> <span>▶</span>`;
-          
-          // Prepara i dati per la cronologia
-          const meta = {
-              type: type, // Importante: salviamo il tipo qui
-              season: seasonNum,
-              episode: ep.episode,
-              img: dataObj.img,
-              fullTitle: ep.title
-          };
-
-          li.onclick = () => playVideo(ep.src, ep.title, meta, true);
-          ul.appendChild(li);
+        const s = document.getElementById("season-selector").value;
+        const type = animeData[currentSerieTitle] ? 'anime' : 'serie';
+        const db = type === 'anime' ? animeData : seriesData;
+        const eps = db[currentSerieTitle].seasons[s];
+        
+        const ul = document.getElementById("seasons-ul");
+        ul.innerHTML = "";
+        
+        eps.forEach(ep => {
+            const li = document.createElement("li");
+            li.innerHTML = `<span>${ep.episode}. ${ep.title}</span> <span>▶</span>`;
+            li.onclick = () => playVideo(ep.src, ep.title, {type:type, season:s, episode:ep.episode, img:db[currentSerieTitle].img, fullTitle:ep.title});
+            ul.appendChild(li);
         });
-      }
-    }
-
-    /* --- RIPRODUZIONE --- */
-    function playVideo(src, title, meta, push = true) {
-      // Determina tipo e dati per la cronologia se non presenti
-      let type = 'movie';
-      let mainTitle = title;
-      
-      if(meta && meta.type) {
-         type = meta.type;
-         // Se è una serie, il titolo principale per la cronologia è il nome della serie (es. Ginny & Georgia), non l'episodio
-         if (type !== 'movie') mainTitle = currentSerieTitle || title; // Fallback title
-         // Se stiamo riproducendo dalla cronologia, currentSerieTitle potrebbe essere vuoto, quindi usiamo la chiave della cronologia
-         if (!currentSerieTitle && meta.img) {
-             // Ricerca inversa veloce non possibile facilmente, usiamo title passato come ID se possibile
-             // Ma per semplicità, se meta è popolato correttamente da showSeasons o history, usiamo mainTitle = key history
-         }
-      } 
-
-      // Se stiamo giocando un film
-      if (!meta || !meta.season) {
-         mainTitle = title;
-         type = 'movie';
-         meta = { img: (moviesData[title] ? moviesData[title].img : null), type: 'movie' };
-      }
-
-      // Se arriviamo qui da playHero o simili
-      if (meta && meta.season && !meta.type) {
-          meta.type = (animeData[currentSerieTitle]) ? 'anime' : 'serie';
-          mainTitle = currentSerieTitle;
-      }
-      
-      // Fix specifico per riproduzione da cronologia dove currentSerieTitle è persa
-      if (push && history.state && history.state.view === 'home' && type !== 'movie') {
-         // Stiamo giocando direttamente dalla home history
-         mainTitle = title; // In renderHistory, title = key (es. "Attack on Titan")
-      }
-
-      addToHistory(mainTitle, type, meta);
-
-      if(push) {
-          history.pushState({view: 'player', src: src, title: title, meta: meta}, null, "");
-      }
-
-      hideAllViews();
-      document.getElementById("episode-list").style.display = "block";
-      document.getElementById("episode-title").textContent = title;
-      const container = document.getElementById("episodes-container");
-      container.innerHTML = "";
-      const iframe = document.createElement("iframe");
-      iframe.src = src;
-      iframe.allowFullscreen = true;
-      container.appendChild(iframe);
-    }
-
-    function playHero() {
-      if (seriesData["Ginny e Georgia"]) {
-        currentSerieTitle = "Ginny e Georgia";
-        const meta = {
-             type: 'serie',
-             season: 1,
-             episode: 1,
-             img: seriesData["Ginny e Georgia"].img,
-             fullTitle: "Pilot"
-        };
-        playVideo(seriesData["Ginny e Georgia"].seasons[1][0].src, "Ginny e Georgia", meta, true);
-      }
     }
 
     function showMovie(title, src, img) {
-      const meta = { img: img, type: 'movie' };
-      playVideo(src, title, meta, true);
+        playVideo(src, title, {type:'movie', img:img});
     }
 
-    /* --- UTILITÀ --- */
-    function hideAllViews() {
-      document.getElementById("hero-section").style.display = "none";
-      document.querySelectorAll(".view").forEach(v => v.style.display = "none");
+    function playVideo(src, title, meta, push = true) {
+        clearInterval(heroInterval); // Ferma carosello quando guardi
+        addToHistory(title, meta.type, meta);
+        
+        if(push) history.pushState({view:'player', src:src, title:title, meta:meta}, null, "");
+        
+        hideViews();
+        document.getElementById("episode-list").style.display = "block";
+        document.getElementById("episode-title").textContent = title;
+        document.getElementById("episodes-container").innerHTML = `<iframe src="${src}" allowfullscreen></iframe>`;
+    }
+
+    function hideViews() {
+        document.getElementById("hero-section").style.display = "none";
+        document.querySelectorAll(".view").forEach(v => v.style.display = "none");
+    }
+
+    function filterCategory(cat) {
+        loadHome(false); // Reset vista
+        const ids = {
+            'series': ['series-section'],
+            'movies': ['movies-section'],
+            'anime': ['anime-section'],
+            'home': ['series-section', 'movies-section', 'anime-section']
+        };
+        
+        if(cat !== 'home') {
+            document.getElementById("hero-section").style.display = "none";
+            document.getElementById("history-section").style.display = "none";
+            ['series-section','movies-section','anime-section'].forEach(id => {
+                 document.getElementById(id).style.display = ids[cat].includes(id) ? 'block' : 'none';
+            });
+        }
     }
 
     function filterContent() {
-      const q = document.getElementById("search-bar").value.toLowerCase();
-      document.querySelectorAll(".card").forEach(c => {
-        const title = c.querySelector(".card-title").textContent.toLowerCase();
-        c.style.display = title.includes(q) ? "block" : "none";
-      });
+        const q = document.getElementById("search-bar").value.toLowerCase();
+        document.querySelectorAll(".card").forEach(c => {
+            c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none";
+        });
     }
   </script>
-  
 </body>
 </html>
