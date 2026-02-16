@@ -13,158 +13,157 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <style>
-    /* --- STILI BASE --- */
+    /* --- RESET & BASE --- */
     body { margin: 0; padding: 0; background-color: #141414; color: white; font-family: 'Roboto', sans-serif; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-    
-    /* Layout Cards */
-    .scroll-container { display: flex; overflow-x: auto; padding: 10px 4%; gap: 10px; scrollbar-width: none; }
-    .scroll-container::-webkit-scrollbar { display: none; }
-    
-    .card { min-width: 140px; max-width: 140px; cursor: pointer; transition: transform 0.3s; position: relative; flex-shrink: 0; }
-    .card:hover { transform: scale(1.05); z-index: 2; }
-    .card img { width: 100%; height: 210px; object-fit: cover; border-radius: 4px; }
-    .card-title { font-size: 0.9rem; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #fff; }
-    .card-info { font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 2px; }
+    * { box-sizing: border-box; }
 
-    /* Login con Immagine di Sfondo */
+    /* --- LOGIN SCREEN --- */
     #login-screen { 
         position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
         background: url('https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg') no-repeat center center/cover;
         z-index: 2000; display: flex; align-items: center; justify-content: center; 
     }
     .login-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 1; }
-    .login-box { position: relative; z-index: 2; width: 85%; max-width: 400px; background: rgba(0,0,0,0.75); padding: 40px; border-radius: 5px; text-align: center; }
-    .login-box h1 { margin-bottom: 30px; }
-    .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; background: #333; border: none; color: white; border-radius: 4px; box-sizing: border-box; }
-    .primary-btn { width: 100%; padding: 12px; background: #e50914; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1rem; }
+    .login-box { position: relative; z-index: 2; width: 90%; max-width: 400px; background: rgba(0,0,0,0.85); padding: 40px 30px; border-radius: 8px; text-align: center; }
+    .login-box h1 { margin-bottom: 30px; font-weight: bold; color: #e50914; font-size: 2.5rem; }
+    .login-box input { width: 100%; padding: 15px; margin-bottom: 15px; background: #333; border: none; color: white; border-radius: 4px; font-size: 1rem; }
+    .primary-btn { width: 100%; padding: 15px; background: #e50914; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1.1rem; margin-top: 10px; }
+
+    /* --- HEADER --- */
+    header { 
+        display: flex; justify-content: space-between; align-items: center; 
+        padding: 0 4%; 
+        background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%); 
+        position: fixed; width: 100%; z-index: 100; top: 0; height: 60px; 
+    }
+    .logo { color: #e50914; font-size: 1.8rem; font-weight: bold; cursor: pointer; text-shadow: 2px 2px 4px #000; margin-right: 15px; }
     
-    /* Header */
-    header { display: flex; justify-content: space-between; align-items: center; padding: 10px 4%; background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%); position: fixed; width: 92%; z-index: 100; top: 0; height: 50px; }
-    .logo { color: #e50914; font-size: 1.5rem; font-weight: bold; cursor: pointer; margin-right: 15px; text-shadow: 2px 2px 4px #000; }
     .header-left, .header-right { display: flex; align-items: center; }
+
+    /* Menu Sfoglia */
+    .netflix-nav { position: relative; cursor: pointer; font-size: 0.9rem; color: #e5e5e5; margin-left: 10px; user-select: none; }
+    .nav-trigger { display: flex; align-items: center; gap: 5px; padding: 10px 0; }
     
-    /* Hero Section (Carosello) */
+    .nav-dropdown { 
+        display: none; 
+        position: absolute; 
+        top: 40px; left: -10px; 
+        background: rgba(0,0,0,0.9); 
+        border: 1px solid #333; 
+        border-top: 2px solid #e5e5e5;
+        flex-direction: column; 
+        min-width: 160px; 
+        z-index: 1000; /* Z-Index alto per stare sopra la hero */
+    }
+    .nav-dropdown.show { display: flex; }
+    .nav-dropdown div { 
+        padding: 15px 20px; 
+        color: #fff; 
+        border-bottom: 1px solid #333; 
+        cursor: pointer; 
+        text-align: center;
+        font-weight: bold;
+    }
+    .nav-dropdown div:hover { background: #333; }
+
+    /* Search & Logout */
+    #search-bar { background: rgba(0,0,0,0.5); border: 1px solid #fff; color: white; padding: 6px; width: 110px; border-radius: 4px; transition: width 0.3s; }
+    #search-bar:focus { width: 150px; background: #000; }
+    .logout-btn { margin-left: 15px; cursor: pointer; font-size: 0.8rem; color: #ccc; }
+
+    /* --- HERO SECTION (Carosello) --- */
     #hero-section { 
-        height: 55vh; 
+        height: 65vh; /* Altezza aumentata per vedere meglio l'immagine */
         position: relative; 
         display: flex; 
         align-items: center; 
         background-color: #000;
         background-size: cover; 
-        background-position: center center; 
+        background-position: center top; /* Focus sulla parte alta dell'immagine */
         transition: background-image 0.5s ease-in-out; 
         margin-bottom: -40px; 
     }
-    .hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 150px; background: linear-gradient(to top, #141414, transparent); }
-    .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); }
+    .hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 200px; background: linear-gradient(to top, #141414, transparent); }
+    .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); }
     
     .hero-content { 
         margin-left: 4%; 
         max-width: 600px; 
         z-index: 10; 
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.8); 
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.9); 
         padding-bottom: 20px; 
         transition: opacity 0.5s ease;
+        padding-right: 40px; /* Evita sovrapposizione freccia */
     }
-    #hero-title { font-size: 2.5rem; margin-bottom: 10px; line-height: 1.1; font-weight: 700; }
-    #hero-desc { font-size: 1rem; margin-bottom: 15px; font-weight: 400; max-height: 60px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-shadow: 1px 1px 2px #000; }
+    #hero-title { font-size: 2.8rem; margin-bottom: 10px; line-height: 1.1; font-weight: 700; }
+    #hero-desc { font-size: 1rem; margin-bottom: 15px; font-weight: 400; max-height: 80px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; text-shadow: 1px 1px 2px #000; }
     
     .hero-buttons { display: flex; gap: 10px; }
-    .hero-btn { padding: 8px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+    .hero-btn { padding: 10px 24px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
     .hero-btn.play { background: white; color: black; }
     .hero-btn.info { background: rgba(109, 109, 110, 0.7); color: white; }
 
     /* Frecce Carosello */
-    .carousel-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; font-size: 2rem; padding: 10px; cursor: pointer; z-index: 20; user-select: none; border-radius: 4px; }
-    .carousel-nav:hover { background: rgba(0,0,0,0.7); }
-    .carousel-nav.prev { left: 10px; }
-    .carousel-nav.next { right: 10px; }
+    .carousel-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; font-size: 2.5rem; padding: 10px; cursor: pointer; z-index: 20; user-select: none; border-radius: 4px; }
+    .carousel-nav:hover { background: rgba(0,0,0,0.6); }
+    .carousel-nav.prev { left: 0; }
+    .carousel-nav.next { right: 0; }
 
-    /* Sections */
+    /* --- LISTE FILMS/SERIE --- */
     .content-wrapper { padding-top: 20px; padding-bottom: 60px; }
     .category-row { margin-bottom: 30px; position: relative; z-index: 5; }
     .row-title { font-size: 1.2rem; font-weight: 500; margin-bottom: 10px; color: #e5e5e5; padding-left: 4%; }
     
-    /* Season View */
-    .details-hero { height: 35vh; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 20px 4%; position: relative; }
-    .details-hero::after { content:''; position: absolute; bottom:0; left:0; width:100%; height:100px; background: linear-gradient(to top, #141414, transparent); }
-    #season-title { font-size: 2rem; text-shadow: 2px 2px 4px #000; margin: 0; z-index: 2; position: relative; }
+    .scroll-container { display: flex; overflow-x: auto; padding: 10px 4%; gap: 10px; scrollbar-width: none; }
+    .scroll-container::-webkit-scrollbar { display: none; }
     
+    .card { min-width: 130px; max-width: 130px; cursor: pointer; transition: transform 0.3s; position: relative; flex-shrink: 0; }
+    .card:hover { transform: scale(1.05); z-index: 2; }
+    .card img { width: 100%; height: 195px; object-fit: cover; border-radius: 4px; }
+    .card-title { font-size: 0.9rem; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #fff; }
+    .card-info { font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 2px; }
+
+    /* --- VISTA EPISODI/STAGIONI --- */
+    .view { display: none; animation: fadeIn 0.4s; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .details-hero { height: 35vh; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 20px 4%; position: relative; }
+    .details-hero::after { content:''; position: absolute; bottom:0; left:0; width:100%; height:150px; background: linear-gradient(to top, #141414, transparent); }
+    #season-title { font-size: 2rem; text-shadow: 2px 2px 4px #000; margin: 0; z-index: 2; position: relative; }
+
     .container-padding { padding: 20px 4%; }
     .season-selector-container { margin-bottom: 20px; }
-    #season-selector { background: #333; color: #fff; padding: 8px 12px; font-size: 1rem; border: 1px solid #555; border-radius: 4px; }
+    #season-selector { background: #333; color: #fff; padding: 10px; font-size: 1rem; border: 1px solid #555; border-radius: 4px; width: 100%; }
+    
     #seasons-ul { list-style: none; padding: 0; }
     #seasons-ul li { padding: 15px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #dcdcdc; }
-    #seasons-ul li:hover { background: #222; }
+    #seasons-ul li:hover { background: #222; color: #fff; }
 
-    /* --- PLAYER MODIFICATO --- */
-    /* Fissa il player sopra tutto il resto con z-index alto */
+    /* --- PLAYER VIDEO (OVERLAY) --- */
     #episode-list {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 5000; /* Superiore a qualsiasi altro elemento */
-        background-color: #000;
-        display: none; /* Gestito da JS */
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 5000; background-color: #000; display: none;
     }
-
-    .player-wrapper { 
-        width: 100%; 
-        height: 100%; 
-        display: flex; 
-        flex-direction: column; 
-    }
-
+    .player-wrapper { width: 100%; height: 100%; display: flex; flex-direction: column; }
+    
     .player-header { 
-        height: 60px; /* Altezza sicura */
-        width: 100%;
-        padding: 0 20px;
-        display: flex; 
-        align-items: center; 
-        gap: 15px; 
-        background: #141414; /* Sfondo scuro per coprire quello sotto */
-        box-sizing: border-box;
-        border-bottom: 1px solid #333;
-        /* Safe area per notch su iPhone */
+        height: 60px; width: 100%; padding: 0 15px; 
+        display: flex; align-items: center; gap: 15px; 
+        background: #101010; border-bottom: 1px solid #333;
+        /* Safe area per iPhone notch */
         padding-top: env(safe-area-inset-top); 
-        padding-top: constant(safe-area-inset-top);
-    }
-
-    #episodes-container { 
-        flex: 1; 
-        background: #000; 
-        position: relative;
     }
     
-    #episodes-container iframe { width: 100%; height: 100%; border: none; }
-
-    /* Bottone Chiudi più visibile */
     .close-btn {
-        background: rgba(255,255,255,0.2);
-        color: white;
-        border: 1px solid white;
-        padding: 5px 15px;
-        border-radius: 4px;
-        font-weight: bold;
-        font-size: 0.9rem;
-        cursor: pointer;
-        text-transform: uppercase;
+        background: #e50914; color: white; border: none; padding: 8px 16px; 
+        border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer; 
     }
-
-    /* Utilities */
-    .view { animation: fadeIn 0.5s; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     
-    /* Menu a tendina */
-    .netflix-nav { margin-left:15px; cursor: pointer; position: relative; }
-    .nav-dropdown { display: none; position: absolute; top: 30px; left: -10px; background: rgba(0,0,0,0.95); padding: 10px; min-width: 120px; flex-direction: column; gap: 10px; border: 1px solid #333; z-index: 200; }
-    .nav-dropdown.show { display: flex; }
-    .nav-dropdown a { color: #fff; text-decoration: none; }
+    #episodes-container { flex: 1; background: #000; position: relative; }
+    #episodes-container iframe { width: 100%; height: 100%; border: none; }
+    
+    .back-btn-float { position: fixed; top: 70px; left: 4%; z-index: 50; background: rgba(0,0,0,0.6); color: white; border: 1px solid #fff; padding: 8px 15px; border-radius: 4px; font-weight: bold; }
 
-    /* Search Bar */
-    #search-bar { background: #000; border: 1px solid #fff; color: white; padding: 5px; width: 120px; }
   </style>
 </head>
 <body>
@@ -176,7 +175,7 @@
       <input type="text" id="username" placeholder="Nome utente" />
       <input type="password" id="password" placeholder="Password" />
       <button onclick="login()" class="primary-btn">Entra</button>
-      <p id="login-error" style="color: red; margin-top: 10px;"></p>
+      <p id="login-error" style="color: #e50914; margin-top: 15px; min-height: 20px;"></p>
     </div>
   </div>
 
@@ -185,19 +184,21 @@
     <header>
       <div class="header-left">
         <div class="logo" onclick="loadHome()">NANOFLIX</div>
+        
         <div class="netflix-nav" onclick="toggleMenu(event)">
-            Sfoglia ▼
+            <div class="nav-trigger">Sfoglia <span style="font-size: 0.7rem; margin-left: 5px;">▼</span></div>
             <div class="nav-dropdown" id="dropdown-menu">
-              <a href="#" onclick="filterCategory('home')">Home</a>
-              <a href="#" onclick="filterCategory('series')">Serie TV</a>
-              <a href="#" onclick="filterCategory('movies')">Film</a>
-              <a href="#" onclick="filterCategory('anime')">Anime</a>
+              <div onclick="filterCategory('home', event)">Home</div>
+              <div onclick="filterCategory('series', event)">Serie TV</div>
+              <div onclick="filterCategory('movies', event)">Film</div>
+              <div onclick="filterCategory('anime', event)">Anime</div>
             </div>
         </div>
       </div>
+
       <div class="header-right">
         <input type="text" id="search-bar" placeholder="Cerca..." onkeyup="filterContent()" />
-        <span onclick="logout()" style="margin-left:15px; cursor:pointer; font-size:0.8rem;">Esci</span>
+        <span onclick="logout()" class="logout-btn">Esci</span>
       </div>
     </header>
 
@@ -241,10 +242,8 @@
       </section>
     </div>
 
-    <div id="season-list" class="view" style="display:none;">
-      <div style="position:fixed; top:60px; left:4%; z-index:50;">
-        <button class="nav-button" onclick="goBack()" style="background:rgba(0,0,0,0.5); padding:5px 10px; border-radius:4px;">← Indietro</button>
-      </div>
+    <div id="season-list" class="view">
+      <button class="back-btn-float" onclick="goBack()">← Indietro</button>
       <div class="details-hero"><h1 id="season-title">Titolo</h1></div>
       <div class="container-padding">
         <div class="season-selector-container">
@@ -258,8 +257,8 @@
     <div id="episode-list">
       <div class="player-wrapper">
         <div class="player-header">
-           <button class="close-btn" onclick="goBack()">Chiudi</button>
-           <span id="episode-title" style="margin-left:15px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></span>
+           <button class="close-btn" onclick="closePlayer()">CHIUDI</button>
+           <span id="episode-title" style="margin-left:15px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color: white;"></span>
         </div>
         <div id="episodes-container"></div>
       </div>
@@ -268,8 +267,7 @@
   </div>
 
   <script>
-    // --- DATI COMPLETI ---
-    
+    // --- DATABASE LINK (TUTTI INCLUSI) ---
     const users = {
       "Alessio": "1234", "Marco": "pelopelo", "Alessia": "oceani", "Anna": "1234", "Alfonso": "1234", "Chiara": "iii"
     };
@@ -387,7 +385,11 @@
             { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
             { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
             { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" }
+            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
+            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
+            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
+            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
+            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
           ],
           4: [
             { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
@@ -611,14 +613,13 @@
       }
     };
 
-    /* --- LOGICA SISTEMA --- */
+    /* --- LOGICA PRINCIPALE --- */
     let currentUser = null;
     let currentSerieTitle = ""; 
-    let currentSelectedSeason = null;
     let watchHistory = JSON.parse(localStorage.getItem('nanoFlixHistory')) || {};
     let heroInterval;
 
-    // Elementi Carosello (Lista delle Copertine)
+    // Carosello
     const heroSlides = [
         { type: 'serie', key: "Ginny e Georgia" },
         { type: 'movie', key: "Il buco: Capitolo 2" },
@@ -645,12 +646,51 @@
 
     function logout() { location.reload(); }
 
+    // NAVIGAZIONE MENU (SFOGLIA)
     function toggleMenu(e) {
         e.stopPropagation();
-        document.getElementById("dropdown-menu").classList.toggle("show");
+        const dropdown = document.getElementById("dropdown-menu");
+        dropdown.classList.toggle("show");
     }
+
+    // Gestione Categorie
+    function filterCategory(cat, e) {
+        if(e) e.stopPropagation();
+        document.getElementById("dropdown-menu").classList.remove("show"); // Chiudi menu
+        
+        // Reset visualizzazione
+        hideViews();
+        document.getElementById("home-view").style.display = "block";
+        
+        const hero = document.getElementById("hero-section");
+        const hist = document.getElementById("history-section");
+        const sSec = document.getElementById("series-section");
+        const mSec = document.getElementById("movies-section");
+        const aSec = document.getElementById("anime-section");
+
+        if (cat === 'home') {
+            hero.style.display = "flex";
+            hist.style.display = (Object.keys(watchHistory).length > 0) ? "block" : "none";
+            sSec.style.display = "block";
+            mSec.style.display = "block";
+            aSec.style.display = "block";
+            startHeroCarousel();
+        } else {
+            // Nascondi Hero e mostra solo categoria scelta
+            hero.style.display = "none";
+            hist.style.display = "none";
+            sSec.style.display = (cat === 'series') ? "block" : "none";
+            mSec.style.display = (cat === 'movies') ? "block" : "none";
+            aSec.style.display = (cat === 'anime') ? "block" : "none";
+            clearInterval(heroInterval);
+        }
+    }
+
+    // Chiudi menu se clicco fuori
     window.onclick = (e) => {
-        if (!e.target.matches('.netflix-nav')) document.getElementById("dropdown-menu").classList.remove("show");
+        if (!e.target.closest('.netflix-nav')) {
+            document.getElementById("dropdown-menu").classList.remove("show");
+        }
     };
 
     // --- CAROSELLO HERO ---
@@ -658,8 +698,8 @@
         if(heroInterval) clearInterval(heroInterval);
         updateHeroUI(currentHeroIndex);
         heroInterval = setInterval(() => {
-            nextHero(); // Avanza automaticamente
-        }, 5000); // 5 secondi
+            nextHero(); 
+        }, 5000); 
     }
 
     function updateHeroUI(index) {
@@ -679,16 +719,15 @@
             title.textContent = item.key;
             desc.textContent = data.desc || "Guarda ora su NanoFlix";
             
-            // Animazione testo fade-in
+            // Fade effect
             const content = document.querySelector('.hero-content');
             content.style.opacity = 0;
             setTimeout(() => content.style.opacity = 1, 300);
         }
     }
 
-    // Funzioni Manuali Avanti/Indietro
     function nextHero(e) {
-        if(e) { e.stopPropagation(); clearInterval(heroInterval); } // Ferma auto se clicchi
+        if(e) { e.stopPropagation(); clearInterval(heroInterval); }
         currentHeroIndex = (currentHeroIndex + 1) % heroSlides.length;
         updateHeroUI(currentHeroIndex);
     }
@@ -705,7 +744,6 @@
             const data = moviesData[item.key];
             playVideo(data.src, item.key, {img: data.img, type: 'movie'});
         } else {
-            // Se è serie o anime, riproduci Stagione 1 Episodio 1
             const db = (item.type === 'anime') ? animeData : seriesData;
             const data = db[item.key];
             if(data && data.seasons && data.seasons[1]) {
@@ -718,23 +756,34 @@
         }
     }
 
-    // --- HISTORY API (Tasto Indietro) ---
+    // --- HISTORY API (Tasto Indietro del Browser) ---
     window.addEventListener('popstate', (e) => {
         if(e.state) {
             if(e.state.view === 'home') loadHome(false);
             else if(e.state.view === 'season') showSeasons(e.state.title, e.state.type, false);
             else if(e.state.view === 'player') playVideo(e.state.src, e.state.title, e.state.meta, false);
         } else {
-            loadHome(false);
+            // Se lo stato è vuoto, chiudi il player o torna home
+            if(document.getElementById("episode-list").style.display === "block") {
+                closePlayer(false);
+            } else {
+                loadHome(false);
+            }
         }
     });
 
     function goBack() {
-        if(history.state && history.state.view !== 'home') history.back();
-        else loadHome(false);
+        // Se il player è aperto, chiudilo
+        if(document.getElementById("episode-list").style.display === "block") {
+            closePlayer();
+        } else if (history.state && history.state.view !== 'home') {
+            history.back();
+        } else {
+            loadHome(false);
+        }
     }
 
-    // --- CARICAMENTO DATI ---
+    // --- RENDER HOME ---
     function loadHome(push = true) {
         if(push) history.pushState({view:'home'}, null, "");
         
@@ -742,15 +791,17 @@
         document.getElementById("home-view").style.display = "block";
         document.getElementById("hero-section").style.display = "flex";
         
-        startHeroCarousel(); // Avvia carosello
+        startHeroCarousel(); 
         
         renderList("series-list-div", seriesData, 'serie');
         renderList("movies-list-div", moviesData, 'movie');
         renderList("anime-list-div", animeData, 'anime');
         renderHistory();
         
-        // Reset filtri
-        ['series-section','movies-section','anime-section'].forEach(id => document.getElementById(id).style.display = "block");
+        // Assicura che tutte le sezioni siano visibili in home
+        document.getElementById("series-section").style.display = "block";
+        document.getElementById("movies-section").style.display = "block";
+        document.getElementById("anime-section").style.display = "block";
     }
 
     function renderList(id, dataObj, type) {
@@ -764,7 +815,7 @@
     function createCard(title, data, type) {
         const card = document.createElement("div");
         card.className = "card";
-        card.innerHTML = `<img src="${data.img}" onerror="this.src='https://via.placeholder.com/200x300'"><p class="card-title">${title}</p>`;
+        card.innerHTML = `<img src="${data.img}"><p class="card-title">${title}</p>`;
         card.onclick = () => {
             if(type === 'movie') showMovie(title, data.src, data.img);
             else showSeasons(title, type);
@@ -822,7 +873,7 @@
         localStorage.setItem('nanoFlixHistory', JSON.stringify(watchHistory));
     }
 
-    // --- PLAYER & DETAILS ---
+    // --- DETTAGLI SERIE ---
     function showSeasons(title, type, push = true) {
         currentSerieTitle = title;
         if(push) history.pushState({view:'season', title:title, type:type}, null, "");
@@ -870,45 +921,31 @@
         playVideo(src, title, {type:'movie', img:img});
     }
 
+    // --- PLAYER ---
     function playVideo(src, title, meta, push = true) {
         clearInterval(heroInterval); 
         addToHistory(title, meta.type, meta);
         
         if(push) history.pushState({view:'player', src:src, title:title, meta:meta}, null, "");
         
-        // Nascondi tutto
-        hideViews();
-        
-        // Mostra Player
         const player = document.getElementById("episode-list");
-        player.style.display = "block"; // Importante: usare block per renderlo visibile
+        player.style.display = "block";
         
         document.getElementById("episode-title").textContent = title;
         document.getElementById("episodes-container").innerHTML = `<iframe src="${src}" allowfullscreen></iframe>`;
     }
 
+    function closePlayer(back = true) {
+        document.getElementById("episode-list").style.display = "none";
+        document.getElementById("episodes-container").innerHTML = ""; // Stop video
+        if(back) history.back();
+    }
+
+    // --- UTILITY ---
     function hideViews() {
         document.getElementById("hero-section").style.display = "none";
         document.querySelectorAll(".view").forEach(v => v.style.display = "none");
         document.getElementById("episode-list").style.display = "none";
-    }
-
-    function filterCategory(cat) {
-        loadHome(false); 
-        const ids = {
-            'series': ['series-section'],
-            'movies': ['movies-section'],
-            'anime': ['anime-section'],
-            'home': ['series-section', 'movies-section', 'anime-section']
-        };
-        
-        if(cat !== 'home') {
-            document.getElementById("hero-section").style.display = "none";
-            document.getElementById("history-section").style.display = "none";
-            ['series-section','movies-section','anime-section'].forEach(id => {
-                 document.getElementById(id).style.display = ids[cat].includes(id) ? 'block' : 'none';
-            });
-        }
     }
 
     function filterContent() {
