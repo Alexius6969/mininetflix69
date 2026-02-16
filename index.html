@@ -59,9 +59,38 @@
     .nav-dropdown div { padding: 15px 20px; color: #fff; border-bottom: 1px solid #333; cursor: pointer; text-align: center; font-weight: bold; }
     .nav-dropdown div:hover { background: #333; }
 
-    /* Search & Logout */
+    /* Search Bar & Logout */
     #search-bar { background: rgba(0,0,0,0.5); border: 1px solid #fff; color: white; padding: 6px; width: 110px; border-radius: 4px; transition: width 0.3s; }
-    #search-bar:focus { width: 150px; background: #000; }
+    
+    /* MODIFICA PER MOBILE: Quando si clicca sulla barra, si centra */
+    @media (max-width: 768px) {
+        #search-bar:focus {
+            position: fixed;
+            top: 80px;
+            left: 5%;
+            width: 90%;
+            z-index: 2000;
+            background-color: #141414;
+            border: 1px solid #e50914;
+            padding: 15px;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            outline: none;
+        }
+        /* Overlay scuro quando si cerca */
+        body.searching::after {
+            content: '';
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1500;
+        }
+    }
+    
+    /* Desktop behavior */
+    @media (min-width: 769px) {
+        #search-bar:focus { width: 200px; background: #000; }
+    }
+
     .logout-btn { margin-left: 15px; cursor: pointer; font-size: 0.8rem; color: #ccc; }
 
     /* --- HERO SECTION (Carosello) --- */
@@ -190,7 +219,7 @@
         </div>
       </div>
       <div class="header-right">
-        <input type="text" id="search-bar" placeholder="Cerca..." onkeyup="filterContent()" />
+        <input type="text" id="search-bar" placeholder="Cerca..." onfocus="startSearch()" onblur="endSearch()" onkeyup="filterContent()" />
         <span onclick="logout()" class="logout-btn">Esci</span>
       </div>
     </header>
@@ -370,79 +399,7 @@
             { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
             { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
           ],
-          3: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          4: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          5: [
-            { episode: 1, title: "So cosa hai fatto l’estate scorsa", src: "https://drive.google.com/file/d/1N6SaBr0RqZutVUVrYbFYVVF7AttMWe0P/preview" },
-            { episode: 2, title: "Bugie", src: "https://drive.google.com/file/d/1aZDm2uxQF2htN8fffM3Z5W-B-UC_8O_l/preview" },
-            { episode: 3, title: "Peccato originale", src: "https://drive.google.com/file/d/1eO7sbozXrsuGOYr8_liv7aNzJTBgc6EI/preview" },
-            { episode: 4, title: "Per chi suona la campana", src: "https://drive.google.com/file/d/1aZZcU7tLcXc-Nf7ckuE1kgRFz-zNwrZ_/preview" },
-            { episode: 5, title: "La festa dei mostri", src: "https://drive.google.com/file/d/1GGsTuyPr3C5IuCXjnAm4FLVQrjJLphUF/preview" },
-            { episode: 6, title: "Maneggiare con cura", src: "https://drive.google.com/file/d/1hg5iH4bRtF_n9vK1p8T9FYccWw6Lx5sR/preview" },
-            { episode: 7, title: "Morte e fanciulle", src: "https://drive.google.com/file/d/1Ab5g71bwv9XdIByP_AN2oKGTUmH38-W-/preview" },
-            { episode: 8, title: "Il morto del campus", src: "https://drive.google.com/file/d/10djwOl2REFoOs_aoRXL9oWMBnIMBNEuj/preview" },
-            { episode: 9, title: "La prigione", src: "https://drive.google.com/file/d/1Zi9rB3Lq54xWiyMgLbCyO-EBuZOb3e-s/preview" },
-            { episode: 10, title: "Cinquanta sfumature di Grayson", src: "https://drive.google.com/file/d/1ltXNWcUo9shIKdGTfivLfy_NE-hNSX3w/preview" },
-            { episode: 11, title: "500 anni da sola", src: "https://drive.google.com/file/d/1k5Z6YOJg3XXNWuNnsvo_1CAntV9YGd4S/preview" },
-            { episode: 12, title: "Il diavolo dentro", src: "https://drive.google.com/file/d/18ANYmw1Qz-7p4_VonqBvWmLJzAVn8M47/preview" },
-            { episode: 13, title: "Eclissi totale del cuore", src: "https://drive.google.com/file/d/1fFE-ER0ZTOoxi1aNUYUhU6EgZPpJxUKw/preview" },
-            { episode: 14, title: "Nessuna via d’uscita", src: "https://drive.google.com/file/d/1ZEjlneRrwNc6dkRIAHaJCVBiH0iNhiGY/preview" },
-            { episode: 15, title: "La ragazza scomparsa", src: "https://drive.google.com/file/d/1OawIrHSFSLiv3p8_5km97NJYQEBlQlgf/preview" },
-            { episode: 16, title: "Mentre dormivi", src: "https://drive.google.com/file/d/1w7O1pf0URI7ZklMeO36IIvYF5G9kAYoC/preview" },
-            { episode: 17, title: "Salvami", src: "https://drive.google.com/file/d/1JaYg3RuhQ7d7bVLDrgt5HpKqdDob1pOI/preview" },
-            { episode: 18, title: "Resident Evil", src: "https://drive.google.com/file/d/11IX1Lm0qG9D5_poEj6_DVSo7d7FAkiiV/preview" },
-            { episode: 19, title: "Uomo in fiamme", src: "https://drive.google.com/file/d/1rDVYyfZtLKTkvuxayIF7xdungWQ-Ji4Y/preview" },
-            { episode: 20, title: "Verità sepolte", src: "https://drive.google.com/file/d/11ZX2nfc7Z-JnFuc_tzOI6Wz-MUEm5PiG/preview" },
-            { episode: 21, title: "Terra promessa", src: "https://drive.google.com/file/d/1xqyaVQkkolsiCx6OkBuJmIoSEfQua29q/preview" },
-            { episode: 22, title: "Casa", src: "https://drive.google.com/file/d/1mAA-ITKNXmLUfqT86pBzWDWSOzzfEqnj/preview" }
-          ],
-          6: [
+          7: [
             { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
             { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
             { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
@@ -623,6 +580,16 @@
     }
 
     function logout() { location.reload(); }
+
+    // SEARCH OVERLAY LOGIC
+    function startSearch() {
+        document.body.classList.add('searching');
+    }
+    function endSearch() {
+        setTimeout(() => { // Piccola pausa per permettere il click
+             document.body.classList.remove('searching');
+        }, 200);
+    }
 
     // MENU
     function toggleMenu(e) {
@@ -864,7 +831,7 @@
         });
     }
 
-    // --- DETTAGLI FILM (NUOVA FUNZIONE) ---
+    // --- DETTAGLI FILM ---
     function showMovieDetail(title, push = true) {
         if(push) history.pushState({view:'movie', title:title}, null, "");
         hideViews();
@@ -876,7 +843,6 @@
             document.getElementById("movie-title").textContent = title;
             document.getElementById("movie-desc").textContent = data.desc || "Nessuna descrizione.";
             
-            // Imposta azione tasto Play
             document.getElementById("movie-play-btn").onclick = function() {
                 playVideo(data.src, title, {type:'movie', img:data.img});
             };
