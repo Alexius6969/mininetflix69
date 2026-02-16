@@ -62,60 +62,37 @@
     /* Search Bar & Logout */
     #search-bar { background: rgba(0,0,0,0.5); border: 1px solid #fff; color: white; padding: 6px; width: 110px; border-radius: 4px; transition: width 0.3s; }
     
-    /* MODIFICA PER MOBILE: Quando si clicca sulla barra, si centra */
     @media (max-width: 768px) {
         #search-bar:focus {
-            position: fixed;
-            top: 80px;
-            left: 5%;
-            width: 90%;
-            z-index: 2000;
-            background-color: #141414;
-            border: 1px solid #e50914;
-            padding: 15px;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.8);
-            outline: none;
+            position: fixed; top: 80px; left: 5%; width: 90%; z-index: 2000;
+            background-color: #141414; border: 1px solid #e50914; padding: 15px;
+            font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.8); outline: none;
         }
-        /* Overlay scuro quando si cerca */
         body.searching::after {
-            content: '';
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1500;
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1500;
         }
     }
     
-    /* Desktop behavior */
     @media (min-width: 769px) {
         #search-bar:focus { width: 200px; background: #000; }
     }
 
     .logout-btn { margin-left: 15px; cursor: pointer; font-size: 0.8rem; color: #ccc; }
 
-    /* --- HERO SECTION (Carosello) --- */
+    /* --- HERO SECTION --- */
     #hero-section { 
-        height: 65vh; 
-        position: relative; 
-        display: flex; 
-        align-items: center; 
-        background-color: #000;
-        background-size: cover; 
-        background-position: center top; 
-        transition: background-image 0.5s ease-in-out; 
-        margin-bottom: -40px; 
+        height: 65vh; position: relative; display: flex; align-items: center; 
+        background-color: #000; background-size: cover; background-position: center top; 
+        transition: background-image 0.5s ease-in-out; margin-bottom: -40px; 
     }
     .hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 200px; background: linear-gradient(to top, #141414, transparent); }
     .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); }
     
     .hero-content { 
-        margin-left: 4%; 
-        max-width: 600px; 
-        z-index: 10; 
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.9); 
-        padding-bottom: 20px; 
-        transition: opacity 0.5s ease;
-        padding-right: 40px; 
+        margin-left: 4%; max-width: 600px; z-index: 10; 
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.9); padding-bottom: 20px; 
+        transition: opacity 0.5s ease; padding-right: 40px; 
     }
     #hero-title { font-size: 2.8rem; margin-bottom: 10px; line-height: 1.1; font-weight: 700; }
     #hero-desc { font-size: 1rem; margin-bottom: 15px; font-weight: 400; max-height: 80px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; text-shadow: 1px 1px 2px #000; }
@@ -130,21 +107,66 @@
     .carousel-nav.prev { left: 0; }
     .carousel-nav.next { right: 0; }
 
-    /* --- LISTE FILMS/SERIE --- */
+    /* --- CONTENUTI (Liste & Griglie) --- */
     .content-wrapper { padding-top: 20px; padding-bottom: 60px; }
     .category-row { margin-bottom: 30px; position: relative; z-index: 5; }
     .row-title { font-size: 1.2rem; font-weight: 500; margin-bottom: 10px; color: #e5e5e5; padding-left: 4%; }
     
+    /* STILE 1: Horizontal Scroll (HOME) */
     .scroll-container { display: flex; overflow-x: auto; padding: 10px 4%; gap: 10px; scrollbar-width: none; }
     .scroll-container::-webkit-scrollbar { display: none; }
     
-    .card { min-width: 130px; max-width: 130px; cursor: pointer; transition: transform 0.3s; position: relative; flex-shrink: 0; }
+    /* STILE 2: Grid View (CATEGORIE) - Ottimizzato */
+    .grid-view {
+        display: grid;
+        padding: 20px 4%;
+        gap: 15px;
+        /* Desktop Default: riempie lo spazio con card da min 150px */
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        overflow-x: visible;
+        flex-wrap: wrap;
+    }
+
+    /* CARD GENERICA */
+    .card { cursor: pointer; transition: transform 0.3s; position: relative; border-radius: 4px; overflow: hidden; }
     .card:hover { transform: scale(1.05); z-index: 2; }
-    .card img { width: 100%; height: 195px; object-fit: cover; border-radius: 4px; }
-    .card-title { font-size: 0.9rem; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #fff; }
+    
+    .card img { width: 100%; height: auto; object-fit: cover; border-radius: 4px; display: block; }
+    .card-title { font-size: 0.9rem; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #fff; padding: 0 2px; }
     .card-info { font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 2px; }
 
-    /* --- VISTE DETTAGLIO (STAGIONI & FILM) --- */
+    /* Specifiche per Scroll Orizzontale (Home) */
+    .scroll-container .card {
+        min-width: 130px; max-width: 130px; flex-shrink: 0;
+    }
+    .scroll-container .card img {
+        height: 195px; /* Altezza fissa per l'allineamento orizzontale */
+    }
+
+    /* Specifiche per Grid View (Sfoglia) */
+    .grid-view .card {
+        width: 100%;
+        min-width: unset; max-width: unset;
+    }
+    .grid-view .card img {
+        aspect-ratio: 2/3; /* Mantiene proporzione locandina */
+        height: auto;
+    }
+
+    /* MOBILE OPTIMIZATION PER GRIGLIA */
+    @media (max-width: 768px) {
+        .grid-view {
+            /* Mobile: 3 colonne fisse per massimizzare spazio */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px; /* Spazio ridotto tra le locandine */
+            padding: 10px 2%;
+        }
+        .grid-view .card-title {
+            font-size: 0.75rem; /* Testo leggermente più piccolo su mobile */
+        }
+    }
+
+    /* --- VISTE DETTAGLIO --- */
     .view { display: none; animation: fadeIn 0.4s; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -155,14 +177,12 @@
     .details-title { font-size: 2.5rem; font-weight: bold; text-shadow: 2px 2px 4px #000; margin: 0 0 10px 0; }
     .details-desc { font-size: 1rem; color: #ccc; margin-bottom: 20px; line-height: 1.4; max-width: 800px; text-shadow: 1px 1px 2px #000; }
     
-    /* Per serie TV */
     .season-selector-container { margin-bottom: 20px; }
     #season-selector { background: #333; color: #fff; padding: 10px; font-size: 1rem; border: 1px solid #555; border-radius: 4px; width: 100%; max-width: 300px; }
     #seasons-ul { list-style: none; padding: 0; }
     #seasons-ul li { padding: 15px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #dcdcdc; }
     #seasons-ul li:hover { background: #222; color: #fff; }
 
-    /* Per Film (Tasto Play Grande) */
     .big-play-btn {
         background-color: white; color: black; font-size: 1.2rem; font-weight: bold;
         padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer;
@@ -170,7 +190,7 @@
     }
     .big-play-btn:hover { background-color: #ddd; }
 
-    /* --- PLAYER VIDEO (OVERLAY) --- */
+    /* --- PLAYER VIDEO --- */
     #episode-list {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         z-index: 5000; background-color: #000; display: none;
@@ -247,17 +267,17 @@
       </section>
 
       <section id="series-section" class="category-row">
-        <h2 class="row-title">Serie TV</h2>
+        <h2 class="row-title" id="series-title">Serie TV</h2>
         <div class="scroll-container" id="series-list-div"></div>
       </section>
 
       <section id="movies-section" class="category-row">
-        <h2 class="row-title">Film</h2>
+        <h2 class="row-title" id="movies-title">Film</h2>
         <div class="scroll-container" id="movies-list-div"></div>
       </section>
 
       <section id="anime-section" class="category-row">
-        <h2 class="row-title">Anime</h2>
+        <h2 class="row-title" id="anime-title">Anime</h2>
         <div class="scroll-container" id="anime-list-div"></div>
       </section>
     </div>
@@ -543,7 +563,7 @@
         document.body.classList.add('searching');
     }
     function endSearch() {
-        setTimeout(() => { // Piccola pausa per permettere il click
+        setTimeout(() => { 
              document.body.classList.remove('searching');
         }, 200);
     }
@@ -563,21 +583,48 @@
         
         const hero = document.getElementById("hero-section");
         const hist = document.getElementById("history-section");
+        
         const sSec = document.getElementById("series-section");
+        const sList = document.getElementById("series-list-div");
+        
         const mSec = document.getElementById("movies-section");
+        const mList = document.getElementById("movies-list-div");
+        
         const aSec = document.getElementById("anime-section");
+        const aList = document.getElementById("anime-list-div");
+
+        // Reset classes to default horizontal scroll
+        [sList, mList, aList].forEach(el => el.className = "scroll-container");
 
         if (cat === 'home') {
             hero.style.display = "flex";
             hist.style.display = (Object.keys(watchHistory).length > 0) ? "block" : "none";
-            sSec.style.display = "block"; mSec.style.display = "block"; aSec.style.display = "block";
+            
+            // Show all sections
+            sSec.style.display = "block"; 
+            mSec.style.display = "block"; 
+            aSec.style.display = "block";
+            
             startHeroCarousel();
         } else {
-            hero.style.display = "none"; hist.style.display = "none";
-            sSec.style.display = (cat === 'series') ? "block" : "none";
-            mSec.style.display = (cat === 'movies') ? "block" : "none";
-            aSec.style.display = (cat === 'anime') ? "block" : "none";
+            hero.style.display = "none"; 
+            hist.style.display = "none";
             clearInterval(heroInterval);
+            
+            // Logic for specific category: Hide others, show selected, switch to Grid View
+            if (cat === 'series') {
+                sSec.style.display = "block"; sList.className = "grid-view";
+                mSec.style.display = "none"; 
+                aSec.style.display = "none";
+            } else if (cat === 'movies') {
+                sSec.style.display = "none";
+                mSec.style.display = "block"; mList.className = "grid-view";
+                aSec.style.display = "none";
+            } else if (cat === 'anime') {
+                sSec.style.display = "none";
+                mSec.style.display = "none";
+                aSec.style.display = "block"; aList.className = "grid-view";
+            }
         }
     }
 
@@ -623,7 +670,7 @@
         updateHeroUI(currentHeroIndex);
     }
 
-    // TASTO PLAY HERO: Riproduce SUBITO
+    // TASTO PLAY HERO
     function playCurrentHero() {
         const item = heroSlides[currentHeroIndex];
         if (item.type === 'movie') {
@@ -640,7 +687,7 @@
         }
     }
 
-    // TASTO INFO HERO: Apre la scheda dettagli
+    // TASTO INFO HERO
     function infoCurrentHero() {
         const item = heroSlides[currentHeroIndex];
         openContent(item.key, item.type);
@@ -668,17 +715,12 @@
     // --- HOME LOGIC ---
     function loadHome(push = true) {
         if(push) history.pushState({view:'home'}, null, "");
-        hideViews();
-        document.getElementById("home-view").style.display = "block";
-        document.getElementById("hero-section").style.display = "flex";
-        startHeroCarousel(); 
+        filterCategory('home', null); // Resets to home view logic
         
         renderList("series-list-div", seriesData, 'serie');
         renderList("movies-list-div", moviesData, 'movie');
         renderList("anime-list-div", animeData, 'anime');
         renderHistory();
-        
-        ['series-section','movies-section','anime-section'].forEach(id => document.getElementById(id).style.display = "block");
     }
 
     function renderList(id, dataObj, type) {
