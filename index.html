@@ -53,17 +53,10 @@
         border-top: 2px solid #e5e5e5;
         flex-direction: column; 
         min-width: 160px; 
-        z-index: 1000; /* Z-Index alto per stare sopra la hero */
+        z-index: 1000; 
     }
     .nav-dropdown.show { display: flex; }
-    .nav-dropdown div { 
-        padding: 15px 20px; 
-        color: #fff; 
-        border-bottom: 1px solid #333; 
-        cursor: pointer; 
-        text-align: center;
-        font-weight: bold;
-    }
+    .nav-dropdown div { padding: 15px 20px; color: #fff; border-bottom: 1px solid #333; cursor: pointer; text-align: center; font-weight: bold; }
     .nav-dropdown div:hover { background: #333; }
 
     /* Search & Logout */
@@ -73,13 +66,13 @@
 
     /* --- HERO SECTION (Carosello) --- */
     #hero-section { 
-        height: 65vh; /* Altezza aumentata per vedere meglio l'immagine */
+        height: 65vh; 
         position: relative; 
         display: flex; 
         align-items: center; 
         background-color: #000;
         background-size: cover; 
-        background-position: center top; /* Focus sulla parte alta dell'immagine */
+        background-position: center top; 
         transition: background-image 0.5s ease-in-out; 
         margin-bottom: -40px; 
     }
@@ -93,7 +86,7 @@
         text-shadow: 2px 2px 4px rgba(0,0,0,0.9); 
         padding-bottom: 20px; 
         transition: opacity 0.5s ease;
-        padding-right: 40px; /* Evita sovrapposizione freccia */
+        padding-right: 40px; 
     }
     #hero-title { font-size: 2.8rem; margin-bottom: 10px; line-height: 1.1; font-weight: 700; }
     #hero-desc { font-size: 1rem; margin-bottom: 15px; font-weight: 400; max-height: 80px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; text-shadow: 1px 1px 2px #000; }
@@ -103,7 +96,6 @@
     .hero-btn.play { background: white; color: black; }
     .hero-btn.info { background: rgba(109, 109, 110, 0.7); color: white; }
 
-    /* Frecce Carosello */
     .carousel-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: white; font-size: 2.5rem; padding: 10px; cursor: pointer; z-index: 20; user-select: none; border-radius: 4px; }
     .carousel-nav:hover { background: rgba(0,0,0,0.6); }
     .carousel-nav.prev { left: 0; }
@@ -123,21 +115,31 @@
     .card-title { font-size: 0.9rem; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: #fff; }
     .card-info { font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 2px; }
 
-    /* --- VISTA EPISODI/STAGIONI --- */
+    /* --- VISTE DETTAGLIO (STAGIONI & FILM) --- */
     .view { display: none; animation: fadeIn 0.4s; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    .details-hero { height: 35vh; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 20px 4%; position: relative; }
+    .details-hero { height: 40vh; background-size: cover; background-position: center top; display: flex; align-items: flex-end; padding: 20px 4%; position: relative; }
     .details-hero::after { content:''; position: absolute; bottom:0; left:0; width:100%; height:150px; background: linear-gradient(to top, #141414, transparent); }
-    #season-title { font-size: 2rem; text-shadow: 2px 2px 4px #000; margin: 0; z-index: 2; position: relative; }
-
-    .container-padding { padding: 20px 4%; }
-    .season-selector-container { margin-bottom: 20px; }
-    #season-selector { background: #333; color: #fff; padding: 10px; font-size: 1rem; border: 1px solid #555; border-radius: 4px; width: 100%; }
     
+    .details-content { position: relative; z-index: 5; margin-top: -40px; padding: 0 4%; }
+    .details-title { font-size: 2.5rem; font-weight: bold; text-shadow: 2px 2px 4px #000; margin: 0 0 10px 0; }
+    .details-desc { font-size: 1rem; color: #ccc; margin-bottom: 20px; line-height: 1.4; max-width: 800px; text-shadow: 1px 1px 2px #000; }
+    
+    /* Per serie TV */
+    .season-selector-container { margin-bottom: 20px; }
+    #season-selector { background: #333; color: #fff; padding: 10px; font-size: 1rem; border: 1px solid #555; border-radius: 4px; width: 100%; max-width: 300px; }
     #seasons-ul { list-style: none; padding: 0; }
     #seasons-ul li { padding: 15px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: #dcdcdc; }
     #seasons-ul li:hover { background: #222; color: #fff; }
+
+    /* Per Film (Tasto Play Grande) */
+    .big-play-btn {
+        background-color: white; color: black; font-size: 1.2rem; font-weight: bold;
+        padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer;
+        display: inline-flex; align-items: center; gap: 10px; margin-top: 10px;
+    }
+    .big-play-btn:hover { background-color: #ddd; }
 
     /* --- PLAYER VIDEO (OVERLAY) --- */
     #episode-list {
@@ -145,24 +147,17 @@
         z-index: 5000; background-color: #000; display: none;
     }
     .player-wrapper { width: 100%; height: 100%; display: flex; flex-direction: column; }
-    
     .player-header { 
         height: 60px; width: 100%; padding: 0 15px; 
         display: flex; align-items: center; gap: 15px; 
         background: #101010; border-bottom: 1px solid #333;
-        /* Safe area per iPhone notch */
         padding-top: env(safe-area-inset-top); 
     }
-    
-    .close-btn {
-        background: #e50914; color: white; border: none; padding: 8px 16px; 
-        border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer; 
-    }
-    
+    .close-btn { background: #e50914; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 0.9rem; cursor: pointer; }
     #episodes-container { flex: 1; background: #000; position: relative; }
     #episodes-container iframe { width: 100%; height: 100%; border: none; }
     
-    .back-btn-float { position: fixed; top: 70px; left: 4%; z-index: 50; background: rgba(0,0,0,0.6); color: white; border: 1px solid #fff; padding: 8px 15px; border-radius: 4px; font-weight: bold; }
+    .back-btn-float { position: fixed; top: 70px; left: 4%; z-index: 50; background: rgba(0,0,0,0.6); color: white; border: 1px solid #fff; padding: 8px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
   </style>
 </head>
@@ -184,7 +179,6 @@
     <header>
       <div class="header-left">
         <div class="logo" onclick="loadHome()">NANOFLIX</div>
-        
         <div class="netflix-nav" onclick="toggleMenu(event)">
             <div class="nav-trigger">Sfoglia <span style="font-size: 0.7rem; margin-left: 5px;">▼</span></div>
             <div class="nav-dropdown" id="dropdown-menu">
@@ -195,7 +189,6 @@
             </div>
         </div>
       </div>
-
       <div class="header-right">
         <input type="text" id="search-bar" placeholder="Cerca..." onkeyup="filterContent()" />
         <span onclick="logout()" class="logout-btn">Esci</span>
@@ -204,7 +197,6 @@
 
     <div id="hero-section">
       <div class="hero-overlay"></div>
-      
       <div class="carousel-nav prev" onclick="prevHero(event)">&#10094;</div>
       <div class="carousel-nav next" onclick="nextHero(event)">&#10095;</div>
 
@@ -213,14 +205,13 @@
         <p id="hero-desc"></p>
         <div class="hero-buttons">
             <button class="hero-btn play" onclick="playCurrentHero()">▶ Riproduci</button>
-            <button class="hero-btn info">ℹ Altre info</button>
+            <button class="hero-btn info" onclick="infoCurrentHero()">ℹ Altre info</button>
         </div>
       </div>
       <div class="hero-gradient"></div>
     </div>
 
     <div id="home-view" class="view content-wrapper">
-      
       <section id="history-section" class="category-row" style="display:none;">
         <h2 class="row-title">Continua a guardare</h2>
         <div class="scroll-container" id="history-list-div"></div>
@@ -244,14 +235,26 @@
 
     <div id="season-list" class="view">
       <button class="back-btn-float" onclick="goBack()">← Indietro</button>
-      <div class="details-hero"><h1 id="season-title">Titolo</h1></div>
-      <div class="container-padding">
-        <div class="season-selector-container">
-          <label for="season-selector">Stagione:</label>
-          <select id="season-selector" onchange="changeSeason()"></select>
-        </div>
-        <ul id="seasons-ul"></ul>
+      <div class="details-hero" id="season-hero"></div>
+      <div class="details-content">
+          <h1 class="details-title" id="season-title">Titolo</h1>
+          <p class="details-desc" id="season-desc">Descrizione...</p>
+          
+          <div class="season-selector-container">
+            <select id="season-selector" onchange="changeSeason()"></select>
+          </div>
+          <ul id="seasons-ul"></ul>
       </div>
+    </div>
+
+    <div id="movie-detail-view" class="view">
+       <button class="back-btn-float" onclick="goBack()">← Indietro</button>
+       <div class="details-hero" id="movie-hero"></div>
+       <div class="details-content">
+           <h1 class="details-title" id="movie-title">Titolo Film</h1>
+           <p class="details-desc" id="movie-desc">Descrizione del film...</p>
+           <button class="big-play-btn" id="movie-play-btn">▶ RIPRODUCI</button>
+       </div>
     </div>
 
     <div id="episode-list">
@@ -267,7 +270,7 @@
   </div>
 
   <script>
-    // --- DATABASE LINK (TUTTI INCLUSI) ---
+    // --- DATABASE ---
     const users = {
       "Alessio": "1234", "Marco": "pelopelo", "Alessia": "oceani", "Anna": "1234", "Alfonso": "1234", "Chiara": "iii"
     };
@@ -275,7 +278,7 @@
     const seriesData = {
       "Ginny e Georgia": {
         img: "https://i.imgur.com/CScKmEZ.jpeg",
-        desc: "Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo.",
+        desc: "Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo in questa serie drammatica e commovente.",
         seasons: {
           1: [
             { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
@@ -317,7 +320,7 @@
       },
       "The Vampire Diaries": {
         img: "https://i.imgur.com/oyXekYo.jpeg",
-        desc: "Due fratelli vampiri ossessionati dalla stessa ragazza in una cittadina dove il soprannaturale è di casa.",
+        desc: "Due fratelli vampiri ossessionati dalla stessa ragazza in una cittadina dove il soprannaturale è di casa. Intrighi, amore e sangue.",
         seasons: {
           1: [
             { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
@@ -440,30 +443,6 @@
             { episode: 22, title: "Casa", src: "https://drive.google.com/file/d/1mAA-ITKNXmLUfqT86pBzWDWSOzzfEqnj/preview" }
           ],
           6: [
-            { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 4, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 5, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 6, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 7, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 8, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 9, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 10, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 11, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 12, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
-            { episode: 13, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
-            { episode: 14, title: "Lydia Bennet è senza dubbio femminista", src: "https://drive.google.com/file/d/1uM6S1cUnBRT_wRLsxvX0VO5oZ6MAIbVU/preview" },
-            { episode: 15, title: "Boo, brutta stron*a", src: "https://drive.google.com/file/d/1MFYR1es-2PzE40642-nuaMJQ7GE0QHOZ/preview" },
-            { episode: 16, title: "Non mi capite", src: "https://drive.google.com/file/d/1Rfr4vh6xVEoG5f-WMeeQyoChIGInwQAt/preview" },
-            { episode: 17, title: "Buon compleanno sciocca", src: "https://drive.google.com/file/d/1Kq7Fs06knX-6VOXQTs0hqphJ3Q3srCun/preview" },
-            { episode: 18, title: "Croce su una parte, croce sull'altra", src: "https://drive.google.com/file/d/1kLJ29kNZnz_RF5NDSXVJvSdWUHe6TC5J/preview" },
-            { episode: 19, title: "Amare è difficile", src: "https://drive.google.com/file/d/1-1Au2tWQIj37QW_PFj3mG71i_k4YS3Rc/preview" },
-            { episode: 20, title: "Il peggior tradimento dai tempi di Jordyn e Kylie", src: "https://drive.google.com/file/d/1jv_pet7AY2Yvrwa0-HmZc_GRGcEeu01o/preview" },
-            { episode: 21, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
-            { episode: 22, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" }
-          ],
-          7: [
             { episode: 1, title: "Pilot", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" },
             { episode: 2, title: "E' un viso, non una maschera", src: "https://drive.google.com/file/d/13wB1kyWtuHqINWpBYsfRSgbOIQ8404UE/preview" },
             { episode: 3, title: "Cose che si addicono solo a gente ricca", src: "https://drive.google.com/file/d/1SagpLPK4OmTmeO0dr23xfeA1rfkmFFv4/preview" },
@@ -613,13 +592,12 @@
       }
     };
 
-    /* --- LOGICA PRINCIPALE --- */
+    /* --- LOGICA --- */
     let currentUser = null;
     let currentSerieTitle = ""; 
     let watchHistory = JSON.parse(localStorage.getItem('nanoFlixHistory')) || {};
     let heroInterval;
 
-    // Carosello
     const heroSlides = [
         { type: 'serie', key: "Ginny e Georgia" },
         { type: 'movie', key: "Il buco: Capitolo 2" },
@@ -646,19 +624,16 @@
 
     function logout() { location.reload(); }
 
-    // NAVIGAZIONE MENU (SFOGLIA)
+    // MENU
     function toggleMenu(e) {
         e.stopPropagation();
-        const dropdown = document.getElementById("dropdown-menu");
-        dropdown.classList.toggle("show");
+        document.getElementById("dropdown-menu").classList.toggle("show");
     }
 
-    // Gestione Categorie
     function filterCategory(cat, e) {
         if(e) e.stopPropagation();
-        document.getElementById("dropdown-menu").classList.remove("show"); // Chiudi menu
+        document.getElementById("dropdown-menu").classList.remove("show");
         
-        // Reset visualizzazione
         hideViews();
         document.getElementById("home-view").style.display = "block";
         
@@ -671,14 +646,10 @@
         if (cat === 'home') {
             hero.style.display = "flex";
             hist.style.display = (Object.keys(watchHistory).length > 0) ? "block" : "none";
-            sSec.style.display = "block";
-            mSec.style.display = "block";
-            aSec.style.display = "block";
+            sSec.style.display = "block"; mSec.style.display = "block"; aSec.style.display = "block";
             startHeroCarousel();
         } else {
-            // Nascondi Hero e mostra solo categoria scelta
-            hero.style.display = "none";
-            hist.style.display = "none";
+            hero.style.display = "none"; hist.style.display = "none";
             sSec.style.display = (cat === 'series') ? "block" : "none";
             mSec.style.display = (cat === 'movies') ? "block" : "none";
             aSec.style.display = (cat === 'anime') ? "block" : "none";
@@ -686,40 +657,30 @@
         }
     }
 
-    // Chiudi menu se clicco fuori
     window.onclick = (e) => {
-        if (!e.target.closest('.netflix-nav')) {
-            document.getElementById("dropdown-menu").classList.remove("show");
-        }
+        if (!e.target.closest('.netflix-nav')) document.getElementById("dropdown-menu").classList.remove("show");
     };
 
     // --- CAROSELLO HERO ---
     function startHeroCarousel() {
         if(heroInterval) clearInterval(heroInterval);
         updateHeroUI(currentHeroIndex);
-        heroInterval = setInterval(() => {
-            nextHero(); 
-        }, 5000); 
+        heroInterval = setInterval(() => nextHero(), 5000); 
     }
 
     function updateHeroUI(index) {
         const item = heroSlides[index];
         let data;
-        
         if (item.type === 'movie') data = moviesData[item.key];
         else if (item.type === 'anime') data = animeData[item.key];
         else data = seriesData[item.key];
 
         if (data) {
             const hero = document.getElementById("hero-section");
-            const title = document.getElementById("hero-title");
-            const desc = document.getElementById("hero-desc");
-            
             hero.style.backgroundImage = `url('${data.img}')`;
-            title.textContent = item.key;
-            desc.textContent = data.desc || "Guarda ora su NanoFlix";
+            document.getElementById("hero-title").textContent = item.key;
+            document.getElementById("hero-desc").textContent = data.desc || "Guarda ora su NanoFlix";
             
-            // Fade effect
             const content = document.querySelector('.hero-content');
             content.style.opacity = 0;
             setTimeout(() => content.style.opacity = 1, 300);
@@ -738,6 +699,7 @@
         updateHeroUI(currentHeroIndex);
     }
 
+    // TASTO PLAY HERO: Riproduce SUBITO
     function playCurrentHero() {
         const item = heroSlides[currentHeroIndex];
         if (item.type === 'movie') {
@@ -749,48 +711,42 @@
             if(data && data.seasons && data.seasons[1]) {
                 const ep = data.seasons[1][0];
                 currentSerieTitle = item.key;
-                playVideo(ep.src, ep.title, { 
-                    type: item.type, season: 1, episode: 1, img: data.img, fullTitle: ep.title 
-                });
+                playVideo(ep.src, ep.title, { type: item.type, season: 1, episode: 1, img: data.img, fullTitle: ep.title });
             }
         }
     }
 
-    // --- HISTORY API (Tasto Indietro del Browser) ---
+    // TASTO INFO HERO: Apre la scheda dettagli
+    function infoCurrentHero() {
+        const item = heroSlides[currentHeroIndex];
+        openContent(item.key, item.type);
+    }
+
+    // --- HISTORY API ---
     window.addEventListener('popstate', (e) => {
         if(e.state) {
             if(e.state.view === 'home') loadHome(false);
             else if(e.state.view === 'season') showSeasons(e.state.title, e.state.type, false);
+            else if(e.state.view === 'movie') showMovieDetail(e.state.title, false);
             else if(e.state.view === 'player') playVideo(e.state.src, e.state.title, e.state.meta, false);
         } else {
-            // Se lo stato è vuoto, chiudi il player o torna home
-            if(document.getElementById("episode-list").style.display === "block") {
-                closePlayer(false);
-            } else {
-                loadHome(false);
-            }
+            if(document.getElementById("episode-list").style.display === "block") closePlayer(false);
+            else loadHome(false);
         }
     });
 
     function goBack() {
-        // Se il player è aperto, chiudilo
-        if(document.getElementById("episode-list").style.display === "block") {
-            closePlayer();
-        } else if (history.state && history.state.view !== 'home') {
-            history.back();
-        } else {
-            loadHome(false);
-        }
+        if(document.getElementById("episode-list").style.display === "block") closePlayer();
+        else if (history.state && history.state.view !== 'home') history.back();
+        else loadHome(false);
     }
 
-    // --- RENDER HOME ---
+    // --- HOME LOGIC ---
     function loadHome(push = true) {
         if(push) history.pushState({view:'home'}, null, "");
-        
         hideViews();
         document.getElementById("home-view").style.display = "block";
         document.getElementById("hero-section").style.display = "flex";
-        
         startHeroCarousel(); 
         
         renderList("series-list-div", seriesData, 'serie');
@@ -798,29 +754,26 @@
         renderList("anime-list-div", animeData, 'anime');
         renderHistory();
         
-        // Assicura che tutte le sezioni siano visibili in home
-        document.getElementById("series-section").style.display = "block";
-        document.getElementById("movies-section").style.display = "block";
-        document.getElementById("anime-section").style.display = "block";
+        ['series-section','movies-section','anime-section'].forEach(id => document.getElementById(id).style.display = "block");
     }
 
     function renderList(id, dataObj, type) {
         const div = document.getElementById(id);
         div.innerHTML = "";
-        for(const key in dataObj) {
-            div.appendChild(createCard(key, dataObj[key], type));
-        }
+        for(const key in dataObj) div.appendChild(createCard(key, dataObj[key], type));
     }
 
     function createCard(title, data, type) {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `<img src="${data.img}"><p class="card-title">${title}</p>`;
-        card.onclick = () => {
-            if(type === 'movie') showMovie(title, data.src, data.img);
-            else showSeasons(title, type);
-        };
+        card.onclick = () => openContent(title, type);
         return card;
+    }
+
+    function openContent(title, type) {
+        if (type === 'movie') showMovieDetail(title);
+        else showSeasons(title, type);
     }
 
     // --- CRONOLOGIA ---
@@ -828,9 +781,7 @@
         const div = document.getElementById("history-list-div");
         const sec = document.getElementById("history-section");
         div.innerHTML = "";
-        
         const keys = Object.keys(watchHistory).sort((a,b) => new Date(watchHistory[b].lastWatched) - new Date(watchHistory[a].lastWatched));
-        
         if(keys.length === 0) { sec.style.display = "none"; return; }
         sec.style.display = "block";
 
@@ -839,12 +790,10 @@
             const card = document.createElement("div");
             card.className = "card";
             card.innerHTML = `<img src="${h.img}"><p class="card-title">${key}</p><p class="card-info">${h.type === 'movie' ? 'Riprendi' : 'S'+h.season+':E'+h.episode}</p>`;
-            
             card.onclick = () => {
                 let src = "";
-                if(h.type === 'movie') {
-                    if(moviesData[key]) src = moviesData[key].src;
-                } else {
+                if(h.type === 'movie') { if(moviesData[key]) src = moviesData[key].src; } 
+                else {
                     const db = h.type === 'anime' ? animeData : seriesData;
                     if(db[key] && db[key].seasons[h.season]) {
                         const ep = db[key].seasons[h.season].find(x => x.episode == h.episode);
@@ -852,7 +801,7 @@
                     }
                 }
                 if(src) playVideo(src, h.fullTitle, h);
-                else showSeasons(key, h.type);
+                else openContent(key, h.type);
             };
             div.appendChild(card);
         });
@@ -861,7 +810,6 @@
     function addToHistory(title, type, meta) {
         let mainKey = title; 
         if(type !== 'movie' && currentSerieTitle) mainKey = currentSerieTitle;
-        
         watchHistory[mainKey] = {
             type: type,
             lastWatched: new Date().toISOString(),
@@ -877,26 +825,26 @@
     function showSeasons(title, type, push = true) {
         currentSerieTitle = title;
         if(push) history.pushState({view:'season', title:title, type:type}, null, "");
-        
         hideViews();
         document.getElementById("season-list").style.display = "block";
-        document.getElementById("season-title").textContent = title;
         
         const db = type === 'anime' ? animeData : seriesData;
         const data = db[title];
         
-        if(data) document.querySelector('.details-hero').style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${data.img}')`;
+        if(data) {
+            document.getElementById("season-hero").style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${data.img}')`;
+            document.getElementById("season-title").textContent = title;
+            document.getElementById("season-desc").textContent = data.desc || "Nessuna descrizione.";
+        }
 
         const sel = document.getElementById("season-selector");
         sel.innerHTML = "";
         const seasons = Object.keys(data.seasons);
         seasons.forEach(s => {
             const opt = document.createElement("option");
-            opt.value = s;
-            opt.textContent = "Stagione " + s;
+            opt.value = s; opt.textContent = "Stagione " + s;
             sel.appendChild(opt);
         });
-        
         changeSeason();
     }
 
@@ -908,7 +856,6 @@
         
         const ul = document.getElementById("seasons-ul");
         ul.innerHTML = "";
-        
         eps.forEach(ep => {
             const li = document.createElement("li");
             li.innerHTML = `<span>${ep.episode}. ${ep.title}</span> <span>▶</span>`;
@@ -917,31 +864,43 @@
         });
     }
 
-    function showMovie(title, src, img) {
-        playVideo(src, title, {type:'movie', img:img});
+    // --- DETTAGLI FILM (NUOVA FUNZIONE) ---
+    function showMovieDetail(title, push = true) {
+        if(push) history.pushState({view:'movie', title:title}, null, "");
+        hideViews();
+        document.getElementById("movie-detail-view").style.display = "block";
+
+        const data = moviesData[title];
+        if(data) {
+            document.getElementById("movie-hero").style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${data.img}')`;
+            document.getElementById("movie-title").textContent = title;
+            document.getElementById("movie-desc").textContent = data.desc || "Nessuna descrizione.";
+            
+            // Imposta azione tasto Play
+            document.getElementById("movie-play-btn").onclick = function() {
+                playVideo(data.src, title, {type:'movie', img:data.img});
+            };
+        }
     }
 
     // --- PLAYER ---
     function playVideo(src, title, meta, push = true) {
         clearInterval(heroInterval); 
         addToHistory(title, meta.type, meta);
-        
         if(push) history.pushState({view:'player', src:src, title:title, meta:meta}, null, "");
         
         const player = document.getElementById("episode-list");
         player.style.display = "block";
-        
         document.getElementById("episode-title").textContent = title;
         document.getElementById("episodes-container").innerHTML = `<iframe src="${src}" allowfullscreen></iframe>`;
     }
 
     function closePlayer(back = true) {
         document.getElementById("episode-list").style.display = "none";
-        document.getElementById("episodes-container").innerHTML = ""; // Stop video
+        document.getElementById("episodes-container").innerHTML = "";
         if(back) history.back();
     }
 
-    // --- UTILITY ---
     function hideViews() {
         document.getElementById("hero-section").style.display = "none";
         document.querySelectorAll(".view").forEach(v => v.style.display = "none");
