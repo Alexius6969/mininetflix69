@@ -12,6 +12,70 @@
   <link rel="icon" type="image/png" href="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/227_Netflix_logo-512.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <style>
+    /* Stili base se style.css manca o per integrazione */
+    body { margin: 0; padding: 0; background-color: #141414; color: white; font-family: 'Roboto', sans-serif; }
+    .scroll-container { display: flex; overflow-x: auto; padding: 10px; gap: 10px; scrollbar-width: none; }
+    .scroll-container::-webkit-scrollbar { display: none; }
+    .card { min-width: 140px; max-width: 140px; cursor: pointer; transition: transform 0.3s; position: relative; }
+    .card:hover { transform: scale(1.05); }
+    .card img { width: 100%; height: 210px; object-fit: cover; border-radius: 4px; }
+    .card-title { font-size: 0.9rem; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+    .card-info { font-size: 0.7rem; color: #aaa; text-align: center; margin-top: -10px; margin-bottom: 5px;}
+    
+    /* Login */
+    #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg') no-repeat center center/cover; z-index: 1000; }
+    .login-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+    .login-box { position: relative; z-index: 2; width: 80%; max-width: 400px; margin: 15vh auto; background: rgba(0,0,0,0.75); padding: 40px; border-radius: 5px; }
+    .login-box input { width: 100%; padding: 12px; margin-bottom: 15px; background: #333; border: none; color: white; border-radius: 4px; box-sizing: border-box; }
+    .primary-btn { width: 100%; padding: 12px; background: #e50914; color: white; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; }
+    
+    /* Header */
+    header { display: flex; justify-content: space-between; align-items: center; padding: 15px 4%; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); position: fixed; width: 92%; z-index: 100; top: 0; transition: background 0.5s; }
+    .logo { color: #e50914; font-size: 1.5rem; font-weight: bold; cursor: pointer; margin-right: 20px; }
+    .header-left, .header-right { display: flex; align-items: center; }
+    .netflix-nav { position: relative; cursor: pointer; font-size: 0.9rem; margin-left: 10px; }
+    .nav-dropdown { display: none; position: absolute; top: 30px; left: 0; background: rgba(0,0,0,0.9); border: 1px solid #333; padding: 10px; min-width: 150px; flex-direction: column; }
+    .nav-dropdown.show { display: flex; }
+    .nav-dropdown a { color: #fff; text-decoration: none; padding: 5px 10px; display: block; }
+    .nav-dropdown a:hover { text-decoration: underline; }
+    #search-bar { background: #000; border: 1px solid #fff; color: white; padding: 5px; border-radius: 2px; }
+    .logout-text { margin-left: 15px; cursor: pointer; font-size: 0.8rem; }
+
+    /* Hero */
+    #hero-section { height: 60vh; position: relative; display: flex; align-items: center; background: url('https://i.imgur.com/CScKmEZ.jpeg') center center/cover; }
+    .hero-gradient { position: absolute; bottom: 0; width: 100%; height: 100px; background: linear-gradient(to top, #141414, transparent); }
+    .hero-content { margin-left: 4%; max-width: 500px; z-index: 10; text-shadow: 2px 2px 4px #000; }
+    #hero-title { font-size: 3rem; margin-bottom: 10px; }
+    .hero-buttons button { padding: 8px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-right: 10px; font-size: 1rem; }
+    .hero-btn.play { background: white; color: black; }
+    .hero-btn.info { background: rgba(109, 109, 110, 0.7); color: white; }
+
+    /* Lists */
+    .category-row { margin-bottom: 20px; padding-left: 4%; }
+    .row-title { font-size: 1.2rem; font-weight: 500; margin-bottom: 10px; color: #e5e5e5; }
+    
+    /* Season View */
+    .details-hero { height: 40vh; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 20px 4%; }
+    #season-title { font-size: 2.5rem; text-shadow: 2px 2px 4px #000; margin: 0; }
+    .container-padding { padding: 20px 4%; }
+    .season-selector-container { margin-bottom: 20px; }
+    #season-selector { background: #000; color: #fff; padding: 5px; font-size: 1rem; border: 1px solid #333; }
+    #seasons-ul { list-style: none; padding: 0; }
+    #seasons-ul li { padding: 15px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    #seasons-ul li:hover { background: #333; }
+
+    /* Player */
+    .player-wrapper { width: 100%; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; }
+    #episodes-container iframe { width: 100%; height: 60vh; border: none; }
+    #episode-title { text-align: center; padding: 10px; }
+    .back-nav { padding: 10px 4%; }
+    .nav-button { background: transparent; color: white; border: none; font-size: 1.2rem; cursor: pointer; }
+
+    /* History Specific */
+    #history-section { min-height: 180px; }
+  </style>
 </head>
 <body>
 
@@ -30,7 +94,7 @@
     
     <header>
       <div class="header-left">
-        <div class="logo" onclick="filterCategory('home')">NANOFLIX</div>
+        <div class="logo" onclick="navigateToHome()">NANOFLIX</div>
         <div class="netflix-nav" onclick="toggleMenu(event)">
           <div class="nav-trigger">
             Sfoglia <span class="arrow">▼</span>
@@ -64,6 +128,11 @@
     </div>
 
     <div id="home-view" class="view content-wrapper">
+      <section id="history-section" class="category-row" style="display:none;">
+        <h2 class="row-title">Continua a guardare</h2>
+        <div class="scroll-container" id="history-list-div"></div>
+      </section>
+
       <section id="series-section" class="category-row">
         <h2 class="row-title">Serie TV</h2>
         <div class="scroll-container" id="series-list-div"></div>
@@ -81,7 +150,7 @@
     </div>
 
     <div id="season-list" class="view" style="display:none;">
-      <div class="back-nav"><button class="nav-button" onclick="backToHome()">← Indietro</button></div>
+      <div class="back-nav"><button class="nav-button" onclick="goBack()">← Indietro</button></div>
       <div class="details-hero"><h1 id="season-title">Titolo</h1></div>
       <div class="container-padding">
         <div class="season-selector-container">
@@ -94,7 +163,7 @@
     </div>
 
     <div id="episode-list" class="view" style="display:none;">
-      <div class="back-nav"><button class="nav-button" onclick="backToSeason()">← Indietro</button></div>
+      <div class="back-nav"><button class="nav-button" onclick="goBack()">← Indietro</button></div>
       <div class="player-wrapper">
         <h2 id="episode-title"></h2>
         <div id="episodes-container"></div>
@@ -353,7 +422,7 @@
       "Mercoledì": {
         img: "https://i.imgur.com/rZ8CYjh.jpeg",
         seasons: {
-           1: [
+            1: [
         { episode: 1, title: "Chi nasce di Mercoledì è immensamente triste", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 2, title: "Un triste isolamento", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 3, title: "Tristemente amici o nemici", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
@@ -469,6 +538,7 @@
     let currentUser = null;
     let currentSerieTitle = ""; 
     let currentSelectedSeason = null;
+    let watchHistory = JSON.parse(localStorage.getItem('nanoFlixHistory')) || {};
 
     // LOGIN
     function login() {
@@ -482,6 +552,9 @@
         currentUser = userInput;
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("main-app").style.display = "block";
+        
+        // Inizializza History API per la home
+        history.replaceState({view: 'home'}, null, "");
         loadHome();
       } else {
         errorMsg.textContent = "Credenziali errate.";
@@ -509,6 +582,122 @@
       }
     }
 
+    // --- HISTORY MANAGER (Tasto Indietro) ---
+    window.addEventListener('popstate', (event) => {
+        if (event.state) {
+            const s = event.state;
+            if (s.view === 'home') {
+                loadHome(false); // false = non pushare di nuovo stato
+            } else if (s.view === 'season') {
+                showSeasons(s.title, s.type, false);
+            } else if (s.view === 'player') {
+                // Di solito se si fa indietro dal player si vuole tornare alla schermata precedente
+                // Ma se la cronologia browser ha salvato il player, lo ricarichiamo.
+                // Per UX migliore, se premi indietro sul browser mentre guardi, torni alle stagioni:
+                // Ma qui rispettiamo lo state.
+                playVideo(s.src, s.title, s.meta, false);
+            }
+        } else {
+            // Stato nullo (caricamento iniziale o errore), torna alla home
+            loadHome(false);
+        }
+    });
+
+    function navigateToHome() {
+        if (history.state && history.state.view === 'home') return;
+        history.pushState({view: 'home'}, null, "");
+        loadHome(false);
+    }
+
+    function goBack() {
+        history.back();
+    }
+
+    // --- WATCH HISTORY (Cronologia salvata) ---
+    function addToHistory(title, type, meta) {
+        // meta contiene { season, episode, img, fullTitle }
+        const key = title;
+        watchHistory[key] = {
+            type: type,
+            lastWatched: new Date().toISOString(),
+            ...meta
+        };
+        localStorage.setItem('nanoFlixHistory', JSON.stringify(watchHistory));
+        // Ricarica la lista se siamo in home (opzionale, ma utile)
+        if(document.getElementById("home-view").style.display === "block") {
+           renderHistoryList();
+        }
+    }
+
+    function renderHistoryList() {
+        const hSec = document.getElementById("history-section");
+        const hList = document.getElementById("history-list-div");
+        hList.innerHTML = "";
+        
+        const keys = Object.keys(watchHistory).sort((a,b) => {
+            return new Date(watchHistory[b].lastWatched) - new Date(watchHistory[a].lastWatched);
+        });
+
+        if (keys.length === 0) {
+            hSec.style.display = "none";
+            return;
+        }
+
+        hSec.style.display = "block";
+
+        keys.forEach(key => {
+            const item = watchHistory[key];
+            const card = document.createElement("div");
+            card.className = "card";
+            
+            const img = document.createElement("img");
+            img.src = item.img ? item.img : "https://via.placeholder.com/200x300?text=" + key;
+            
+            const p = document.createElement("p");
+            p.className = "card-title";
+            p.textContent = key;
+
+            const info = document.createElement("p");
+            info.className = "card-info";
+            if (item.type === 'serie' || item.type === 'anime') {
+                info.textContent = `S${item.season}:E${item.episode}`;
+            } else {
+                info.textContent = "Visto";
+            }
+
+            card.onclick = () => {
+                // Riprendi esattamente quell'episodio
+                // Recuperiamo la source originale cercando nei dati
+                let src = "";
+                let type = item.type;
+                
+                // Ricerca brute-force source URL se non salvato (per sicurezza)
+                if(type === 'movie') {
+                    if(moviesData[key]) src = moviesData[key].src;
+                } else {
+                    let db = (type === 'anime') ? animeData : seriesData;
+                    if(db[key] && db[key].seasons[item.season]) {
+                        const epData = db[key].seasons[item.season].find(e => e.episode == item.episode);
+                        if(epData) src = epData.src;
+                    }
+                }
+
+                if(src) {
+                    playVideo(src, item.fullTitle || key, item, true); // true = push state
+                } else {
+                    // Fallback se dati non trovati, vai alla scheda
+                    showSeasons(key, type, true);
+                }
+            };
+
+            card.appendChild(img);
+            card.appendChild(p);
+            card.appendChild(info);
+            hList.appendChild(card);
+        });
+    }
+
+
     // CARD
     function createCard(title, data, type) {
       const card = document.createElement("div");
@@ -524,9 +713,9 @@
 
       card.onclick = () => {
         if (type === 'movie') {
-          showMovie(title, data.src);
+          showMovie(title, data.src, data.img);
         } else {
-          showSeasons(title, type);
+          showSeasons(title, type, true); // true = push state
         }
       };
 
@@ -538,32 +727,43 @@
     // NAVIGAZIONE
     function filterCategory(category) {
       const hero = document.getElementById("hero-section");
+      const hSec = document.getElementById("history-section");
       const sSec = document.getElementById("series-section");
       const mSec = document.getElementById("movies-section");
       const aSec = document.getElementById("anime-section");
 
-      hideAllViews();
-      document.getElementById("home-view").style.display = "block";
+      // Se non siamo in home view, ci andiamo
+      if (document.getElementById("home-view").style.display === "none") {
+          navigateToHome();
+      }
 
       if (category === 'home') {
         hero.style.display = "flex";
+        if(Object.keys(watchHistory).length > 0) hSec.style.display = "block";
         sSec.style.display = "block"; mSec.style.display = "block"; aSec.style.display = "block";
       } 
       else if (category === 'series') {
-        hero.style.display = "none";
+        hero.style.display = "none"; hSec.style.display = "none";
         sSec.style.display = "block"; mSec.style.display = "none"; aSec.style.display = "none";
       } 
       else if (category === 'movies') {
-        hero.style.display = "none";
+        hero.style.display = "none"; hSec.style.display = "none";
         sSec.style.display = "none"; mSec.style.display = "block"; aSec.style.display = "none";
       } 
       else if (category === 'anime') {
-        hero.style.display = "none";
+        hero.style.display = "none"; hSec.style.display = "none";
         sSec.style.display = "none"; mSec.style.display = "none"; aSec.style.display = "block";
       }
     }
 
-    function loadHome() {
+    function loadHome(push = true) {
+      if(push) {
+          // Se siamo già qui, evitiamo duplicati o gestiamo replace
+      }
+
+      hideAllViews();
+      document.getElementById("home-view").style.display = "block";
+
       const sList = document.getElementById("series-list-div");
       const mList = document.getElementById("movies-list-div");
       const aList = document.getElementById("anime-list-div");
@@ -574,12 +774,23 @@
       for (const k in moviesData) mList.appendChild(createCard(k, moviesData[k], 'movie'));
       for (const k in animeData)  aList.appendChild(createCard(k, animeData[k], 'anime'));
       
-      filterCategory('home');
+      renderHistoryList(); // Carica cronologia
+      
+      // Default reset filters
+      document.getElementById("hero-section").style.display = "flex";
+      document.getElementById("series-section").style.display = "block";
+      document.getElementById("movies-section").style.display = "block";
+      document.getElementById("anime-section").style.display = "block";
     }
 
     // SEASON & PLAYER
-    function showSeasons(title, type) {
+    function showSeasons(title, type, push = true) {
       currentSerieTitle = title;
+      
+      if(push) {
+          history.pushState({view: 'season', title: title, type: type}, null, "");
+      }
+
       hideAllViews();
       document.getElementById("season-list").style.display = "block";
       document.getElementById("season-title").textContent = title;
@@ -629,14 +840,44 @@
       if (dataObj && dataObj.seasons && dataObj.seasons[seasonNum]) {
         dataObj.seasons[seasonNum].forEach(ep => {
           const li = document.createElement("li");
+          // Check if watched? (Optional advanced feature)
           li.innerHTML = `<span>${ep.episode}. ${ep.title}</span> <span>▶</span>`;
-          li.onclick = () => playVideo(ep.src, ep.title);
+          
+          // Metadata for history
+          const meta = {
+              season: seasonNum,
+              episode: ep.episode,
+              img: dataObj.img,
+              fullTitle: ep.title
+          };
+
+          li.onclick = () => playVideo(ep.src, ep.title, meta, true);
           ul.appendChild(li);
         });
       }
     }
 
-    function playVideo(src, title) {
+    function playVideo(src, title, meta, push = true) {
+      // Salva in cronologia
+      // Determina tipo
+      let type = 'movie';
+      let mainTitle = title;
+      
+      if(meta && (meta.season)) {
+          type = (animeData[currentSerieTitle]) ? 'anime' : 'serie';
+          mainTitle = currentSerieTitle;
+      } else {
+          // E' un film
+          mainTitle = title; // Per i film il titolo è la chiave
+          meta = { img: (moviesData[title] ? moviesData[title].img : null) };
+      }
+
+      addToHistory(mainTitle, type, meta);
+
+      if(push) {
+          history.pushState({view: 'player', src: src, title: title, meta: meta}, null, "");
+      }
+
       hideAllViews();
       document.getElementById("episode-list").style.display = "block";
       document.getElementById("episode-title").textContent = title;
@@ -650,24 +891,25 @@
 
     function playHero() {
       if (seriesData["Ginny e Georgia"]) {
-        playVideo(seriesData["Ginny e Georgia"].seasons[1][0].src, "Ginny e Georgia");
+        const meta = {
+             season: 1,
+             episode: 1,
+             img: seriesData["Ginny e Georgia"].img,
+             fullTitle: "Pilot"
+        };
+        currentSerieTitle = "Ginny e Georgia"; // Important context setter
+        playVideo(seriesData["Ginny e Georgia"].seasons[1][0].src, "Pilot", meta, true);
       }
     }
 
-    function showMovie(title, src) {
-      playVideo(src, title);
+    function showMovie(title, src, img) {
+      const meta = { img: img };
+      playVideo(src, title, meta, true);
     }
 
     function hideAllViews() {
       document.getElementById("hero-section").style.display = "none";
       document.querySelectorAll(".view").forEach(v => v.style.display = "none");
-    }
-
-    function backToHome() { filterCategory('home'); }
-    function backToSeason() {
-      if (seriesData[currentSerieTitle]) showSeasons(currentSerieTitle, 'serie');
-      else if (animeData[currentSerieTitle]) showSeasons(currentSerieTitle, 'anime');
-      else backToHome();
     }
 
     function filterContent() {
