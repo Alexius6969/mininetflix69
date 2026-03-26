@@ -104,7 +104,7 @@ const seriesData = {
       4: [
         { episode: 1, title: "Capitolo uno: Hellfire Club", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 2, title: "Capitolo due: La maledizione di Vecna", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-        { episode: 3, title: "Capitolo tre: Il mostro e la supereroina", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
+        { episode: 3, title: "Capitolo three: Il mostro e la supereroina", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 4, title: "Capitolo quattro: Caro Billy", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 5, title: "Capitolo cinque: Il progetto Nina", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 6, title: "Capitolo sei: Il tuffo", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
@@ -351,6 +351,7 @@ window.addEventListener('scroll', () => {
     }
     lastScrollTop = st <= 0 ? 0 : st;
 });
+
 function handleEnter(e) { if(e.key === "Enter") login(); }
 
 function login() {
@@ -660,7 +661,9 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
                 'onReady': function(event) {
                     event.target.playVideo();
                     event.target.mute(); 
-                }
+                },
+                // HO INSERITO LA CHIAMATA QUI DENTRO
+                'onStateChange': onTrailerStateChange
             }
         });
     }
@@ -836,6 +839,7 @@ function filterContent() {
         c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none";
     });
 }
+
 // Variabili globali per la barra di progresso
 let trailerProgressInterval;
 let isScrubbing = false;
@@ -915,6 +919,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// La funzione che gestisce i cambiamenti di stato del player e anima la barra
 function onTrailerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
         document.getElementById('trailer-progress-container').style.display = 'flex';
