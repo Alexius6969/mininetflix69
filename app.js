@@ -7,7 +7,7 @@ const users = {
 const seriesData = {
   "Ginny e Georgia": {
     img: "https://i.imgur.com/CScKmEZ.jpeg",
-    trailer: "xFNQ7Cumd8Y", 
+    trailer: "9uBrr25Gwj4", 
     desc: "Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo in questa serie drammatica e commovente.",
     seasons: {
       1: [
