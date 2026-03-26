@@ -836,3 +836,140 @@ function filterContent() {
         c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none";
     });
 }
+// =======================================================
+// --- LOGICA CONTROLLI TRAILER (PLAY, BARRA, MUTE) ---
+// =======================================================
+
+let trailerProgressInterval;
+let trailerInactivityTimeout;
+
+// Formatta i secondi (es. 65 -> "01:05")
+function formatTime(seconds) {
+    if (isNaN(seconds)) return "00:00";
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+}
+
+// Inizializza i controlli per la vista attiva (Film o Serie)
+function initTrailerControls(type) {
+    const controlsContainer = document.getElementById(`trailer-controls-${type}`);
+    const progressBar = document.getElementById(`trailer-progress-${type}`);
+    const playPauseBtn = document.getElementById(`trailer-play-pause-${type}`);
+    const muteBtn = document.getElementById(`trailer-mute-${type}`);
+    const timeDisplay = document.getElementById(`trailer-time-${type}`);
+    const heroSection = document.getElementById(`${type}-hero`);
+
+    if (!controlsContainer || !progressBar) return;
+
+    // --- GESTIONE AUTO-SCOMPARSA ---
+    function wakeUpControls() {
+        controlsContainer.style.opacity = '1';
+        clearTimeout(trailerInactivityTimeout);
+        
+        // Nascondi dopo 3 secondi di inattività (solo se in play)
+        if (ytTrailerPlayer && ytTrailerPlayer.getPlayerState && ytTrailerPlayer.getPlayerState() === 1) {
+            trailerInactivityTimeout = setTimeout(() => {
+                controlsContainer.style.opacity = '0';
+            }, 3000);
+        }
+    }
+    
+    // Mostra i controlli quando il mouse si muove sopra il trailer
+    heroSection.addEventListener('mousemove', wakeUpControls);
+    controlsContainer.addEventListener('mousemove', wakeUpControls);
+    controlsContainer.addEventListener('touchstart', wakeUpControls);
+
+    // --- PULSANTI ---
+    playPauseBtn.onclick = () => {
+        if (ytTrailerPlayer && ytTrailerPlayer.getPlayerState) {
+            const state = ytTrailerPlayer.getPlayerState();
+            if (state === 1) { ytTrailerPlayer.pauseVideo(); wakeUpControls(); }
+            else { ytTrailerPlayer.playVideo(); wakeUpControls(); }
+        }
+    };
+
+    muteBtn.onclick = () => {
+        if (ytTrailerPlayer && ytTrailerPlayer.isMuted) {
+            if (ytTrailerPlayer.isMuted()) ytTrailerPlayer.unMute();
+            else ytTrailerPlayer.mute();
+            wakeUpControls();
+        }
+    };
+
+    // --- BARRA DI SCORRIMENTO ---
+    progressBar.addEventListener('input', (e) => {
+        if (ytTrailerPlayer && ytTrailerPlayer.seekTo) {
+            const seekTime = parseFloat(e.target.value);
+            ytTrailerPlayer.seekTo(seekTime, true);
+            wakeUpControls();
+        }
+    });
+
+    // --- SINCRONIZZAZIONE CONTINUE ---
+    if (trailerProgressInterval) clearInterval(trailerProgressInterval);
+    
+    trailerProgressInterval = setInterval(() => {
+        if (typeof ytTrailerPlayer !== 'undefined' && ytTrailerPlayer && ytTrailerPlayer.getPlayerState) {
+            const state = ytTrailerPlayer.getPlayerState();
+            
+            // 1=Play, 2=Pausa, 3=Buffering
+            if (state === 1 || state === 2 || state === 3) {
+                controlsContainer.style.display = 'flex';
+                
+                const currentTime = ytTrailerPlayer.getCurrentTime();
+                const duration = ytTrailerPlayer.getDuration();
+                
+                progressBar.max = duration;
+                progressBar.value = currentTime;
+                timeDisplay.innerText = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+
+                playPauseBtn.innerText = state === 1 ? '⏸' : '▶';
+                muteBtn.innerText = ytTrailerPlayer.isMuted() ? '🔇' : '🔊';
+            } else {
+                controlsContainer.style.display = 'none';
+            }
+        } else {
+            controlsContainer.style.display = 'none';
+        }
+    }, 500);
+}
+
+// Intercetta quando viene aperto un trailer e attiva la barra giusta
+const originalOpenTrailer = window.openTrailerFullscreen;
+// Modifichiamo il momento dell'apertura del dettaglio (devi chiamare initTrailerControls qui)
+
+// Aggiungi questo alla fine del blocco dove apri i dettagli della serie
+document.addEventListener('DOMContentLoaded', () => {
+    // Osserviamo i click sulle card per attivare i controlli
+    document.body.addEventListener('click', (e) => {
+        const card = e.target.closest('.card');
+        if(card) {
+            // Un piccolo ritardo per aspettare che ytTrailerPlayer sia pronto
+            setTimeout(() => {
+                if(document.getElementById('serie-detail-view').style.display !== 'none') {
+                    initTrailerControls('serie');
+                } else if(document.getElementById('movie-detail-view').style.display !== 'none') {
+                    initTrailerControls('movie');
+                }
+            }, 1000);
+        }
+    });
+});
+
+// Modifica hideViews per nascondere e stoppare gli intervalli
+const originalHideViews = window.hideViews;
+window.hideViews = function() {
+    if(trailerProgressInterval) clearInterval(trailerProgressInterval);
+    const cs = document.getElementById("trailer-controls-serie");
+    const cm = document.getElementById("trailer-controls-movie");
+    if(cs) cs.style.display = "none";
+    if(cm) cm.style.display = "none";
+    
+    // Chiama la tua vecchia funzione (se non riesci a fare l'override, aggiungi 
+    // manualmente queste righe dentro la tua funzione hideViews() già esistente!)
+    if(ytTrailerPlayer) { ytTrailerPlayer.destroy(); ytTrailerPlayer = null; }
+    document.getElementById("hero-section").style.display = "none";
+    document.querySelectorAll(".view").forEach(v => v.style.display = "none");
+    document.getElementById("episode-list").style.display = "none";
+};
