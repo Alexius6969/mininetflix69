@@ -7,7 +7,7 @@ const users = {
 const seriesData = {
   "Ginny e Georgia": {
     img: "https://i.imgur.com/CScKmEZ.jpeg",
-    trailer: "9uBrr25Gwj4",
+    trailer: "Z2R2aD8A9X0", 
     desc: "Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo in questa serie drammatica e commovente.",
     seasons: {
       1: [
@@ -322,7 +322,6 @@ let lastScrollTop = 0;
 window.addEventListener('scroll', () => {
     const header = document.getElementById('main-header');
     let st = window.pageYOffset || document.documentElement.scrollTop;
-    
     if (st > 50) header.classList.add('scrolled');
     else header.classList.remove('scrolled');
 
@@ -330,22 +329,12 @@ window.addEventListener('scroll', () => {
         const iframe = document.getElementById('yt-trailer-iframe');
         if (iframe) {
             const rect = iframe.getBoundingClientRect();
-            
-            // Fuori dallo schermo: Metti in pausa
             if (rect.bottom < 0 || rect.top > window.innerHeight) {
-                if (ytTrailerPlayer.getPlayerState() === 1) ytTrailerPlayer.pauseVideo();
+                ytTrailerPlayer.pauseVideo();
             } else {
-                // Dentro lo schermo: Riproduci
                 if (ytTrailerPlayer.getPlayerState() !== 1) ytTrailerPlayer.playVideo();
-                
-                // IL FIX E' QUI: Muta/S-muta SOLO se necessario, senza intassare l'API!
-                if (st > lastScrollTop) {
-                    // Scorri GIÙ -> Muto (solo se non lo è già)
-                    if (!ytTrailerPlayer.isMuted()) ytTrailerPlayer.mute();
-                } else if (st < lastScrollTop) {
-                    // Scorri SU -> Audio (solo se attualmente è muto)
-                    if (ytTrailerPlayer.isMuted()) ytTrailerPlayer.unMute();
-                }
+                if (st > lastScrollTop) ytTrailerPlayer.mute();
+                else if (st < lastScrollTop) ytTrailerPlayer.unMute();
             }
         }
     }
