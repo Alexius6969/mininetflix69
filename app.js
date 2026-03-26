@@ -660,8 +660,8 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
                 'onReady': function(event) {
                     event.target.playVideo();
                     event.target.mute(); 
-            'onStateChange': onTrailerStateChange
                 }
+              'onStateChange': onTrailerStateChange
             }
         });
     }
