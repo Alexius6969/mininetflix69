@@ -316,13 +316,13 @@ function onYouTubeIframeAPIReady() {
     isYtApiReady = true;
 }
 
-// Funzione Helper per aggiornare l'icona del tasto Play/Pausa
-function updatePlayButtonIcon(isPlaying) {
-    const btn = document.getElementById('trailer-play-btn');
-    if (btn) btn.innerHTML = isPlaying ? "⏸️" : "▶️";
+// Funzione Helper per aggiornare l'icona del tasto muto
+function updateMuteButtonIcon(iconText) {
+    const btn = document.querySelector('.trailer-mute-btn');
+    if (btn) btn.innerHTML = iconText;
 }
 
-// --- GESTIONE SCROLL: Mette in pausa se scorri giù ---
+// --- GESTIONE SCROLL CON CONTROLLO MUTO/AUDIO ---
 let lastScrollTop = 0;
 window.addEventListener('scroll', () => {
     const header = document.getElementById('main-header');
@@ -334,11 +334,25 @@ window.addEventListener('scroll', () => {
     if (ytTrailerPlayer && typeof ytTrailerPlayer.getPlayerState === 'function') {
         const iframe = document.getElementById('yt-trailer-iframe');
         if (iframe) {
-            // Se scorro verso il basso e mi allontano dall'inizio, metti in pausa!
-            if (st > lastScrollTop && st > 20) {
-                if (ytTrailerPlayer.getPlayerState() === 1) {
-                    ytTrailerPlayer.pauseVideo();
-                    updatePlayButtonIcon(false);
+            const rect = iframe.getBoundingClientRect();
+            
+            if (rect.bottom < 0 || rect.top > window.innerHeight) {
+                if (ytTrailerPlayer.getPlayerState() === 1) ytTrailerPlayer.pauseVideo();
+            } else {
+                if (ytTrailerPlayer.getPlayerState() !== 1) ytTrailerPlayer.playVideo();
+                
+                if (st > lastScrollTop) {
+                    // Se scendiamo, mutiamo e cambiamo l'icona
+                    if (!ytTrailerPlayer.isMuted()) {
+                        ytTrailerPlayer.mute();
+                        updateMuteButtonIcon("🔇");
+                    }
+                } else if (st < lastScrollTop) {
+                    // Se saliamo, riattiviamo l'audio e cambiamo l'icona
+                    if (ytTrailerPlayer.isMuted()) {
+                        ytTrailerPlayer.unMute();
+                        updateMuteButtonIcon("🔊");
+                    }
                 }
             }
         }
@@ -618,7 +632,7 @@ function addToHistory(title, type, meta) {
     localStorage.setItem('nanoFlixHistory_' + currentUser, JSON.stringify(watchHistory));
 }
 
-// --- FUNZIONE TRAILER: CREA TASTI PLAY E MUTO ---
+// --- FUNZIONE PER AVVIARE IL TRAILER CON IL PULSANTE MUTO AGGIUNTO ---
 function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
     const container = document.getElementById(containerId);
     
@@ -627,8 +641,9 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
     const existing = container.querySelector('.yt-trailer-container');
     if(existing) existing.remove();
 
-    const oldControls = container.querySelector('.trailer-controls');
-    if (oldControls) oldControls.remove();
+    // Rimuoviamo un vecchio pulsante se era già lì
+    const oldBtn = container.querySelector('.trailer-mute-btn');
+    if (oldBtn) oldBtn.remove();
 
     if(ytTrailerPlayer) {
         ytTrailerPlayer.destroy();
@@ -644,36 +659,13 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
         ytDiv.innerHTML = `<div id="yt-trailer-iframe"></div>`;
         container.appendChild(ytDiv);
 
-        // --- CREAZIONE CONTENITORE PULSANTI ---
-        const controlsDiv = document.createElement("div");
-        controlsDiv.className = "trailer-controls";
-        
-        // 1. Bottone Play/Pausa
-        const playBtn = document.createElement("button");
-        playBtn.className = "trailer-control-btn";
-        playBtn.id = "trailer-play-btn";
-        playBtn.innerHTML = "⏸️"; // Parte in play, quindi mostra il tasto pausa
-        playBtn.onclick = (e) => {
-            e.stopPropagation();
-            if (ytTrailerPlayer) {
-                const state = ytTrailerPlayer.getPlayerState();
-                if (state === 1 || state === 3) { // 1 = in riproduzione, 3 = buffering
-                    ytTrailerPlayer.pauseVideo();
-                    playBtn.innerHTML = "▶️";
-                } else {
-                    ytTrailerPlayer.playVideo();
-                    playBtn.innerHTML = "⏸️";
-                }
-            }
-        };
-
-        // 2. Bottone Muto/Audio
+        // --- CREAZIONE DEL PULSANTE MUTO/AUDIO ---
         const muteBtn = document.createElement("button");
-        muteBtn.className = "trailer-control-btn";
-        muteBtn.id = "trailer-mute-btn";
-        muteBtn.innerHTML = "🔇"; // Parte muto di default
+        muteBtn.className = "trailer-mute-btn";
+        muteBtn.innerHTML = "🔇"; // Parte muto per default
+        
         muteBtn.onclick = (e) => {
-            e.stopPropagation(); 
+            e.stopPropagation(); // Evita che il click passi alla pagina sottostante
             if (ytTrailerPlayer) {
                 if (ytTrailerPlayer.isMuted()) {
                     ytTrailerPlayer.unMute();
@@ -684,12 +676,8 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
                 }
             }
         };
-        
-        controlsDiv.appendChild(playBtn);
-        controlsDiv.appendChild(muteBtn);
-        container.appendChild(controlsDiv);
+        container.appendChild(muteBtn);
 
-        // Inizializza il player
         ytTrailerPlayer = new YT.Player('yt-trailer-iframe', {
             videoId: videoId,
             playerVars: { 
@@ -715,8 +703,7 @@ function openTrailerFullscreen() {
         
         if(ytTrailerPlayer) {
             ytTrailerPlayer.unMute();
-            const muteBtn = document.getElementById("trailer-mute-btn");
-            if (muteBtn) muteBtn.innerHTML = "🔊"; 
+            updateMuteButtonIcon("🔊"); // Aggiorniamo anche l'icona
         }
     }
 }
