@@ -35,63 +35,49 @@
       <div class="header-left">
         <div class="logo" onclick="loadHome()">NANOFLIX</div>
         <div class="netflix-nav" onclick="toggleMenu(event)">
-            <div class="nav-trigger">Sfoglia <span style="font-size: 0.7rem; margin-left: 5px;">▼</span></div>
-            <div class="nav-dropdown" id="dropdown-menu">
-              <div onclick="filterCategory('home', event)">Home</div>
-              <div onclick="filterCategory('series', event)">Serie TV</div>
-              <div onclick="filterCategory('movies', event)">Film</div>
-              <div onclick="filterCategory('anime', event)">Anime</div>
-            </div>
+          <div class="nav-trigger">Sfoglia <span style="font-size: 0.7rem;">▼</span></div>
+          <div class="nav-dropdown" id="nav-menu">
+            <div onclick="filterCategory('all')">Home</div>
+            <div onclick="filterCategory('series')">Serie TV</div>
+            <div onclick="filterCategory('movies')">Film</div>
+          </div>
         </div>
       </div>
       <div class="header-right">
-        <input type="text" id="search-bar" placeholder="Cerca..." onfocus="startSearch()" onblur="endSearch()" onkeyup="filterContent()" />
-        <span onclick="logout()" class="logout-btn">Esci</span>
+        <input type="text" id="search-bar" placeholder="Cerca..." oninput="filterContent()" />
+        <span class="logout-btn" onclick="logout()">Esci</span>
       </div>
     </header>
 
-    <div id="hero-section">
-      <div class="hero-overlay"></div>
-      <div class="carousel-nav prev" onclick="prevHero(event)">&#10094;</div>
-      <div class="carousel-nav next" onclick="nextHero(event)">&#10095;</div>
-
-      <div class="hero-content">
-        <h1 id="hero-title">Caricamento...</h1>
-        <p id="hero-desc"></p>
-        <div class="hero-buttons">
-            <button class="hero-btn play" onclick="playCurrentHero()">▶ Riproduci</button>
-            <button class="hero-btn info" onclick="infoCurrentHero()">ℹ Altre info</button>
+    <div id="hero-section" class="view">
+        <div class="hero-content">
+            <h1 id="hero-title"></h1>
+            <p id="hero-desc"></p>
+            <button class="hero-btn primary" id="hero-play-btn">▶ Riproduci</button>
         </div>
+    </div>
+
+    <div id="home-view" class="view" style="display:none; padding: 20px 4%;">
+      <div id="continue-watching-section" class="category-row" style="display:none;">
+          <h2 class="category-title">Continua a guardare</h2>
+          <div class="carousel" id="continue-watching-carousel"></div>
       </div>
-      <div class="hero-gradient"></div>
+      <div id="categories-container"></div>
     </div>
 
-    <div id="home-view" class="view content-wrapper">
-      <section id="history-section" class="category-row" style="display:none;">
-        <h2 class="row-title">Continua a guardare</h2>
-        <div class="scroll-container" id="history-list-div"></div>
-      </section>
-
-      <section id="series-section" class="category-row">
-        <h2 class="row-title" id="series-title">Serie TV</h2>
-        <div class="scroll-container" id="series-list-div"></div>
-      </section>
-
-      <section id="movies-section" class="category-row">
-        <h2 class="row-title" id="movies-title">Film</h2>
-        <div class="scroll-container" id="movies-list-div"></div>
-      </section>
-
-      <section id="anime-section" class="category-row">
-        <h2 class="row-title" id="anime-title">Anime</h2>
-        <div class="scroll-container" id="anime-list-div"></div>
-      </section>
-    </div>
-
-    <div id="season-list" class="view">
+    <div id="serie-detail-view" class="view">
       <button class="back-btn-float" onclick="goBack()">← Indietro</button>
-      <button class="fullscreen-btn" id="season-fs-btn" onclick="openTrailerFullscreen()" style="display:none;">⛶ Trailer Intero</button>
-      <div class="details-hero" id="season-hero"></div>
+      <button class="fullscreen-btn" id="serie-fs-btn" onclick="openTrailerFullscreen()" style="display:none;">⛶ Trailer Intero</button>
+      
+      <div class="details-hero" id="serie-hero"></div>
+      
+      <div class="custom-trailer-controls" id="trailer-controls-serie" style="display: none;">
+          <button id="trailer-play-pause-serie" class="control-btn">⏸</button>
+          <input type="range" id="trailer-progress-serie" class="trailer-progress" min="0" value="0" step="1">
+          <span id="trailer-time-serie" class="trailer-time">00:00 / 00:00</span>
+          <button id="trailer-mute-serie" class="control-btn">🔊</button>
+      </div>
+
       <div class="details-content">
           <h1 class="details-title" id="season-title">Titolo</h1>
           <p class="details-desc" id="season-desc">Descrizione...</p>
@@ -106,7 +92,16 @@
     <div id="movie-detail-view" class="view">
        <button class="back-btn-float" onclick="goBack()">← Indietro</button>
        <button class="fullscreen-btn" id="movie-fs-btn" onclick="openTrailerFullscreen()" style="display:none;">⛶ Trailer Intero</button>
+       
        <div class="details-hero" id="movie-hero"></div>
+       
+       <div class="custom-trailer-controls" id="trailer-controls-movie" style="display: none;">
+           <button id="trailer-play-pause-movie" class="control-btn">⏸</button>
+           <input type="range" id="trailer-progress-movie" class="trailer-progress" min="0" value="0" step="1">
+           <span id="trailer-time-movie" class="trailer-time">00:00 / 00:00</span>
+           <button id="trailer-mute-movie" class="control-btn">🔊</button>
+       </div>
+
        <div class="details-content">
            <h1 class="details-title" id="movie-title">Titolo Film</h1>
            <p class="details-desc" id="movie-desc">Descrizione del film...</p>
@@ -119,12 +114,11 @@
         <div class="player-header">
            <button class="close-btn" onclick="closePlayer()">CHIUDI</button>
            <span id="episode-title" style="margin-left:15px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color: white;"></span>
-           <button id="next-ep-btn" class="next-btn" style="display:none;"></button>
+           <button id="next-ep-btn" class="close-btn" style="display:none; background:#333; margin-left:auto;">PROSSIMO EPISODIO ⏭</button>
         </div>
-        <div id="episodes-container"></div>
+        <div id="episodes-container" style="flex: 1; width: 100%; position: relative;"></div>
       </div>
     </div>
-
   </div>
 
   <script src="app.js"></script>
