@@ -651,6 +651,13 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
         ytDiv.innerHTML = `<div id="yt-trailer-iframe"></div>`;
         container.appendChild(ytDiv);
 
+        // --- TRUCCO MAGICO: SPOSTIAMO LA BARRA NEL TRAILER ATTIVO ---
+        const progressBar = document.getElementById('trailer-progress-container');
+        if (progressBar) {
+            progressBar.style.display = 'none'; // La nascondiamo finché non parte il video
+            container.appendChild(progressBar); // Viene attaccata sotto al player in esecuzione!
+        }
+
         ytTrailerPlayer = new YT.Player('yt-trailer-iframe', {
             videoId: videoId,
             playerVars: { 
@@ -662,7 +669,6 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
                     event.target.playVideo();
                     event.target.mute(); 
                 },
-                // HO INSERITO LA CHIAMATA QUI DENTRO
                 'onStateChange': onTrailerStateChange
             }
         });
