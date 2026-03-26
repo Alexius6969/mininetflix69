@@ -25,7 +25,6 @@ header {
     position: fixed; width: 100%; z-index: 100; top: 0; height: 60px; 
     transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
-/* Classe aggiunta dinamicamente con JS allo scroll */
 header.scrolled {
     background: #141414;
     box-shadow: 0 2px 10px rgba(0,0,0,0.5);
@@ -48,26 +47,29 @@ header.scrolled {
 .nav-dropdown div:hover { background: #333; }
 
 /* Search Bar & Logout */
-#search-bar { background: rgba(0,0,0,0.5); border: 1px solid #fff; color: white; padding: 6px; width: 110px; border-radius: 4px; transition: width 0.3s; }
+#search-bar { background: rgba(0,0,0,0.5); border: 1px solid #fff; color: white; padding: 6px; width: 110px; border-radius: 4px; transition: width 0.3s; outline: none; }
+.logout-btn { margin-left: 15px; cursor: pointer; font-size: 0.8rem; color: #ccc; white-space: nowrap; }
+.logout-btn:hover { color: #fff; text-decoration: underline; }
 
+/* --- MOBILE HEADER FIX (Risolto problema tasto ESCI) --- */
 @media (max-width: 768px) {
+    header { padding: 0 2%; } /* Riduco padding laterale per recuperare spazio */
+    .logo { font-size: 1.2rem; margin-right: 5px; }
+    .netflix-nav { font-size: 0.8rem; margin-left: 2px; }
+    #search-bar { width: 75px; padding: 5px 8px; font-size: 0.8rem; } /* Barra più corta di base */
+    .logout-btn { margin-left: 8px; font-size: 0.75rem; }
+    
     #search-bar:focus {
         position: fixed; top: 80px; left: 5%; width: 90%; z-index: 2000;
         background-color: #141414; border: 1px solid #e50914; padding: 15px;
-        font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.8); outline: none;
+        font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.8);
     }
     body.searching::after {
         content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.8); z-index: 1500;
     }
 }
-
-@media (min-width: 769px) {
-    #search-bar:focus { width: 200px; background: #000; }
-}
-
-.logout-btn { margin-left: 15px; cursor: pointer; font-size: 0.8rem; color: #ccc; }
-.logout-btn:hover { color: #fff; text-decoration: underline; }
+@media (min-width: 769px) { #search-bar:focus { width: 200px; background: #000; } }
 
 /* --- HERO SECTION --- */
 #hero-section { 
@@ -75,8 +77,8 @@ header.scrolled {
     background-color: #000; background-size: cover; background-position: center top; 
     transition: background-image 0.5s ease-in-out; margin-bottom: -40px; 
 }
-.hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 200px; background: linear-gradient(to top, #141414, transparent); }
-.hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); }
+.hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 200px; background: linear-gradient(to top, #141414, transparent); pointer-events: none;}
+.hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); pointer-events: none;}
 
 .hero-content { 
     margin-left: 4%; max-width: 600px; z-index: 10; 
@@ -123,23 +125,13 @@ header.scrolled {
 .card-info { font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 2px; }
 
 /* SKELETON LOADERS */
-.skeleton-card {
-    border-radius: 4px;
-    background-color: #2a2a2a;
-    animation: pulse 1.5s infinite ease-in-out;
-}
-@keyframes pulse {
-    0% { background-color: #2a2a2a; }
-    50% { background-color: #444; }
-    100% { background-color: #2a2a2a; }
-}
+.skeleton-card { border-radius: 4px; background-color: #2a2a2a; animation: pulse 1.5s infinite ease-in-out; }
+@keyframes pulse { 0% { background-color: #2a2a2a; } 50% { background-color: #444; } 100% { background-color: #2a2a2a; } }
 
-/* Specifiche per Scroll Orizzontale (Home) */
 .scroll-container .card { min-width: 130px; max-width: 130px; flex-shrink: 0; }
 .scroll-container .card img { height: 195px; }
 .scroll-container .skeleton-card { min-width: 130px; max-width: 130px; height: 195px; flex-shrink: 0; }
 
-/* Specifiche per Grid View (Sfoglia) */
 .grid-view .card { width: 100%; min-width: unset; max-width: unset; }
 .grid-view .card img { aspect-ratio: 2/3; height: auto; }
 .grid-view .skeleton-card { width: 100%; aspect-ratio: 2/3; }
@@ -149,12 +141,40 @@ header.scrolled {
     .grid-view .card-title { font-size: 0.75rem; }
 }
 
-/* --- VISTE DETTAGLIO --- */
+/* --- VISTE DETTAGLIO & YOUTUBE TRAILER --- */
 .view { display: none; animation: fadeIn 0.4s; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-.details-hero { height: 40vh; background-size: cover; background-position: center top; display: flex; align-items: flex-end; padding: 20px 4%; position: relative; }
-.details-hero::after { content:''; position: absolute; bottom:0; left:0; width:100%; height:150px; background: linear-gradient(to top, #141414, transparent); }
+.details-hero { 
+    height: 40vh; background-size: cover; background-position: center top; 
+    display: flex; align-items: flex-end; padding: 20px 4%; position: relative; 
+    overflow: hidden; /* Taglia i bordi dell'iframe se sfora */
+}
+.details-hero::after { 
+    content:''; position: absolute; bottom:0; left:0; width:100%; height:150px; 
+    background: linear-gradient(to top, #141414, transparent); z-index: 2; pointer-events: none; 
+}
+
+/* Stile per il container Youtube dentro l'Hero */
+.yt-trailer-container {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+    pointer-events: none; /* Evita click accidentali sul video, li gestiamo noi coi pulsanti */
+}
+.yt-trailer-container iframe {
+    width: 100vw; height: 56.25vw; /* Mantiene proporzione 16:9 */
+    min-height: 40vh; min-width: 71.11vh; /* Copre sempre l'altezza */
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    border: none;
+}
+
+.fullscreen-btn { 
+    position: fixed; top: 70px; right: 4%; z-index: 50; 
+    background: rgba(0,0,0,0.6); color: white; border: 1px solid #fff; 
+    padding: 8px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s;
+}
+.fullscreen-btn:hover { background: rgba(255,255,255,0.2); }
+.back-btn-float { position: fixed; top: 70px; left: 4%; z-index: 50; background: rgba(0,0,0,0.6); color: white; border: 1px solid #fff; padding: 8px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s;}
+.back-btn-float:hover { background: rgba(255,255,255,0.2); }
 
 .details-content { position: relative; z-index: 5; margin-top: -40px; padding: 0 4%; }
 .details-title { font-size: 2.5rem; font-weight: bold; text-shadow: 2px 2px 4px #000; margin: 0 0 10px 0; }
@@ -174,7 +194,7 @@ header.scrolled {
 }
 .big-play-btn:hover { background-color: #ddd; }
 
-/* --- PLAYER VIDEO --- */
+/* --- PLAYER VIDEO PRINCIPALE --- */
 #episode-list { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5000; background-color: #000; display: none; }
 .player-wrapper { width: 100%; height: 100%; display: flex; flex-direction: column; }
 .player-header { 
@@ -196,5 +216,3 @@ header.scrolled {
 
 #episodes-container { flex: 1; background: #000; position: relative; }
 #episodes-container iframe { width: 100%; height: 100%; border: none; }
-
-.back-btn-float { position: fixed; top: 70px; left: 4%; z-index: 50; background: rgba(0,0,0,0.6); color: white; border: 1px solid #fff; padding: 8px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; }
