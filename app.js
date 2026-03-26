@@ -7,7 +7,7 @@ const users = {
 const seriesData = {
   "Ginny e Georgia": {
     img: "https://i.imgur.com/CScKmEZ.jpeg",
-    trailer: "9uBrr25Gwj4", 
+    trailer: "Z2R2aD8A9X0", 
     desc: "Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo in questa serie drammatica e commovente.",
     seasons: {
       1: [
@@ -209,7 +209,7 @@ const moviesData = {
 const animeData = {
   "One Piece": {
      img: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
-     trailer: "A1SqXhU5bQ0", // Trailer One Piece già presente
+     trailer: "A1SqXhU5bQ0", 
      desc: "Luffy e la sua ciurma salpano alla ricerca del tesoro supremo: lo One Piece.",
      seasons: { 
          1: [ { episode: 1, title: "Sono Luffy!", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" } ] 
@@ -217,7 +217,7 @@ const animeData = {
   },
   "Attack on Titan": {
      img: "https://flxt.tmsimg.com/assets/p10701949_b_v8_ah.jpg",
-     trailer: "MGRm4IzK1SQ", // <-- HO AGGIUNTO IL TRAILER DELL'ANIME ANCHE QUI!
+     trailer: "MGRm4IzK1SQ", 
      desc: "L'umanità combatte per la sopravvivenza contro giganti mangia-uomini.",
      seasons: { 
        1: [
@@ -296,7 +296,6 @@ let currentUser = null;
 let currentSerieTitle = ""; 
 let currentPlayingMeta = null; 
 
-// Rimosso il caricamento globale: ora si carica dopo il login!
 let watchHistory = {}; 
 let heroInterval;
 
@@ -317,7 +316,13 @@ function onYouTubeIframeAPIReady() {
     isYtApiReady = true;
 }
 
-// --- GESTIONE SCROLL ---
+// Funzione Helper per aggiornare l'icona del tasto Play/Pausa
+function updatePlayButtonIcon(isPlaying) {
+    const btn = document.getElementById('trailer-play-btn');
+    if (btn) btn.innerHTML = isPlaying ? "⏸️" : "▶️";
+}
+
+// --- GESTIONE SCROLL: Mette in pausa se scorri giù ---
 let lastScrollTop = 0;
 window.addEventListener('scroll', () => {
     const header = document.getElementById('main-header');
@@ -329,22 +334,11 @@ window.addEventListener('scroll', () => {
     if (ytTrailerPlayer && typeof ytTrailerPlayer.getPlayerState === 'function') {
         const iframe = document.getElementById('yt-trailer-iframe');
         if (iframe) {
-            const rect = iframe.getBoundingClientRect();
-            
-            // Fuori dallo schermo: Metti in pausa
-            if (rect.bottom < 0 || rect.top > window.innerHeight) {
-                if (ytTrailerPlayer.getPlayerState() === 1) ytTrailerPlayer.pauseVideo();
-            } else {
-                // Dentro lo schermo: Riproduci
-                if (ytTrailerPlayer.getPlayerState() !== 1) ytTrailerPlayer.playVideo();
-                
-                // IL FIX E' QUI: Muta/S-muta SOLO se necessario, senza intassare l'API!
-                if (st > lastScrollTop) {
-                    // Scorri GIÙ -> Muto (solo se non lo è già)
-                    if (!ytTrailerPlayer.isMuted()) ytTrailerPlayer.mute();
-                } else if (st < lastScrollTop) {
-                    // Scorri SU -> Audio (solo se attualmente è muto)
-                    if (ytTrailerPlayer.isMuted()) ytTrailerPlayer.unMute();
+            // Se scorro verso il basso e mi allontano dall'inizio, metti in pausa!
+            if (st > lastScrollTop && st > 20) {
+                if (ytTrailerPlayer.getPlayerState() === 1) {
+                    ytTrailerPlayer.pauseVideo();
+                    updatePlayButtonIcon(false);
                 }
             }
         }
@@ -364,7 +358,6 @@ function login() {
   if (users[u] && users[u] === p) {
     currentUser = u;
     
-    // --- NOVITÀ: Carica la cronologia separata per questo specifico utente! ---
     watchHistory = JSON.parse(localStorage.getItem('nanoFlixHistory_' + currentUser)) || {};
     
     document.getElementById("login-screen").style.display = "none";
@@ -380,10 +373,7 @@ function login() {
   }
 }
 
-function logout() { 
-    // Ricaricando la pagina l'utente viene sbattuto fuori e il sistema scorda "currentUser"
-    location.reload(); 
-}
+function logout() { location.reload(); }
 
 function startSearch() { document.body.classList.add('searching'); }
 function endSearch() { setTimeout(() => { document.body.classList.remove('searching'); }, 200); }
@@ -612,7 +602,7 @@ function renderHistory() {
 }
 
 function addToHistory(title, type, meta) {
-    if(!currentUser) return; // Controllo di sicurezza
+    if(!currentUser) return;
 
     let mainKey = meta.seriesKey || title; 
     watchHistory[mainKey] = {
@@ -625,10 +615,10 @@ function addToHistory(title, type, meta) {
         seriesKey: mainKey
     };
     
-    // --- NOVITÀ: Salva la cronologia sotto il nome dello specifico utente ---
     localStorage.setItem('nanoFlixHistory_' + currentUser, JSON.stringify(watchHistory));
 }
 
+// --- FUNZIONE TRAILER: CREA TASTI PLAY E MUTO ---
 function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
     const container = document.getElementById(containerId);
     
@@ -636,6 +626,9 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
     
     const existing = container.querySelector('.yt-trailer-container');
     if(existing) existing.remove();
+
+    const oldControls = container.querySelector('.trailer-controls');
+    if (oldControls) oldControls.remove();
 
     if(ytTrailerPlayer) {
         ytTrailerPlayer.destroy();
@@ -651,6 +644,52 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
         ytDiv.innerHTML = `<div id="yt-trailer-iframe"></div>`;
         container.appendChild(ytDiv);
 
+        // --- CREAZIONE CONTENITORE PULSANTI ---
+        const controlsDiv = document.createElement("div");
+        controlsDiv.className = "trailer-controls";
+        
+        // 1. Bottone Play/Pausa
+        const playBtn = document.createElement("button");
+        playBtn.className = "trailer-control-btn";
+        playBtn.id = "trailer-play-btn";
+        playBtn.innerHTML = "⏸️"; // Parte in play, quindi mostra il tasto pausa
+        playBtn.onclick = (e) => {
+            e.stopPropagation();
+            if (ytTrailerPlayer) {
+                const state = ytTrailerPlayer.getPlayerState();
+                if (state === 1 || state === 3) { // 1 = in riproduzione, 3 = buffering
+                    ytTrailerPlayer.pauseVideo();
+                    playBtn.innerHTML = "▶️";
+                } else {
+                    ytTrailerPlayer.playVideo();
+                    playBtn.innerHTML = "⏸️";
+                }
+            }
+        };
+
+        // 2. Bottone Muto/Audio
+        const muteBtn = document.createElement("button");
+        muteBtn.className = "trailer-control-btn";
+        muteBtn.id = "trailer-mute-btn";
+        muteBtn.innerHTML = "🔇"; // Parte muto di default
+        muteBtn.onclick = (e) => {
+            e.stopPropagation(); 
+            if (ytTrailerPlayer) {
+                if (ytTrailerPlayer.isMuted()) {
+                    ytTrailerPlayer.unMute();
+                    muteBtn.innerHTML = "🔊";
+                } else {
+                    ytTrailerPlayer.mute();
+                    muteBtn.innerHTML = "🔇";
+                }
+            }
+        };
+        
+        controlsDiv.appendChild(playBtn);
+        controlsDiv.appendChild(muteBtn);
+        container.appendChild(controlsDiv);
+
+        // Inizializza il player
         ytTrailerPlayer = new YT.Player('yt-trailer-iframe', {
             videoId: videoId,
             playerVars: { 
@@ -674,7 +713,11 @@ function openTrailerFullscreen() {
         else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
         else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
         
-        if(ytTrailerPlayer) ytTrailerPlayer.unMute();
+        if(ytTrailerPlayer) {
+            ytTrailerPlayer.unMute();
+            const muteBtn = document.getElementById("trailer-mute-btn");
+            if (muteBtn) muteBtn.innerHTML = "🔊"; 
+        }
     }
 }
 
@@ -684,7 +727,6 @@ function showSeasons(title, type, push = true) {
     hideViews();
     document.getElementById("season-list").style.display = "block";
     
-    // Controlliamo il tipo: questo funziona perfettamente sia per "serie" che per "anime"!
     const db = type === 'anime' ? animeData : seriesData;
     const data = db[title];
     
