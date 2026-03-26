@@ -836,3 +836,82 @@ function filterContent() {
         c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none";
     });
 }
+// Variabili globali per la barra di progresso
+let trailerProgressInterval;
+let isScrubbing = false;
+
+// Funzione per aggiornare la UI della barra
+function updateProgressBar() {
+    // ytTrailerPlayer è la variabile globale del tuo player YouTube Iframe
+    if (ytTrailerPlayer && ytTrailerPlayer.getCurrentTime && !isScrubbing) {
+        const currentTime = ytTrailerPlayer.getCurrentTime();
+        const duration = ytTrailerPlayer.getDuration();
+        
+        if (duration > 0) {
+            const percentage = (currentTime / duration) * 100;
+            document.getElementById('trailer-progress-filled').style.width = `${percentage}%`;
+            document.getElementById('trailer-progress-handle').style.left = `${percentage}%`;
+        }
+    }
+}
+
+// Funzione per calcolare il click o il trascinamento sulla barra
+function seekTrailer(event) {
+    if (!ytTrailerPlayer || !ytTrailerPlayer.getDuration) return;
+    
+    const container = document.getElementById('trailer-progress-bar');
+    const rect = container.getBoundingClientRect();
+    
+    // Supporto per Mouse o Touch
+    const offsetX = event.clientX || (event.touches && event.touches.length > 0 ? event.touches[0].clientX : 0);
+    
+    let pos = (offsetX - rect.left) / rect.width;
+    pos = Math.max(0, Math.min(1, pos)); // Mantiene il valore tra 0 e 1 (0% - 100%)
+    
+    const duration = ytTrailerPlayer.getDuration();
+    const newTime = pos * duration;
+    
+    ytTrailerPlayer.seekTo(newTime, true);
+    
+    // Aggiornamento visivo immediato durante il trascinamento
+    document.getElementById('trailer-progress-filled').style.width = `${pos * 100}%`;
+    document.getElementById('trailer-progress-handle').style.left = `${pos * 100}%`;
+}
+
+// --- GESTIONE DEGLI EVENTI DELLA BARRA (Drag & Drop / Touch) ---
+document.addEventListener('DOMContentLoaded', () => {
+    const progressContainer = document.getElementById('trailer-progress-container');
+    
+    if (progressContainer) {
+        // Eventi Mouse (Desktop)
+        progressContainer.addEventListener('mousedown', (e) => {
+            isScrubbing = true;
+            seekTrailer(e);
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (isScrubbing) seekTrailer(e);
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isScrubbing = false;
+        });
+        
+        // Eventi Touch (Smartphone e Tablet)
+        progressContainer.addEventListener('touchstart', (e) => {
+            isScrubbing = true;
+            seekTrailer(e);
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (isScrubbing) {
+                e.preventDefault(); // Previene lo scroll della pagina
+                seekTrailer(e);
+            }
+        }, { passive: false });
+        
+        document.addEventListener('touchend', () => {
+            isScrubbing = false;
+        });
+    }
+});
