@@ -888,7 +888,7 @@ function initTrailerControls(type) {
         clearTimeout(trailerInactivityTimeout);
         
         // Nascondi dopo 3 secondi di inattività (solo se in play)
-        if (ytTrailerPlayer && ytTrailerPlayer.getPlayerState && ytTrailerPlayer.getPlayerState() === 1) {
+        if (typeof ytTrailerPlayer !== 'undefined' && ytTrailerPlayer && ytTrailerPlayer.getPlayerState && ytTrailerPlayer.getPlayerState() === 1) {
             trailerInactivityTimeout = setTimeout(() => {
                 controlsContainer.style.opacity = '0';
             }, 3000);
@@ -896,13 +896,13 @@ function initTrailerControls(type) {
     }
     
     // Mostra i controlli quando il mouse si muove sopra il trailer
-    heroSection.addEventListener('mousemove', wakeUpControls);
+    if(heroSection) heroSection.addEventListener('mousemove', wakeUpControls);
     controlsContainer.addEventListener('mousemove', wakeUpControls);
     controlsContainer.addEventListener('touchstart', wakeUpControls);
 
     // --- PULSANTI ---
     playPauseBtn.onclick = () => {
-        if (ytTrailerPlayer && ytTrailerPlayer.getPlayerState) {
+        if (typeof ytTrailerPlayer !== 'undefined' && ytTrailerPlayer && ytTrailerPlayer.getPlayerState) {
             const state = ytTrailerPlayer.getPlayerState();
             if (state === 1) { ytTrailerPlayer.pauseVideo(); wakeUpControls(); }
             else { ytTrailerPlayer.playVideo(); wakeUpControls(); }
@@ -910,7 +910,7 @@ function initTrailerControls(type) {
     };
 
     muteBtn.onclick = () => {
-        if (ytTrailerPlayer && ytTrailerPlayer.isMuted) {
+        if (typeof ytTrailerPlayer !== 'undefined' && ytTrailerPlayer && ytTrailerPlayer.isMuted) {
             if (ytTrailerPlayer.isMuted()) ytTrailerPlayer.unMute();
             else ytTrailerPlayer.mute();
             wakeUpControls();
@@ -919,14 +919,14 @@ function initTrailerControls(type) {
 
     // --- BARRA DI SCORRIMENTO ---
     progressBar.addEventListener('input', (e) => {
-        if (ytTrailerPlayer && ytTrailerPlayer.seekTo) {
+        if (typeof ytTrailerPlayer !== 'undefined' && ytTrailerPlayer && ytTrailerPlayer.seekTo) {
             const seekTime = parseFloat(e.target.value);
             ytTrailerPlayer.seekTo(seekTime, true);
             wakeUpControls();
         }
     });
 
-    // --- SINCRONIZZAZIONE CONTINUE ---
+    // --- SINCRONIZZAZIONE CONTINUA ---
     if (trailerProgressInterval) clearInterval(trailerProgressInterval);
     
     trailerProgressInterval = setInterval(() => {
@@ -955,17 +955,12 @@ function initTrailerControls(type) {
     }, 500);
 }
 
-// Intercetta quando viene aperto un trailer e attiva la barra giusta
-const originalOpenTrailer = window.openTrailerFullscreen;
-// Modifichiamo il momento dell'apertura del dettaglio (devi chiamare initTrailerControls qui)
-
-// Aggiungi questo alla fine del blocco dove apri i dettagli della serie
+// Aggiungi questo alla fine del file per intercettare i click sulle card
 document.addEventListener('DOMContentLoaded', () => {
-    // Osserviamo i click sulle card per attivare i controlli
     document.body.addEventListener('click', (e) => {
         const card = e.target.closest('.card');
         if(card) {
-            // Un piccolo ritardo per aspettare che ytTrailerPlayer sia pronto
+            // Un piccolo ritardo per aspettare che ytTrailerPlayer sia pronto e caricato
             setTimeout(() => {
                 if(document.getElementById('serie-detail-view').style.display !== 'none') {
                     initTrailerControls('serie');
@@ -976,31 +971,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-function hideViews() {
-    // 1. Ferma la barra di avanzamento se è attiva
-    if (typeof trailerProgressInterval !== 'undefined') {
-        clearInterval(trailerProgressInterval);
-    }
-    
-    // 2. Nascondi i controlli del trailer
-    const cs = document.getElementById("trailer-controls-serie");
-    const cm = document.getElementById("trailer-controls-movie");
-    if(cs) cs.style.display = "none";
-    if(cm) cm.style.display = "none";
-
-    // 3. Distruggi il player di YouTube IN MODO SICURO (evita il crash)
-    if (typeof ytTrailerPlayer !== 'undefined' && ytTrailerPlayer) { 
-        ytTrailerPlayer.destroy(); 
-        ytTrailerPlayer = null; 
-    }
-    
-    // 4. Nascondi tutte le schermate
-    const hero = document.getElementById("hero-section");
-    if(hero) hero.style.display = "none";
-    
-    document.querySelectorAll(".view").forEach(v => v.style.display = "none");
-    
-    const epList = document.getElementById("episode-list");
-    if(epList) epList.style.display = "none";
-}
