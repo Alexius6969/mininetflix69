@@ -104,7 +104,7 @@ const seriesData = {
       4: [
         { episode: 1, title: "Capitolo uno: Hellfire Club", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 2, title: "Capitolo due: La maledizione di Vecna", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
-        { episode: 3, title: "Capitolo three: Il mostro e la supereroina", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
+        { episode: 3, title: "Capitolo tre: Il mostro e la supereroina", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 4, title: "Capitolo quattro: Caro Billy", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 5, title: "Capitolo cinque: Il progetto Nina", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
         { episode: 6, title: "Capitolo sei: Il tuffo", src: "https://www.youtube.com/embed/HhesaQXLuRY" },
@@ -209,7 +209,7 @@ const moviesData = {
 const animeData = {
   "One Piece": {
      img: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
-     trailer: "A1SqXhU5bQ0", // Trailer One Piece già presente
+     trailer: "A1SqXhU5bQ0",
      desc: "Luffy e la sua ciurma salpano alla ricerca del tesoro supremo: lo One Piece.",
      seasons: { 
          1: [ { episode: 1, title: "Sono Luffy!", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" } ] 
@@ -217,7 +217,7 @@ const animeData = {
   },
   "Attack on Titan": {
      img: "https://flxt.tmsimg.com/assets/p10701949_b_v8_ah.jpg",
-     trailer: "MGRm4IzK1SQ", // <-- HO AGGIUNTO IL TRAILER DELL'ANIME ANCHE QUI!
+     trailer: "MGRm4IzK1SQ",
      desc: "L'umanità combatte per la sopravvivenza contro giganti mangia-uomini.",
      seasons: { 
        1: [
@@ -296,7 +296,6 @@ let currentUser = null;
 let currentSerieTitle = ""; 
 let currentPlayingMeta = null; 
 
-// Rimosso il caricamento globale: ora si carica dopo il login!
 let watchHistory = {}; 
 let heroInterval;
 
@@ -331,19 +330,14 @@ window.addEventListener('scroll', () => {
         if (iframe) {
             const rect = iframe.getBoundingClientRect();
             
-            // Fuori dallo schermo: Metti in pausa
             if (rect.bottom < 0 || rect.top > window.innerHeight) {
                 if (ytTrailerPlayer.getPlayerState() === 1) ytTrailerPlayer.pauseVideo();
             } else {
-                // Dentro lo schermo: Riproduci
                 if (ytTrailerPlayer.getPlayerState() !== 1) ytTrailerPlayer.playVideo();
                 
-                // IL FIX E' QUI: Muta/S-muta SOLO se necessario, senza intassare l'API!
                 if (st > lastScrollTop) {
-                    // Scorri GIÙ -> Muto (solo se non lo è già)
                     if (!ytTrailerPlayer.isMuted()) ytTrailerPlayer.mute();
                 } else if (st < lastScrollTop) {
-                    // Scorri SU -> Audio (solo se attualmente è muto)
                     if (ytTrailerPlayer.isMuted()) ytTrailerPlayer.unMute();
                 }
             }
@@ -364,7 +358,6 @@ function login() {
   if (users[u] && users[u] === p) {
     currentUser = u;
     
-    // --- NOVITÀ: Carica la cronologia separata per questo specifico utente! ---
     watchHistory = JSON.parse(localStorage.getItem('nanoFlixHistory_' + currentUser)) || {};
     
     document.getElementById("login-screen").style.display = "none";
@@ -381,7 +374,6 @@ function login() {
 }
 
 function logout() { 
-    // Ricaricando la pagina l'utente viene sbattuto fuori e il sistema scorda "currentUser"
     location.reload(); 
 }
 
@@ -612,7 +604,7 @@ function renderHistory() {
 }
 
 function addToHistory(title, type, meta) {
-    if(!currentUser) return; // Controllo di sicurezza
+    if(!currentUser) return; 
 
     let mainKey = meta.seriesKey || title; 
     watchHistory[mainKey] = {
@@ -625,7 +617,6 @@ function addToHistory(title, type, meta) {
         seriesKey: mainKey
     };
     
-    // --- NOVITÀ: Salva la cronologia sotto il nome dello specifico utente ---
     localStorage.setItem('nanoFlixHistory_' + currentUser, JSON.stringify(watchHistory));
 }
 
@@ -651,11 +642,10 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
         ytDiv.innerHTML = `<div id="yt-trailer-iframe"></div>`;
         container.appendChild(ytDiv);
 
-        // --- TRUCCO MAGICO: SPOSTIAMO LA BARRA NEL TRAILER ATTIVO ---
         const progressBar = document.getElementById('trailer-progress-container');
         if (progressBar) {
-            progressBar.style.display = 'none'; // La nascondiamo finché non parte il video
-            container.appendChild(progressBar); // Viene attaccata sotto al player in esecuzione!
+            progressBar.style.display = 'none'; 
+            container.appendChild(progressBar); 
         }
 
         ytTrailerPlayer = new YT.Player('yt-trailer-iframe', {
@@ -678,11 +668,26 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
 function openTrailerFullscreen() {
     const iframe = document.getElementById('yt-trailer-iframe');
     if (iframe) {
-        if (iframe.requestFullscreen) iframe.requestFullscreen();
-        else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
-        else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+        const container = iframe.closest('.details-hero'); 
+        
+        if (container) {
+            if (container.requestFullscreen) container.requestFullscreen();
+            else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+            else if (container.msRequestFullscreen) container.msRequestFullscreen();
+        }
         
         if(ytTrailerPlayer) ytTrailerPlayer.unMute();
+    }
+}
+
+function toggleTrailerPlay() {
+    if (ytTrailerPlayer && typeof ytTrailerPlayer.getPlayerState === 'function') {
+        const state = ytTrailerPlayer.getPlayerState();
+        if (state === YT.PlayerState.PLAYING) {
+            ytTrailerPlayer.pauseVideo();
+        } else {
+            ytTrailerPlayer.playVideo();
+        }
     }
 }
 
@@ -692,7 +697,6 @@ function showSeasons(title, type, push = true) {
     hideViews();
     document.getElementById("season-list").style.display = "block";
     
-    // Controlliamo il tipo: questo funziona perfettamente sia per "serie" che per "anime"!
     const db = type === 'anime' ? animeData : seriesData;
     const data = db[title];
     
@@ -846,13 +850,11 @@ function filterContent() {
     });
 }
 
-// Variabili globali per la barra di progresso
+// --- BARRA DI PROGRESSO E CONTROLLI TRAILER ---
 let trailerProgressInterval;
 let isScrubbing = false;
 
-// Funzione per aggiornare la UI della barra
 function updateProgressBar() {
-    // ytTrailerPlayer è la variabile globale del tuo player YouTube Iframe
     if (ytTrailerPlayer && ytTrailerPlayer.getCurrentTime && !isScrubbing) {
         const currentTime = ytTrailerPlayer.getCurrentTime();
         const duration = ytTrailerPlayer.getDuration();
@@ -865,35 +867,30 @@ function updateProgressBar() {
     }
 }
 
-// Funzione per calcolare il click o il trascinamento sulla barra
 function seekTrailer(event) {
     if (!ytTrailerPlayer || !ytTrailerPlayer.getDuration) return;
     
     const container = document.getElementById('trailer-progress-bar');
     const rect = container.getBoundingClientRect();
     
-    // Supporto per Mouse o Touch
     const offsetX = event.clientX || (event.touches && event.touches.length > 0 ? event.touches[0].clientX : 0);
     
     let pos = (offsetX - rect.left) / rect.width;
-    pos = Math.max(0, Math.min(1, pos)); // Mantiene il valore tra 0 e 1 (0% - 100%)
+    pos = Math.max(0, Math.min(1, pos)); 
     
     const duration = ytTrailerPlayer.getDuration();
     const newTime = pos * duration;
     
     ytTrailerPlayer.seekTo(newTime, true);
     
-    // Aggiornamento visivo immediato durante il trascinamento
     document.getElementById('trailer-progress-filled').style.width = `${pos * 100}%`;
     document.getElementById('trailer-progress-handle').style.left = `${pos * 100}%`;
 }
 
-// --- GESTIONE DEGLI EVENTI DELLA BARRA (Drag & Drop / Touch) ---
 document.addEventListener('DOMContentLoaded', () => {
     const progressContainer = document.getElementById('trailer-progress-container');
     
     if (progressContainer) {
-        // Eventi Mouse (Desktop)
         progressContainer.addEventListener('mousedown', (e) => {
             isScrubbing = true;
             seekTrailer(e);
@@ -907,7 +904,6 @@ document.addEventListener('DOMContentLoaded', () => {
             isScrubbing = false;
         });
         
-        // Eventi Touch (Smartphone e Tablet)
         progressContainer.addEventListener('touchstart', (e) => {
             isScrubbing = true;
             seekTrailer(e);
@@ -915,7 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         document.addEventListener('touchmove', (e) => {
             if (isScrubbing) {
-                e.preventDefault(); // Previene lo scroll della pagina
+                e.preventDefault(); 
                 seekTrailer(e);
             }
         }, { passive: false });
@@ -926,14 +922,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// La funzione che gestisce i cambiamenti di stato del player e anima la barra
+// --- LOGICA DI SCOMPARSA DELLA BARRA (AUTO-HIDE) ---
+let hideControlsTimeout;
+
+function wakeUpControls() {
+    const container = document.getElementById('trailer-progress-container');
+    
+    if (container && container.style.display !== 'none') {
+        container.classList.remove('fade-out');
+        clearTimeout(hideControlsTimeout);
+        
+        if (ytTrailerPlayer && typeof ytTrailerPlayer.getPlayerState === 'function' && ytTrailerPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+            hideControlsTimeout = setTimeout(() => {
+                if (!isScrubbing) {
+                    container.classList.add('fade-out');
+                }
+            }, 3000);
+        }
+    }
+}
+
+document.addEventListener('mousemove', wakeUpControls);
+document.addEventListener('touchstart', wakeUpControls, { passive: true });
+document.addEventListener('click', wakeUpControls);
+
+// --- GESTIONE DEGLI STATI DEL TRAILER ---
 function onTrailerStateChange(event) {
+    const playBtn = document.getElementById('trailer-play-pause');
+    const container = document.getElementById('trailer-progress-container');
+    
     if (event.data == YT.PlayerState.PLAYING) {
-        document.getElementById('trailer-progress-container').style.display = 'flex';
-        // Avvia l'aggiornamento della barra
+        if(container) container.style.display = 'flex';
+        if(playBtn) playBtn.textContent = '⏸';
+        
         clearInterval(trailerProgressInterval);
-        trailerProgressInterval = setInterval(updateProgressBar, 100); // Aggiorna ogni 100ms
+        trailerProgressInterval = setInterval(updateProgressBar, 100); 
+        
+        wakeUpControls();
+        
     } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+        if(playBtn) playBtn.textContent = '▶';
         clearInterval(trailerProgressInterval);
+        
+        if(container) container.classList.remove('fade-out');
+        clearTimeout(hideControlsTimeout);
     }
 }
