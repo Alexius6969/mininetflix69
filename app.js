@@ -915,3 +915,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+function onTrailerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+        document.getElementById('trailer-progress-container').style.display = 'flex';
+        // Avvia l'aggiornamento della barra
+        clearInterval(trailerProgressInterval);
+        trailerProgressInterval = setInterval(updateProgressBar, 100); // Aggiorna ogni 100ms
+    } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+        clearInterval(trailerProgressInterval);
+    }
+}
