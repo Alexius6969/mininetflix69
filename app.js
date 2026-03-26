@@ -823,11 +823,31 @@ function closePlayer(back = true) {
 }
 
 function hideViews() {
-    if(ytTrailerPlayer) { ytTrailerPlayer.destroy(); ytTrailerPlayer = null; }
+    // 1. Ferma la barra di avanzamento se è attiva
+    if (typeof trailerProgressInterval !== 'undefined') {
+        clearInterval(trailerProgressInterval);
+    }
     
-    document.getElementById("hero-section").style.display = "none";
+    // 2. Nascondi i controlli del trailer
+    const cs = document.getElementById("trailer-controls-serie");
+    const cm = document.getElementById("trailer-controls-movie");
+    if(cs) cs.style.display = "none";
+    if(cm) cm.style.display = "none";
+
+    // 3. Distruggi il player di YouTube IN MODO SICURO
+    if (typeof ytTrailerPlayer !== 'undefined' && ytTrailerPlayer) { 
+        ytTrailerPlayer.destroy(); 
+        ytTrailerPlayer = null; 
+    }
+    
+    // 4. Nascondi tutte le schermate
+    const hero = document.getElementById("hero-section");
+    if(hero) hero.style.display = "none";
+    
     document.querySelectorAll(".view").forEach(v => v.style.display = "none");
-    document.getElementById("episode-list").style.display = "none";
+    
+    const epList = document.getElementById("episode-list");
+    if(epList) epList.style.display = "none";
 }
 
 function filterContent() {
