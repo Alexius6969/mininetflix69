@@ -32,7 +32,78 @@ header.scrolled {
 
 .logo { color: #e50914; font-size: 1.8rem; font-weight: bold; cursor: pointer; text-shadow: 2px 2px 4px #000; margin-right: 15px; }
 .header-left, .header-right { display: flex; align-items: center; }
+/* --- CONTROLLI TRAILER PERSONALIZZATI --- */
+.custom-trailer-controls {
+    position: absolute;
+    bottom: 8%;
+    left: 5%;
+    width: 90%;
+    z-index: 1000;
+    
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    
+    /* Per l'effetto di comparsa/scomparsa automatica */
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
 
+.control-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn:hover {
+    color: #e50914;
+    transform: scale(1.1);
+}
+
+.trailer-time {
+    color: white;
+    font-size: 0.9rem;
+    font-family: monospace;
+    white-space: nowrap;
+}
+
+.trailer-progress {
+    flex-grow: 1;
+    cursor: pointer;
+    accent-color: #e50914;
+    background: rgba(255, 255, 255, 0.3);
+    height: 6px;
+    border-radius: 5px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.trailer-progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #e50914;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.trailer-progress::-webkit-slider-thumb:hover {
+    transform: scale(1.3);
+}
 /* Menu Sfoglia */
 .netflix-nav { position: relative; cursor: pointer; font-size: 0.9rem; color: #e5e5e5; margin-left: 10px; user-select: none; }
 .nav-trigger { display: flex; align-items: center; gap: 5px; padding: 10px 0; }
