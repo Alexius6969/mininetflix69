@@ -7,7 +7,7 @@ const users = {
 const seriesData = {
   "Ginny e Georgia": {
     img: "https://i.imgur.com/CScKmEZ.jpeg",
-    trailer: "9uBrr25Gwj4", 
+    trailer: "Z2R2aD8A9X0", 
     desc: "Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo in questa serie drammatica e commovente.",
     seasons: {
       1: [
@@ -209,7 +209,7 @@ const moviesData = {
 const animeData = {
   "One Piece": {
      img: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
-     trailer: "A1SqXhU5bQ0", 
+     trailer: "A1SqXhU5bQ0", // Trailer One Piece già presente
      desc: "Luffy e la sua ciurma salpano alla ricerca del tesoro supremo: lo One Piece.",
      seasons: { 
          1: [ { episode: 1, title: "Sono Luffy!", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" } ] 
@@ -217,7 +217,7 @@ const animeData = {
   },
   "Attack on Titan": {
      img: "https://flxt.tmsimg.com/assets/p10701949_b_v8_ah.jpg",
-     trailer: "MGRm4IzK1SQ", 
+     trailer: "MGRm4IzK1SQ", // <-- HO AGGIUNTO IL TRAILER DELL'ANIME ANCHE QUI!
      desc: "L'umanità combatte per la sopravvivenza contro giganti mangia-uomini.",
      seasons: { 
        1: [
@@ -296,6 +296,7 @@ let currentUser = null;
 let currentSerieTitle = ""; 
 let currentPlayingMeta = null; 
 
+// Rimosso il caricamento globale: ora si carica dopo il login!
 let watchHistory = {}; 
 let heroInterval;
 
@@ -316,18 +317,11 @@ function onYouTubeIframeAPIReady() {
     isYtApiReady = true;
 }
 
-// Funzione Helper per aggiornare l'icona del tasto muto
-function updateMuteButtonIcon(iconText) {
-    const btn = document.querySelector('.trailer-mute-btn');
-    if (btn) btn.innerHTML = iconText;
-}
-
-// --- GESTIONE SCROLL CON CONTROLLO MUTO/AUDIO ---
+// --- GESTIONE SCROLL ---
 let lastScrollTop = 0;
 window.addEventListener('scroll', () => {
     const header = document.getElementById('main-header');
     let st = window.pageYOffset || document.documentElement.scrollTop;
-    
     if (st > 50) header.classList.add('scrolled');
     else header.classList.remove('scrolled');
 
@@ -335,25 +329,12 @@ window.addEventListener('scroll', () => {
         const iframe = document.getElementById('yt-trailer-iframe');
         if (iframe) {
             const rect = iframe.getBoundingClientRect();
-            
             if (rect.bottom < 0 || rect.top > window.innerHeight) {
-                if (ytTrailerPlayer.getPlayerState() === 1) ytTrailerPlayer.pauseVideo();
+                ytTrailerPlayer.pauseVideo();
             } else {
                 if (ytTrailerPlayer.getPlayerState() !== 1) ytTrailerPlayer.playVideo();
-                
-                if (st > lastScrollTop) {
-                    // Se scendiamo, mutiamo e cambiamo l'icona
-                    if (!ytTrailerPlayer.isMuted()) {
-                        ytTrailerPlayer.mute();
-                        updateMuteButtonIcon("🔇");
-                    }
-                } else if (st < lastScrollTop) {
-                    // Se saliamo, riattiviamo l'audio e cambiamo l'icona
-                    if (ytTrailerPlayer.isMuted()) {
-                        ytTrailerPlayer.unMute();
-                        updateMuteButtonIcon("🔊");
-                    }
-                }
+                if (st > lastScrollTop) ytTrailerPlayer.mute();
+                else if (st < lastScrollTop) ytTrailerPlayer.unMute();
             }
         }
     }
@@ -372,6 +353,7 @@ function login() {
   if (users[u] && users[u] === p) {
     currentUser = u;
     
+    // --- NOVITÀ: Carica la cronologia separata per questo specifico utente! ---
     watchHistory = JSON.parse(localStorage.getItem('nanoFlixHistory_' + currentUser)) || {};
     
     document.getElementById("login-screen").style.display = "none";
@@ -387,7 +369,10 @@ function login() {
   }
 }
 
-function logout() { location.reload(); }
+function logout() { 
+    // Ricaricando la pagina l'utente viene sbattuto fuori e il sistema scorda "currentUser"
+    location.reload(); 
+}
 
 function startSearch() { document.body.classList.add('searching'); }
 function endSearch() { setTimeout(() => { document.body.classList.remove('searching'); }, 200); }
@@ -616,7 +601,7 @@ function renderHistory() {
 }
 
 function addToHistory(title, type, meta) {
-    if(!currentUser) return;
+    if(!currentUser) return; // Controllo di sicurezza
 
     let mainKey = meta.seriesKey || title; 
     watchHistory[mainKey] = {
@@ -629,10 +614,10 @@ function addToHistory(title, type, meta) {
         seriesKey: mainKey
     };
     
+    // --- NOVITÀ: Salva la cronologia sotto il nome dello specifico utente ---
     localStorage.setItem('nanoFlixHistory_' + currentUser, JSON.stringify(watchHistory));
 }
 
-// --- FUNZIONE PER AVVIARE IL TRAILER CON IL PULSANTE MUTO AGGIUNTO ---
 function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
     const container = document.getElementById(containerId);
     
@@ -640,10 +625,6 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
     
     const existing = container.querySelector('.yt-trailer-container');
     if(existing) existing.remove();
-
-    // Rimuoviamo un vecchio pulsante se era già lì
-    const oldBtn = container.querySelector('.trailer-mute-btn');
-    if (oldBtn) oldBtn.remove();
 
     if(ytTrailerPlayer) {
         ytTrailerPlayer.destroy();
@@ -658,25 +639,6 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
         ytDiv.className = "yt-trailer-container";
         ytDiv.innerHTML = `<div id="yt-trailer-iframe"></div>`;
         container.appendChild(ytDiv);
-
-        // --- CREAZIONE DEL PULSANTE MUTO/AUDIO ---
-        const muteBtn = document.createElement("button");
-        muteBtn.className = "trailer-mute-btn";
-        muteBtn.innerHTML = "🔇"; // Parte muto per default
-        
-        muteBtn.onclick = (e) => {
-            e.stopPropagation(); // Evita che il click passi alla pagina sottostante
-            if (ytTrailerPlayer) {
-                if (ytTrailerPlayer.isMuted()) {
-                    ytTrailerPlayer.unMute();
-                    muteBtn.innerHTML = "🔊";
-                } else {
-                    ytTrailerPlayer.mute();
-                    muteBtn.innerHTML = "🔇";
-                }
-            }
-        };
-        container.appendChild(muteBtn);
 
         ytTrailerPlayer = new YT.Player('yt-trailer-iframe', {
             videoId: videoId,
@@ -701,10 +663,7 @@ function openTrailerFullscreen() {
         else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
         else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
         
-        if(ytTrailerPlayer) {
-            ytTrailerPlayer.unMute();
-            updateMuteButtonIcon("🔊"); // Aggiorniamo anche l'icona
-        }
+        if(ytTrailerPlayer) ytTrailerPlayer.unMute();
     }
 }
 
@@ -714,6 +673,7 @@ function showSeasons(title, type, push = true) {
     hideViews();
     document.getElementById("season-list").style.display = "block";
     
+    // Controlliamo il tipo: questo funziona perfettamente sia per "serie" che per "anime"!
     const db = type === 'anime' ? animeData : seriesData;
     const data = db[title];
     
