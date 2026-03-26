@@ -661,7 +661,6 @@ function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
                     event.target.playVideo();
                     event.target.mute(); 
                 }
-              'onStateChange': onTrailerStateChange
             }
         });
     }
