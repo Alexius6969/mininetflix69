@@ -216,3 +216,58 @@ header.scrolled {
 
 #episodes-container { flex: 1; background: #000; position: relative; }
 #episodes-container iframe { width: 100%; height: 100%; border: none; }
+/* --- BARRA DI PROGRESSO TRAILER --- */
+.progress-container {
+    width: 100%;
+    max-width: 800px; /* Adattalo alla larghezza massima del tuo player */
+    margin: 10px auto;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 1000;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    position: relative;
+    transition: height 0.1s ease;
+}
+
+.progress-container:hover .progress-bar {
+    height: 8px; /* Si ingrandisce quando ci passi sopra col mouse */
+}
+
+.progress-filled {
+    height: 100%;
+    background-color: #e50914; /* Rosso Netflix */
+    width: 0%;
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.progress-handle {
+    width: 14px;
+    height: 14px;
+    background-color: #e50914;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 0%;
+    opacity: 0;
+    transition: opacity 0.1s ease, transform 0.1s ease;
+    pointer-events: none;
+}
+
+.progress-container:hover .progress-handle {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+}
