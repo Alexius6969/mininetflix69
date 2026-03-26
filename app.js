@@ -4,9 +4,12 @@ const users = {
 };
 
 // --- DATABASE CONTENUTI COMPLETO ---
+// NOTA: Ho aggiunto il campo 'trailer' in alcune serie/film per testare. 
+// Puoi cercare l'ID del video di YouTube (i caratteri dopo "v=") e incollarli qui.
 const seriesData = {
   "Ginny e Georgia": {
     img: "https://i.imgur.com/CScKmEZ.jpeg",
+    trailer: "Z2R2aD8A9X0", // <-- Esempio: Trailer ufficiale Netflix
     desc: "Una madre dallo spirito libero e i suoi figli si trasferiscono al nord per ricominciare da capo in questa serie drammatica e commovente.",
     seasons: {
       1: [
@@ -49,6 +52,7 @@ const seriesData = {
   },
   "Mercoledì": {
     img: "https://i.imgur.com/rZ8CYjh.jpeg",
+    trailer: "Di310WS8zLk",
     desc: "Intelligente, sarcastica e un po' morta dentro, Mercoledì Addams indaga su una serie di omicidi.",
     seasons: {
       1: [
@@ -65,6 +69,7 @@ const seriesData = {
   },
    "Stranger Things": {
     img: "https://i.imgur.com/yBTjmMZ.jpeg",
+    trailer: "yQEondeGvKo",
     desc: "Nella Hawkins degli anni '80, la misteriosa sparizione di un bambino trascina i suoi amici in un'avventura soprannaturale.",
     seasons: {
       1: [
@@ -131,11 +136,13 @@ const moviesData = {
   },
   "Harry Potter e i doni della morte": {
     img: "https://i.imgur.com/4q0eRaQ.jpeg",
+    trailer: "9hXH0Ackz6w", // Trailer Harry Potter
     src: "https://drive.google.com/file/d/1PnyQvFvB1hd92DJYQQRSgElZc1BT77Li/preview",
     desc: "La battaglia finale tra Harry Potter e Lord Voldemort ha inizio."
   },
   "Inception": {
     img: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg",
+    trailer: "YoHD9XEInc0", // Trailer Inception
     src: "https://drive.google.com/file/d/1D_3ZEoglOfcVeYvBI6EO84v7pH5kXYvi/preview",
     desc: "Un ladro che ruba segreti dai sogni deve compiere l'impresa inversa: innestare un'idea."
   },
@@ -204,6 +211,7 @@ const moviesData = {
 const animeData = {
   "One Piece": {
      img: "https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
+     trailer: "A1SqXhU5bQ0",
      desc: "Luffy e la sua ciurma salpano alla ricerca del tesoro supremo: lo One Piece.",
      seasons: { 
          1: [ { episode: 1, title: "Sono Luffy!", src: "https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview" } ] 
@@ -300,14 +308,48 @@ const heroSlides = [
 ];
 let currentHeroIndex = 0;
 
-// --- GESTIONE HEADER TRASPARENTE ALLO SCROLL ---
+// Variabili per i Trailer Youtube
+let ytTrailerPlayer = null;
+let isYtApiReady = false;
+
+// Funzione richiamata automaticamente quando le API di YT sono caricate
+function onYouTubeIframeAPIReady() {
+    isYtApiReady = true;
+}
+
+// --- GESTIONE SCROLL: HEADER TRASPARENTE E LOGICA AUDIO TRAILER ---
+let lastScrollTop = 0;
 window.addEventListener('scroll', () => {
+    // 1. Logica Header scuro
     const header = document.getElementById('main-header');
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
+    let st = window.pageYOffset || document.documentElement.scrollTop;
+    if (st > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+
+    // 2. Logica Audio/Pausa del Trailer
+    if (ytTrailerPlayer && typeof ytTrailerPlayer.getPlayerState === 'function') {
+        const iframe = document.getElementById('yt-trailer-iframe');
+        if (iframe) {
+            const rect = iframe.getBoundingClientRect();
+            // Se il video è andato completamente fuori dallo schermo in alto (rect.bottom < 0) o in basso
+            if (rect.bottom < 0 || rect.top > window.innerHeight) {
+                ytTrailerPlayer.pauseVideo();
+            } else {
+                // Se rientra nello schermo lo facciamo ripartire
+                if (ytTrailerPlayer.getPlayerState() !== 1) ytTrailerPlayer.playVideo();
+                
+                // Direzione Scroll: Su o Giù
+                if (st > lastScrollTop) {
+                    // Scorri GIÙ -> Muto
+                    ytTrailerPlayer.mute();
+                } else if (st < lastScrollTop) {
+                    // Scorri SU -> Attiva Audio
+                    ytTrailerPlayer.unMute();
+                }
+            }
+        }
     }
+    lastScrollTop = st <= 0 ? 0 : st;
 });
 
 function handleEnter(e) { if(e.key === "Enter") login(); }
@@ -483,21 +525,18 @@ function loadHome(push = true) {
     renderHistory();
 }
 
-// --- SKELETON LOADERS: MODIFICA A RENDER LIST ---
 function renderList(id, dataObj, type) {
     const div = document.getElementById(id);
     div.innerHTML = "";
     
-    // Mostra gli skeleton loader (ne creiamo 6 come segnaposto)
     for(let i=0; i<6; i++) {
         const skel = document.createElement("div");
         skel.className = "skeleton-card";
         div.appendChild(skel);
     }
 
-    // Ritarda il vero caricamento di 500ms
     setTimeout(() => {
-        div.innerHTML = ""; // Rimuove gli skeleton
+        div.innerHTML = ""; 
         for(const key in dataObj) {
             div.appendChild(createCard(key, dataObj[key], type));
         }
@@ -517,7 +556,6 @@ function openContent(title, type) {
     else showSeasons(title, type);
 }
 
-// --- SKELETON LOADERS: MODIFICA ALLA CRONOLOGIA ---
 function renderHistory() {
     const div = document.getElementById("history-list-div");
     const sec = document.getElementById("history-section");
@@ -527,7 +565,6 @@ function renderHistory() {
     if(keys.length === 0) { sec.style.display = "none"; return; }
     sec.style.display = "block";
 
-    // Mostra gli skeleton loader per la cronologia
     const numSkeletons = Math.min(keys.length, 5);
     for(let i=0; i<numSkeletons; i++) {
         const skel = document.createElement("div");
@@ -535,7 +572,6 @@ function renderHistory() {
         div.appendChild(skel);
     }
 
-    // Ritarda il caricamento reale di 500ms
     setTimeout(() => {
         div.innerHTML = "";
         keys.forEach(key => {
@@ -577,6 +613,63 @@ function addToHistory(title, type, meta) {
     localStorage.setItem('nanoFlixHistory', JSON.stringify(watchHistory));
 }
 
+// --- FUNZIONE PER AVVIARE IL TRAILER ---
+function avviaTrailer(containerId, videoId, imgFallback, buttonId) {
+    const container = document.getElementById(containerId);
+    
+    // Reset background all'immagine standard se non c'è trailer o carica in ritardo
+    container.style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${imgFallback}')`;
+    
+    // Rimuoviamo vecchi trailer se presenti
+    const existing = container.querySelector('.yt-trailer-container');
+    if(existing) existing.remove();
+
+    if(ytTrailerPlayer) {
+        ytTrailerPlayer.destroy();
+        ytTrailerPlayer = null;
+    }
+
+    // Mostra/Nascondi tasto Fullscreen
+    const fsBtn = document.getElementById(buttonId);
+    if(fsBtn) fsBtn.style.display = (isYtApiReady && videoId) ? "block" : "none";
+
+    // Se abbiamo un ID YouTube e le API sono pronte
+    if (isYtApiReady && videoId) {
+        // Creiamo il contenitore dinamico per l'iframe
+        const ytDiv = document.createElement("div");
+        ytDiv.className = "yt-trailer-container";
+        ytDiv.innerHTML = `<div id="yt-trailer-iframe"></div>`;
+        container.appendChild(ytDiv);
+
+        ytTrailerPlayer = new YT.Player('yt-trailer-iframe', {
+            videoId: videoId,
+            playerVars: { 
+                'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 
+                'playlist': videoId, 'modestbranding': 1, 'rel': 0, 'showinfo': 0 
+            },
+            events: {
+                'onReady': function(event) {
+                    event.target.playVideo();
+                    event.target.mute(); // Assicuriamoci che parta muto
+                }
+            }
+        });
+    }
+}
+
+// --- FULLSCREEN DEL TRAILER ---
+function openTrailerFullscreen() {
+    const iframe = document.getElementById('yt-trailer-iframe');
+    if (iframe) {
+        if (iframe.requestFullscreen) iframe.requestFullscreen();
+        else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+        else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+        
+        // Quando vai a schermo intero, togliamo il muto
+        if(ytTrailerPlayer) ytTrailerPlayer.unMute();
+    }
+}
+
 function showSeasons(title, type, push = true) {
     currentSerieTitle = title;
     if(push) history.pushState({view:'season', title:title, type:type}, null, "");
@@ -587,7 +680,9 @@ function showSeasons(title, type, push = true) {
     const data = db[title];
     
     if(data) {
-        document.getElementById("season-hero").style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${data.img}')`;
+        // Avvia il trailer passando l'ID e il tasto specifico
+        avviaTrailer("season-hero", data.trailer, data.img, "season-fs-btn");
+        
         document.getElementById("season-title").textContent = title;
         document.getElementById("season-desc").textContent = data.desc || "Nessuna descrizione.";
     }
@@ -631,7 +726,9 @@ function showMovieDetail(title, push = true) {
 
     const data = moviesData[title];
     if(data) {
-        document.getElementById("movie-hero").style.backgroundImage = `linear-gradient(to top, #141414, transparent), url('${data.img}')`;
+        // Avvia il trailer
+        avviaTrailer("movie-hero", data.trailer, data.img, "movie-fs-btn");
+        
         document.getElementById("movie-title").textContent = title;
         document.getElementById("movie-desc").textContent = data.desc || "Nessuna descrizione.";
         
@@ -643,6 +740,9 @@ function showMovieDetail(title, push = true) {
 
 function playVideo(src, title, meta, push = true) {
     clearInterval(heroInterval); 
+    // Fermiamo e distruggiamo il trailer quando apriamo un video ufficiale
+    if(ytTrailerPlayer) { ytTrailerPlayer.destroy(); ytTrailerPlayer = null; }
+
     currentPlayingMeta = meta; 
     addToHistory(title, meta.type, meta);
     if(push) history.pushState({view:'player', src:src, title:title, meta:meta}, null, "");
@@ -720,6 +820,9 @@ function closePlayer(back = true) {
 }
 
 function hideViews() {
+    // Quando cambio schermata distruggo il trailer corrente
+    if(ytTrailerPlayer) { ytTrailerPlayer.destroy(); ytTrailerPlayer = null; }
+    
     document.getElementById("hero-section").style.display = "none";
     document.querySelectorAll(".view").forEach(v => v.style.display = "none");
     document.getElementById("episode-list").style.display = "none";
