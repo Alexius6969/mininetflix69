@@ -12,6 +12,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -88,6 +90,7 @@
 
     <div id="season-list" class="view">
       <button class="back-btn-float" onclick="goBack()">← Indietro</button>
+      <button class="fullscreen-btn" id="season-fs-btn" onclick="openTrailerFullscreen()" style="display:none;">⛶ Trailer Intero</button>
       <div class="details-hero" id="season-hero"></div>
       <div class="details-content">
           <h1 class="details-title" id="season-title">Titolo</h1>
@@ -102,11 +105,12 @@
 
     <div id="movie-detail-view" class="view">
        <button class="back-btn-float" onclick="goBack()">← Indietro</button>
+       <button class="fullscreen-btn" id="movie-fs-btn" onclick="openTrailerFullscreen()" style="display:none;">⛶ Trailer Intero</button>
        <div class="details-hero" id="movie-hero"></div>
        <div class="details-content">
            <h1 class="details-title" id="movie-title">Titolo Film</h1>
            <p class="details-desc" id="movie-desc">Descrizione del film...</p>
-           <button class="big-play-btn" id="movie-play-btn">▶ RIPRODUCI</button>
+           <button class="big-play-btn" id="movie-play-btn">▶ RIPRODUCI IL FILM</button>
        </div>
     </div>
 
