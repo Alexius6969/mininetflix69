@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  
+
   <title>NanoFlix</title>
-  
+
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/227_Netflix_logo-512.png">
-  
+
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <script src="https://www.youtube.com/iframe_api"></script>
-
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -30,20 +29,21 @@
   </div>
 
   <div id="main-app" style="display:none;">
-    
+
     <header id="main-header">
       <div class="header-left">
         <div class="logo" onclick="loadHome()">NANOFLIX</div>
         <div class="netflix-nav" onclick="toggleMenu(event)">
-            <div class="nav-trigger">Sfoglia <span style="font-size: 0.7rem; margin-left: 5px;">▼</span></div>
-            <div class="nav-dropdown" id="dropdown-menu">
-              <div onclick="filterCategory('home', event)">Home</div>
-              <div onclick="filterCategory('series', event)">Serie TV</div>
-              <div onclick="filterCategory('movies', event)">Film</div>
-              <div onclick="filterCategory('anime', event)">Anime</div>
-            </div>
+          <div class="nav-trigger">Sfoglia <span style="font-size: 0.7rem; margin-left: 5px;">▼</span></div>
+          <div class="nav-dropdown" id="dropdown-menu">
+            <div onclick="filterCategory('home', event)">Home</div>
+            <div onclick="filterCategory('series', event)">Serie TV</div>
+            <div onclick="filterCategory('movies', event)">Film</div>
+            <div onclick="filterCategory('anime', event)">Anime</div>
+          </div>
         </div>
       </div>
+
       <div class="header-right">
         <input type="text" id="search-bar" placeholder="Cerca..." onfocus="startSearch()" onblur="endSearch()" onkeyup="filterContent()" />
         <span onclick="logout()" class="logout-btn">Esci</span>
@@ -59,10 +59,11 @@
         <h1 id="hero-title">Caricamento...</h1>
         <p id="hero-desc"></p>
         <div class="hero-buttons">
-            <button class="hero-btn play" onclick="playCurrentHero()">▶ Riproduci</button>
-            <button class="hero-btn info" onclick="infoCurrentHero()">ℹ Altre info</button>
+          <button class="hero-btn play" onclick="playCurrentHero()">▶ Riproduci</button>
+          <button class="hero-btn info" onclick="infoCurrentHero()">ℹ Altre info</button>
         </div>
       </div>
+
       <div class="hero-gradient"></div>
     </div>
 
@@ -89,49 +90,69 @@
     </div>
 
     <div id="season-list" class="view">
-      <button class="back-btn-float" onclick="goBack()">← Indietro</button>
-      <button class="fullscreen-btn" id="season-fs-btn" onclick="openTrailerFullscreen()" style="display:none;">⛶ Trailer Intero</button>
       <div class="details-hero" id="season-hero"></div>
       <div class="details-content">
-          <h1 class="details-title" id="season-title">Titolo</h1>
-          <p class="details-desc" id="season-desc">Descrizione...</p>
-          
-          <div class="season-selector-container">
-            <select id="season-selector" onchange="changeSeason()"></select>
-          </div>
-          <ul id="seasons-ul"></ul>
+        <h1 class="details-title" id="season-title">Titolo</h1>
+        <p class="details-desc" id="season-desc">Descrizione...</p>
+
+        <div class="season-selector-container">
+          <select id="season-selector" onchange="changeSeason()"></select>
+        </div>
+        <ul id="seasons-ul"></ul>
       </div>
     </div>
 
     <div id="movie-detail-view" class="view">
-       <button class="back-btn-float" onclick="goBack()">← Indietro</button>
-       <button class="fullscreen-btn" id="movie-fs-btn" onclick="openTrailerFullscreen()" style="display:none;">⛶ Trailer Intero</button>
-       <div class="details-hero" id="movie-hero"></div>
-       <div class="details-content">
-           <h1 class="details-title" id="movie-title">Titolo Film</h1>
-           <p class="details-desc" id="movie-desc">Descrizione del film...</p>
-           <button class="big-play-btn" id="movie-play-btn">▶ RIPRODUCI IL FILM</button>
-       </div>
+      <div class="details-hero" id="movie-hero"></div>
+      <div class="details-content">
+        <h1 class="details-title" id="movie-title">Titolo Film</h1>
+        <p class="details-desc" id="movie-desc">Descrizione del film...</p>
+        <button class="big-play-btn" id="movie-play-btn">▶ RIPRODUCI IL FILM</button>
+      </div>
     </div>
 
     <div id="episode-list">
       <div class="player-wrapper">
         <div class="player-header">
-           <button class="close-btn" onclick="closePlayer()">CHIUDI</button>
-           <span id="episode-title" style="margin-left:15px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color: white;"></span>
-           <button id="next-ep-btn" class="next-btn" style="display:none;"></button>
+          <button class="close-btn" onclick="closePlayer()">CHIUDI</button>
+          <span id="episode-title" style="margin-left:15px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color: white;"></span>
+          <button id="next-ep-btn" class="next-btn" style="display:none;"></button>
         </div>
         <div id="episodes-container"></div>
       </div>
     </div>
 
-    <div id="trailer-progress-container" class="progress-container" style="display: none;">
-      <div id="trailer-progress-bar" class="progress-bar">
-          <div id="trailer-progress-filled" class="progress-filled"></div>
-          <div id="trailer-progress-handle" class="progress-handle"></div>
+    <!-- UI Trailer condivisa -->
+    <div id="trailer-ui" class="trailer-ui controls-hidden" style="display:none;">
+      <div class="trailer-top-row trailer-fade-ui">
+        <button id="trailer-back-btn" class="trailer-control-btn">← Indietro</button>
+        <button id="trailer-fullscreen-btn" class="trailer-control-btn">⛶ Schermo intero</button>
+      </div>
+
+      <div class="trailer-center-row trailer-fade-ui">
+        <button id="trailer-play-toggle" class="trailer-play-btn" aria-label="Play o Pausa">❚❚</button>
+      </div>
+
+      <div class="trailer-bottom-row trailer-fade-ui">
+        <div class="trailer-bottom-header">
+          <span id="trailer-ui-title">Trailer</span>
+          <div class="trailer-actions">
+            <button id="trailer-restart-btn" class="trailer-control-btn small">↺ Inizio</button>
+            <button id="trailer-mute-btn" class="trailer-control-btn small">🔇 Muto</button>
+          </div>
+        </div>
+
+        <div id="trailer-progress-container" class="progress-container">
+          <div id="trailer-progress-bar" class="progress-bar">
+            <div id="trailer-progress-filled" class="progress-filled"></div>
+            <div id="trailer-progress-handle" class="progress-handle"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-  </div> <script src="app.js"></script>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
